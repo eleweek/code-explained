@@ -1,4 +1,5 @@
 import {BigNumber} from 'bignumber.js';
+import _ from 'lodash';
 
 export function repr(obj, allowNull = false) {
     let res;
@@ -314,6 +315,23 @@ export class BreakpointFunction {
     getBreakpoints() {
         return this._breakpoints;
     }
+}
+
+export function joinBreakpoints(breakpointsList, prefixes) {
+    const bps = [];
+    const maxTime = Math.max(...breakpointsList.map(l => l.length));
+    for (let i = 0; i < maxTime; ++i) {
+        const newBp = {};
+        for (const [breakpoints, prefix] of _.zip(breakpointsList, prefixes)) {
+            const bp = breakpoints[Math.min(i, breakpoints.length - 1)];
+            for (let key in bp) {
+                newBp[prefix + '_' + key] = bp[key];
+            }
+        }
+        bps.push(newBp);
+    }
+    console.log(bps);
+    return bps;
 }
 
 export function computeIdx(hashCodeBig, len) {

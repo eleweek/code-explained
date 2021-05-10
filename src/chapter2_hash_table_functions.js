@@ -65,18 +65,19 @@ function anotherValue(array, ARRAY_CHANCE = 0.5, MEANINGFUL_CHANCE = 0.25, NUMBE
 }
 
 class HashCreateNew extends HashBreakpointFunction {
-    run(_fromKeys) {
+    run(_fromKeys, _size) {
         this.fromKeys = new List(_fromKeys);
+        const size = _size ? _size : this.fromKeys.size * 2;
 
         this.hashCodes = new List();
         this.keys = new List();
 
-        for (let i = 0; i < this.fromKeys.size * 2; ++i) {
+        for (let i = 0; i < size; ++i) {
             this.hashCodes = this.hashCodes.push(null);
         }
         this.addBP('create-new-empty-hashes');
 
-        for (let i = 0; i < this.fromKeys.size * 2; ++i) {
+        for (let i = 0; i < size; ++i) {
             this.keys = this.keys.push(null);
         }
         this.addBP('create-new-empty-keys');
@@ -124,7 +125,7 @@ class HashCreateNew extends HashBreakpointFunction {
     }
 }
 
-const HashCreateNewStateVisualization = TetrisFactory([
+export const HashCreateNewStateVisualization = TetrisFactory([
     [
         LineOfBoxesComponent,
         [
@@ -139,7 +140,7 @@ const HashCreateNewStateVisualization = TetrisFactory([
     [HashBoxesComponent, [{labels: ['hash_codes']}, 'hashCodes', 'idx']],
 ]);
 
-function formatHashCreateNewAndInsert(bp, prevBp) {
+export function formatHashCreateNewAndInsert(bp, prevBp) {
     switch (bp.point) {
         case 'create-new-empty-hashes':
             return `Create a new list of size <code>${bp.hashCodes.size}</code> for hash codes`;
@@ -561,9 +562,9 @@ class HashExamples extends React.Component {
 }
 
 export class Ops {
-    static createNew(array) {
+    static createNew(array, size) {
         const hcn = new HashCreateNew();
-        const [hashCodes, keys] = hcn.run(array);
+        const [hashCodes, keys] = hcn.run(array, size);
         const bp = hcn.getBreakpoints();
         return {hashCodes, keys, bp};
     }
@@ -687,8 +688,8 @@ export class Chapter2_HashTableFunctions extends ChapterComponent {
         };
     }
 
-    runCreateNew = memoizeOne(array => {
-        return Ops.createNew(array);
+    runCreateNew = memoizeOne((array, size) => {
+        return Ops.createNew(array, size);
     });
 
     runSearch = memoizeOne((hashCodes, keys, searchedObj) => {

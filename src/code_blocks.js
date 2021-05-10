@@ -933,8 +933,8 @@ class BaseBoxesComponent extends React.PureComponent {
                 'active-box-selection-2',
                 state.lastIdx2,
                 nextProps.idx2,
-                activeBoxSelection1status,
-                nextProps.selection1color || BLUE
+                activeBoxSelection2status,
+                nextProps.selection2color || BLUE
             );
         }
 
@@ -1222,7 +1222,6 @@ export class Tetris extends React.PureComponent {
         const props = this.props;
         let elems = [];
         let labels = [];
-        const transformedBp = props.bp;
         let labelsEnabled = false;
         const {boxGeometry, labelFontSize} =
             this.props.fixedGeometry || selectGeometry(props.windowWidth, props.windowHeight);
@@ -1856,20 +1855,22 @@ export class VisualizedCode extends React.Component {
                         )}
                     />
                     {this.props.comment}
-                    <div className="row code-block-row fix-animation">
-                        <div className="col">
-                            <CodeBlockWithActiveLineAndAnnotations
-                                height={codeHeight}
-                                time={time}
-                                code={this.props.code}
-                                overflow={serverSide}
-                                fontSize={smallerFont ? 12 : 9}
-                                lineHeight={smallerFont ? 1.15 : 0.8}
-                                breakpoints={this.props.breakpoints}
-                                formatBpDesc={this.props.formatBpDesc}
-                            />
+                    {this.props.code && (
+                        <div className="row code-block-row fix-animation">
+                            <div className="col">
+                                <CodeBlockWithActiveLineAndAnnotations
+                                    height={codeHeight}
+                                    time={time}
+                                    code={this.props.code}
+                                    overflow={serverSide}
+                                    fontSize={smallerFont ? 12 : 9}
+                                    lineHeight={smallerFont ? 1.15 : 0.8}
+                                    breakpoints={this.props.breakpoints}
+                                    formatBpDesc={this.props.formatBpDesc}
+                                />
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </MyErrorBoundary>
         );
