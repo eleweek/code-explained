@@ -1220,6 +1220,7 @@ export class Tetris extends React.PureComponent {
 
     render() {
         const props = this.props;
+        console.log('PROPS', this.props);
         let elems = [];
         let labels = [];
         let labelsEnabled = false;
@@ -1227,6 +1228,7 @@ export class Tetris extends React.PureComponent {
             this.props.fixedGeometry || selectGeometry(props.windowWidth, props.windowHeight);
         // console.log('selectBoxGeometry', boxGeometry, props.windowWidth, props.windowHeight);
         for (let [i, [Component, [linesData, dataName, idxName, idx2Name, subProps]]] of props.lines.entries()) {
+            console.log('array', deepGet(props.bp, dataName));
             const component = (
                 <Component
                     onExpectedWidthChange={this.updateScrollbar}
@@ -1800,6 +1802,7 @@ export class VisualizedCode extends React.Component {
         const smallerFont = tallScreen || serverSide;
 
         let bp = this.props.breakpoints[this.state.time];
+        console.log('VC time', this.state.time, bp);
         const StateVisualization = this.props.stateVisualization;
 
         let codeHeight;
@@ -1824,6 +1827,7 @@ export class VisualizedCode extends React.Component {
                 ? this.props.breakpoints.length - 1
                 : Math.min(this.state.time, this.props.breakpoints.length - 1)
             : this.state.time;
+        console.log('Time time', time);
 
         return (
             <MyErrorBoundary>
