@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import stylesCss from './styles.css';
+import './mainpage.css';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -116,6 +116,26 @@ export class App extends React.Component {
     }
 }
 
+function MainPage() {
+    return (
+        <div className="page">
+            <div className="header">
+                <div className="title">Объясняем</div>
+                <div className="definition">
+                    Интерактивные визуализации
+                    <br /> с комментариями к коду
+                </div>
+            </div>
+            <div className="sorts">
+                <h1>Сортировки</h1>
+                <div class="pane bubble-sort">
+                    <h2>Пузырьком</h2>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export function initAndRender() {
     if (typeof window !== 'undefined') {
         initUxSettings();
@@ -124,7 +144,7 @@ export function initAndRender() {
             logViewportStats();
             const root = document.getElementById('root');
             const isSSR = root.hasChildNodes();
-            ReactDOM.render(<App />, root);
+            ReactDOM.render(<MainPage />, root);
 
             /*if (isSSR) {
                 console.log('Rehydrating');

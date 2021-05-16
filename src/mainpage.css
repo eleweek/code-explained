@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: Jura;
+    line-height: 1.2;
+}
+
+.page {
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.header > .title {
+    font-size: 104px;
+    line-height: 123px;
+}
+
+.header > .definition {
+    padding-top: 20px;
+    font-size: 30px;
+    margin-left: auto;
+}
+
+h1 {
+    font-size: 65px;
+    font-weight: 700;
+}
+
+.sorts {
+    margin-top: 90px;
+}
+
+.pane {
+    border-radius: 14px;
+    width: 33%;
+    height: 200px;
+}
+
+.pane > h2 {
+    padding: 10px;
+}
+
+.bubble-sort {
+    background-color: #8700ff;
+    color: white;
+}
