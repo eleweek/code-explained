@@ -17,3 +17,8 @@
     /* box-shadow: 0 0 0 3px #a0b1c3 !important;*/
     box-shadow: unset !important;
 }
+
+.player-slider-wrapper {
+    padding-left: 10px;
+    padding-right: 10px;
+}

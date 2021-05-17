@@ -40,7 +40,7 @@ function Footer() {
         <footer className="footer">
             <div className="footer-container container-fluid">
                 <div className="footer-list">
-                    <div className="footer-list-item">Сделано в Школе Бюро Горбунова</div>
+                    {/* <div className="footer-list-item">Сделано в Школе Бюро Горбунова</div> */}
                 </div>
             </div>
         </footer>
@@ -112,7 +112,7 @@ export class App extends React.Component {
 
         return (
             <React.Fragment>
-                {this.state.isPlayer ? <Player /> : <MainPage />}
+                {this.state.isPlayer ? <Player breakpoints={insertionSortRes.bp} /> : <MainPage />}
                 <Footer />
             </React.Fragment>
         );
