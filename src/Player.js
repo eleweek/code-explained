@@ -24,13 +24,19 @@ export class Player extends React.Component {
                         width: 12,
                     }}
                     handleStyle={{
-                        height: 20,
-                        width: 20,
-                        marginTop: -6,
-                    }}
-                    railStyle={{height: 10}}
-                    trackStyle={{
                         height: 10,
+                        width: 10,
+                        marginTop: -3.5,
+                        backgroundColor: '#416287',
+                        border: '2px solid white',
+                    }}
+                    railStyle={{
+                        height: 3,
+                        backgroundColor: '#E6E6E6',
+                    }}
+                    trackStyle={{
+                        height: 3,
+                        backgroundColor: '#416287',
                     }}
                 />
             </div>
