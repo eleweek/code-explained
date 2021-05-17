@@ -16,7 +16,7 @@ export const BUBBLE_SORT_CODE = [
     ['', 'end', -1],
 ];
 
-class BubbleSort extends BreakpointFunction {
+export class BubbleSort extends BreakpointFunction {
     constructor() {
         super();
     }
@@ -208,9 +208,22 @@ class MergeSort extends BreakpointFunction {
     }
 }
 
-const BubbleSortVisualisation = TetrisFactory([
-    [HashBoxesComponent, [{labels: ['a']}, 'a', 'j', 'jplus1', {selection1color: 'red', selection2color: 'red'}]],
-]);
+export const BubbleSortVisualisationFactory = withLabel =>
+    TetrisFactory([
+        [
+            HashBoxesComponent,
+            [
+                {labels: withLabel ? ['a'] : [null]},
+                'a',
+                'j',
+                'jplus1',
+                {selection1color: 'red', selection2color: 'red'},
+            ],
+        ],
+    ]);
+
+export const BubbleSortVisualisation = BubbleSortVisualisationFactory(true);
+export const BubbleSortVisualisationNoLabel = BubbleSortVisualisationFactory(false);
 
 const InsertionSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: ['a']}, 'a', 'i', undefined]]]);
 

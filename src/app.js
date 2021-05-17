@@ -1,12 +1,15 @@
 import _ from 'lodash';
 import Bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import './mainpage.css';
+import './styles.css';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
+import {ForeverAnimation, VisualizedCode, dummyFormat, TetrisFactory, HashBoxesComponent} from './code_blocks';
+import {BubbleSort, BubbleSortVisualisationNoLabel} from './new_demos';
 
 function getWindowDimensions() {
     const width = document.documentElement.clientWidth;
@@ -107,33 +110,65 @@ export class App extends React.Component {
 
         return (
             <React.Fragment>
-                <div className="app-container container-fluid">
-                    <p>Hello, world!</p>
-                </div>
+                <MainPage />
                 <Footer />
             </React.Fragment>
         );
     }
 }
 
-function MainPage() {
-    return (
-        <div className="page">
-            <div className="header">
-                <div className="title">Объясняем</div>
-                <div className="definition">
-                    Интерактивные визуализации
-                    <br /> с комментариями к коду
+function runBubbleSort(a) {
+    const bs = new BubbleSort();
+    bs.run(a);
+    const bp = bs.getBreakpoints();
+    return {bp};
+}
+
+const MAIN_PAGE_ARRAY = [42, 13, 27, 89, 14, 67, 92];
+const bubbleSortRes = runBubbleSort(MAIN_PAGE_ARRAY);
+console.log('BS res', bubbleSortRes);
+
+export const BubbleSortVisualisationMinimal = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
+
+export class MainPage extends React.Component {
+    constructor() {
+        super();
+    }
+
+    render() {
+        return (
+            <div className="page">
+                <div className="header">
+                    <div className="title">Объясняем</div>
+                    <div className="definition">
+                        Интерактивные визуализации
+                        <br /> с комментариями к коду
+                    </div>
+                </div>
+                <div className="sorts">
+                    <h1>Сортировки</h1>
+                    <div class="pane bubble-sort">
+                        <h2>Пузырьком</h2>
+                        <div className="vis-wrapper">
+                            <ForeverAnimation
+                                breakpoints={bubbleSortRes.bp}
+                                stateVisualization={BubbleSortVisualisationMinimal}
+                                time={3}
+                                {...this.props}
+                            />
+                        </div>
+                        {/* <VisualizedCode
+                        code={null}
+                        breakpoints={bubbleSortRes.bp}
+                        formatBpDesc={dummyFormat}
+                        stateVisualization={BubbleSortVisualisation}
+                        {...this.props}
+                    /> */}
+                    </div>
                 </div>
             </div>
-            <div className="sorts">
-                <h1>Сортировки</h1>
-                <div class="pane bubble-sort">
-                    <h2>Пузырьком</h2>
-                </div>
-            </div>
-        </div>
-    );
+        );
+    }
 }
 
 export function initAndRender() {
@@ -144,7 +179,7 @@ export function initAndRender() {
             logViewportStats();
             const root = document.getElementById('root');
             const isSSR = root.hasChildNodes();
-            ReactDOM.render(<MainPage />, root);
+            ReactDOM.render(<App />, root);
 
             /*if (isSSR) {
                 console.log('Rehydrating');

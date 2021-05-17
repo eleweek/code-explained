@@ -1,16 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&display=swap');
 
-body {
-    font-family: Jura;
-    line-height: 1.2;
-}
-
 .page {
     padding-left: 7px;
     padding-right: 7px;
 }
 
 .header {
+    font-family: Jura;
+    line-height: 1.2;
     display: flex;
     align-items: center;
 }
@@ -26,9 +23,12 @@ body {
     margin-left: auto;
 }
 
-h1 {
+.page h1 {
     font-size: 65px;
     font-weight: 700;
+
+    font-family: Jura;
+    line-height: 1.2;
 }
 
 .sorts {
@@ -43,9 +43,19 @@ h1 {
 
 .pane > h2 {
     padding: 10px;
+
+    font-family: Jura;
+    line-height: 1.2;
+}
+
+.pane > .vis-wrapper {
+    padding-left: 10px;
 }
 
 .bubble-sort {
     background-color: #8700ff;
+}
+
+.bubble-sort > h2 {
     color: white;
 }

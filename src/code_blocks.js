@@ -1881,6 +1881,32 @@ export class VisualizedCode extends React.Component {
     }
 }
 
+export class ForeverAnimation extends React.Component {
+    constructor() {
+        super();
+        this.ref = React.createRef();
+    }
+
+    render() {
+        let bp = this.props.breakpoints[this.props.time];
+
+        const windowWidth = this.props.windowWidth;
+        const windowHeight = this.props.windowHeight;
+        const StateVisualization = this.props.stateVisualization;
+
+        return (
+            <StateVisualization
+                bp={bp}
+                epoch={0} /* Fixed, too lazy to implement changing breakpoints here */
+                innerRef={this.ref}
+                windowWidth={windowWidth}
+                windowHeight={windowHeight}
+                overflow={true}
+            />
+        );
+    }
+}
+
 export class HashBoxesComponent extends React.PureComponent {
     static getExpectedGeometry({boxGeometry: {boxSize, spacingY}}) {
         return {height: boxSize, rowHeight: boxSize, rowMarginBottom: spacingY, rowsNumber: 1};
