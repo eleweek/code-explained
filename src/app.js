@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
 import {ForeverAnimation, VisualizedCode, dummyFormat, TetrisFactory, HashBoxesComponent} from './code_blocks';
-import {BubbleSort, BubbleSortVisualisationNoLabel} from './new_demos';
+import {BubbleSort, InsertionSort} from './new_demos';
 
 function getWindowDimensions() {
     const width = document.documentElement.clientWidth;
@@ -124,18 +124,42 @@ function runBubbleSort(a) {
     return {bp};
 }
 
-const MAIN_PAGE_ARRAY = [42, 13, 27, 89, 14, 67, 92];
-const bubbleSortRes = runBubbleSort(MAIN_PAGE_ARRAY);
-console.log('BS res', bubbleSortRes);
+function runInsertionSort(a) {
+    const is = new InsertionSort();
+    is.run(a);
+    const bp = is.getBreakpoints();
+    return {bp};
+}
 
-export const BubbleSortVisualisationMinimal = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
+const MAIN_PAGE_ARRAY = [42, 11, 92, 27, 87, 14, 67, 1];
+const bubbleSortRes = runBubbleSort(MAIN_PAGE_ARRAY);
+const insertionSortRes = runInsertionSort(MAIN_PAGE_ARRAY);
+const MAX_PAGE_TIME = Math.max(...[bubbleSortRes, insertionSortRes].map(res => res.bp.length));
+console.log('Max page time', MAX_PAGE_TIME);
+
+console.log('BS res', bubbleSortRes);
+console.log('IS res', insertionSortRes);
+
+export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
 
 export class MainPage extends React.Component {
     constructor() {
         super();
+        this.state = {
+            time: 0,
+        };
+        this.timerId = setInterval(() => {
+            const newTime = this.state.time + 1;
+            if (newTime <= MAX_PAGE_TIME) {
+                this.setState({time: newTime});
+            } else {
+                this.setState({time: 0});
+            }
+        }, 2000);
     }
 
     render() {
+        console.log('render time', this.state.time);
         return (
             <div className="page">
                 <div className="header">
@@ -147,23 +171,29 @@ export class MainPage extends React.Component {
                 </div>
                 <div className="sorts">
                     <h1>Сортировки</h1>
-                    <div class="pane bubble-sort">
-                        <h2>Пузырьком</h2>
-                        <div className="vis-wrapper">
-                            <ForeverAnimation
-                                breakpoints={bubbleSortRes.bp}
-                                stateVisualization={BubbleSortVisualisationMinimal}
-                                time={3}
-                                {...this.props}
-                            />
+                    <div className="panes-container">
+                        <div className="pane bubble-sort">
+                            <h2>Пузырьком</h2>
+                            <div className="vis-wrapper">
+                                <ForeverAnimation
+                                    breakpoints={bubbleSortRes.bp}
+                                    stateVisualization={MinimalSortVisualisation}
+                                    time={Math.min(this.state.time, bubbleSortRes.bp.length - 1)}
+                                    {...this.props}
+                                />
+                            </div>
                         </div>
-                        {/* <VisualizedCode
-                        code={null}
-                        breakpoints={bubbleSortRes.bp}
-                        formatBpDesc={dummyFormat}
-                        stateVisualization={BubbleSortVisualisation}
-                        {...this.props}
-                    /> */}
+                        <div className="pane insertion-sort">
+                            <h2>Вставками</h2>
+                            <div className="vis-wrapper">
+                                <ForeverAnimation
+                                    breakpoints={insertionSortRes.bp}
+                                    stateVisualization={MinimalSortVisualisation}
+                                    time={Math.min(this.state.time, insertionSortRes.bp.length - 1)}
+                                    {...this.props}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

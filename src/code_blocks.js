@@ -1889,6 +1889,7 @@ export class ForeverAnimation extends React.Component {
 
     render() {
         let bp = this.props.breakpoints[this.props.time];
+        console.log('BP', this.props.breakpoints, this.props.time, bp);
 
         const windowWidth = this.props.windowWidth;
         const windowHeight = this.props.windowHeight;
@@ -1897,7 +1898,7 @@ export class ForeverAnimation extends React.Component {
         return (
             <StateVisualization
                 bp={bp}
-                epoch={0} /* Fixed, too lazy to implement changing breakpoints here */
+                epoch={0} /* Fixed to 0, too lazy to implement changing breakpoints here */
                 innerRef={this.ref}
                 windowWidth={windowWidth}
                 windowHeight={windowHeight}

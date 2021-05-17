@@ -21,23 +21,34 @@ export class BubbleSort extends BreakpointFunction {
         super();
     }
 
-    run(_a) {
+    run(_a, granular = false) {
         this.a = new ImmutableList(_a);
         const n = _a.length;
 
         for (this.i = 0; this.i < n; ++this.i) {
             this.addBP('for-i');
+            let swapped = false;
             for (this.j = 0; this.j < n - 1; ++this.j) {
                 this.jplus1 = this.j + 1;
-                this.addBP('for-j');
+                if (granular) {
+                    this.addBP('for-j');
+                }
                 const aj = this.a.get(this.j);
                 const ajplus1 = this.a.get(this.j + 1);
-                this.addBP('compare');
+                if (granular) {
+                    this.addBP('compare');
+                }
                 if (aj > ajplus1) {
                     this.a = this.a.set(this.j, ajplus1);
                     this.a = this.a.set(this.j + 1, aj);
-                    this.addBP('swap');
+                    swapped = true;
+                    if (granular) {
+                        this.addBP('swap');
+                    }
                 }
+            }
+            if (!granular && !swapped) {
+                break;
             }
         }
         this.addBP('end');
@@ -60,7 +71,7 @@ export const INSERTION_SORT_CODE = [
     ['', 'end', -1],
 ];
 
-class InsertionSort extends BreakpointFunction {
+export class InsertionSort extends BreakpointFunction {
     constructor() {
         super();
     }
