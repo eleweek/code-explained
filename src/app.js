@@ -10,6 +10,7 @@ import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRA
 import {win, globalSettings} from './store';
 import {ForeverAnimation, VisualizedCode, dummyFormat, TetrisFactory, HashBoxesComponent} from './code_blocks';
 import {BubbleSort, InsertionSort} from './new_demos';
+import {Player} from './player';
 
 function getWindowDimensions() {
     const width = document.documentElement.clientWidth;
@@ -55,6 +56,7 @@ export class App extends React.Component {
             mounted: false,
             windowWidth: null,
             windowHeight: null,
+            isPlayer: true,
         };
     }
 
@@ -110,7 +112,7 @@ export class App extends React.Component {
 
         return (
             <React.Fragment>
-                <MainPage />
+                {this.state.isPlayer ? <Player /> : <MainPage />}
                 <Footer />
             </React.Fragment>
         );

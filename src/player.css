@@ -1,0 +1,9 @@
+.player-header {
+    display: flex;
+}
+
+.player-title {
+    font-weight: 700;
+    margin-left: 10px;
+    margin-right: 10px;
+}
