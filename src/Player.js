@@ -4,6 +4,8 @@ import './player.css';
 import Slider from 'rc-slider/lib/Slider';
 import 'rc-slider/assets/index.css';
 
+import {CodeBlockWithActiveLineAndAnnotations} from './code_blocks';
+
 export class Player extends React.Component {
     AUTOPLAY_TIMEOUT = 1000;
 
@@ -15,6 +17,8 @@ export class Player extends React.Component {
             autoPlaying: true,
             speed: 1,
         };
+
+        this.ref = React.createRef();
     }
 
     unixtimestamp() {
@@ -32,7 +36,7 @@ export class Player extends React.Component {
 
     handleTimeChange = (value, autoPlaying = false) => {
         this.setState(state => ({time: value, autoPlaying}));
-        this.props.handleTimeChange(value);
+        // this.props.handleTimeChange(value);
     };
 
     prevStep = () => {
@@ -124,11 +128,29 @@ export class Player extends React.Component {
     }
 
     render() {
+        const StateVisualization = this.props.stateVisualization;
+        const {windowHeight, windowWidth} = this.props;
+
+        const time = this.state.time;
+
+        const bp = this.props.breakpoints[time];
+
+        const smallerFont = false;
+
+        let codeHeight;
+        if (windowHeight) {
+            const approximateSliderAndControlsHeight = 100;
+            codeHeight =
+                this.props.windowHeight -
+                StateVisualization.getExpectedHeight(windowWidth, windowHeight) -
+                approximateSliderAndControlsHeight;
+        }
+
         return (
             <div className="player">
                 <div className="player-header">
                     <div className="player-title">Объясняем</div>
-                    <div className="player-lesson-name">сортировку пузырьком</div>
+                    <div className="player-lesson-name">{this.props.headerTitle}</div>
                 </div>
                 <div className="player-slider-wrapper">
                     <Slider
@@ -136,7 +158,7 @@ export class Player extends React.Component {
                         onChange={this.handleTimeChange}
                         min={0}
                         max={this.props.breakpoints.length - 1}
-                        value={this.state.time}
+                        value={time}
                         dotStyle={{
                             top: -1,
                             height: 12,
@@ -155,10 +177,28 @@ export class Player extends React.Component {
                         }}
                         trackStyle={{
                             height: 3,
-                            backgroundColor: '#416287',
+                            backgroundColor: 'rgba(157, 187, 220, 0.5)',
                         }}
                     />
                 </div>
+                <CodeBlockWithActiveLineAndAnnotations
+                    height={codeHeight}
+                    time={time}
+                    code={this.props.code}
+                    overflow={false}
+                    fontSize={12}
+                    lineHeight={1.15}
+                    breakpoints={this.props.breakpoints}
+                    formatBpDesc={this.props.formatBpDesc}
+                />
+                <StateVisualization
+                    bp={bp}
+                    epoch={this.state.breakpointsUpdatedCounter}
+                    innerRef={this.ref}
+                    windowWidth={windowWidth}
+                    windowHeight={windowHeight}
+                    overflow={false}
+                />
             </div>
         );
     }

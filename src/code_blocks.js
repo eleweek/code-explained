@@ -1311,7 +1311,7 @@ export class Tetris extends React.PureComponent {
     }
 }
 
-class CodeBlockWithActiveLineAndAnnotations extends React.Component {
+export class CodeBlockWithActiveLineAndAnnotations extends React.Component {
     constructor() {
         super();
         this.ssRef = React.createRef();

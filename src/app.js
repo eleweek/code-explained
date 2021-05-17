@@ -8,8 +8,8 @@ import ReactDOM from 'react-dom';
 
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
-import {ForeverAnimation, VisualizedCode, dummyFormat, TetrisFactory, HashBoxesComponent} from './code_blocks';
-import {BubbleSort, InsertionSort} from './new_demos';
+import {ForeverAnimation, dummyFormat, TetrisFactory, HashBoxesComponent} from './code_blocks';
+import {BubbleSort, InsertionSort, INSERTION_SORT_CODE} from './new_demos';
 import {Player} from './player';
 
 function getWindowDimensions() {
@@ -112,7 +112,17 @@ export class App extends React.Component {
 
         return (
             <React.Fragment>
-                {this.state.isPlayer ? <Player breakpoints={insertionSortRes.bp} /> : <MainPage />}
+                {this.state.isPlayer ? (
+                    <Player
+                        headerTitle="сортировку вставками"
+                        breakpoints={insertionSortRes.bp}
+                        formatBpDesc={dummyFormat}
+                        stateVisualization={MinimalSortVisualisation}
+                        code={INSERTION_SORT_CODE}
+                    />
+                ) : (
+                    <MainPage />
+                )}
                 <Footer />
             </React.Fragment>
         );
