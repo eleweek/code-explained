@@ -12,7 +12,7 @@
 }
 
 .player-buttons {
-    font-family: monospace;
+    font-family: 'IBM Plex Mono', monospace;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
