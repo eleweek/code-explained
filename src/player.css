@@ -1,11 +1,18 @@
 .player-header {
     display: flex;
+    align-items: center;
+    height: 35px;
 }
 
 .player-title {
     font-weight: 700;
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.player-buttons {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .rc-slider-handle-click-focused {
@@ -21,4 +28,8 @@
 .player-slider-wrapper {
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.player-state-vis-wrapper {
+    padding: 10px;
 }

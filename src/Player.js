@@ -4,22 +4,30 @@ import './player.css';
 import Slider from 'rc-slider/lib/Slider';
 import 'rc-slider/assets/index.css';
 
+import rightArrow from './icons/keyboard_arrow_right.svg';
+import leftArrow from './icons/keyboard_arrow_left.svg';
+import playArrow from './icons/play_arrow.svg';
+
 import {CodeBlockWithActiveLineAndAnnotations} from './code_blocks';
 
 export class Player extends React.Component {
-    AUTOPLAY_TIMEOUT = 1000;
+    AUTOPLAY_TIMEOUT = 1500;
 
     constructor() {
         super();
 
         this.state = {
             time: 0,
-            autoPlaying: true,
+            autoPlaying: false,
             speed: 1,
         };
 
         this.ref = React.createRef();
     }
+
+    maxTime = () => {
+        return this.props.breakpoints.length - 1;
+    };
 
     unixtimestamp() {
         return new Date().getTime();
@@ -41,28 +49,18 @@ export class Player extends React.Component {
 
     prevStep = () => {
         this.stop();
-        if (this.props.time > 0) {
-            const newTime = this.props.time - 1;
+        if (this.state.time > 0) {
+            const newTime = this.state.time - 1;
             this.handleTimeChange(newTime);
         }
     };
 
     nextStep = () => {
         this.stop();
-        if (this.props.time < this.props.maxTime) {
-            const newTime = this.props.time + 1;
+        if (this.state.time < this.maxTime()) {
+            const newTime = this.state.time + 1;
             this.handleTimeChange(newTime);
         }
-    };
-
-    firstStep = () => {
-        this.stop();
-        this.handleTimeChange(0);
-    };
-
-    lastStep = () => {
-        this.stop();
-        this.handleTimeChange(this.props.maxTime);
     };
 
     getAutoplayTimeout = speed => {
@@ -70,15 +68,16 @@ export class Player extends React.Component {
     };
 
     autoPlayNextStep = () => {
-        if (this.state.time < this.props.maxTime) {
+        if (this.state.time < this.maxTime()) {
             let newTime = this.state.time + 1;
-            if (newTime < this.props.maxTime) {
+            if (newTime < this.maxTime()) {
+                console.log('Launching autoplay');
                 this.timeoutId = setTimeout(this.autoPlayNextStep, this.getAutoplayTimeout());
                 this.timeoutStarted = this.unixtimestamp();
             } else {
                 this.timeoutId = null;
             }
-            this.handleTimeChange(newTime, newTime < this.props.maxTime);
+            this.handleTimeChange(newTime, newTime < this.maxTime());
         }
     };
 
@@ -89,10 +88,20 @@ export class Player extends React.Component {
     };
 
     autoPlay = () => {
-        if (this.props.time < this.props.maxTime) {
+        console.log('autoplay');
+        if (this.state.time < this.maxTime()) {
             this.autoPlayNextStep();
         } else {
             this.repeatPlay();
+        }
+    };
+
+    toggleAutoPlay = () => {
+        console.log('toggleAutoPlay', this.state.autoPlaying);
+        if (!this.state.autoPlaying) {
+            this.autoPlay();
+        } else {
+            this.stop();
         }
     };
 
@@ -108,7 +117,7 @@ export class Player extends React.Component {
     };
 
     static getDerivedStateFromProps(props, state) {
-        if (state.autoPlaying && props.time === props.maxTime) {
+        if (state.autoPlaying && props.time === props.breakpoints.length - 1) {
             return {...state, autoPlaying: false};
         } else {
             return null;
@@ -128,6 +137,8 @@ export class Player extends React.Component {
     }
 
     render() {
+        const maxTime = this.props.breakpoints.length;
+
         const marks = {};
         if (this.props.breakpoints.length < 80) {
             for (let i = 0; i <= this.props.breakpoints.length; ++i) {
@@ -158,6 +169,12 @@ export class Player extends React.Component {
                 <div className="player-header">
                     <div className="player-title">Объясняем</div>
                     <div className="player-lesson-name">{this.props.headerTitle}</div>
+                    <div className="player-buttons">
+                        <img src={playArrow} onClick={this.toggleAutoPlay} />
+                        <img src={leftArrow} onClick={this.prevStep} />
+                        {time} / {maxTime}
+                        <img src={rightArrow} onClick={this.nextStep} />
+                    </div>
                 </div>
                 <div className="player-slider-wrapper">
                     <Slider
@@ -201,14 +218,16 @@ export class Player extends React.Component {
                     breakpoints={this.props.breakpoints}
                     formatBpDesc={this.props.formatBpDesc}
                 />
-                <StateVisualization
-                    bp={bp}
-                    epoch={this.state.breakpointsUpdatedCounter}
-                    innerRef={this.ref}
-                    windowWidth={windowWidth}
-                    windowHeight={windowHeight}
-                    overflow={false}
-                />
+                <div className="player-state-vis-wrapper">
+                    <StateVisualization
+                        bp={bp}
+                        epoch={this.state.breakpointsUpdatedCounter}
+                        innerRef={this.ref}
+                        windowWidth={windowWidth}
+                        windowHeight={windowHeight}
+                        overflow={false}
+                    />
+                </div>
             </div>
         );
     }
