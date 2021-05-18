@@ -22,7 +22,7 @@ export class Player extends React.Component {
             speed: 1,
         };
 
-        this.ref = React.createRef();
+        this.componentRef = React.createRef();
     }
 
     maxTime = () => {
@@ -131,10 +131,31 @@ export class Player extends React.Component {
     }
 
     componentDidMount() {
+        document.addEventListener('keydown', this.handleKeyboard);
+
         if (this.props.autoplayByDefault) {
             this.autoPlay();
         }
     }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleKeyboard);
+    }
+
+    handleKeyboard = event => {
+        console.log('keyboard', event);
+        event.preventDefault();
+        const keyCode = event.keyCode;
+        const isNext = keyCode == 38 || keyCode == 39;
+        const isPrev = keyCode == 40 || keyCode == 37;
+
+        if (isNext) {
+            this.nextStep();
+        }
+        if (isPrev) {
+            this.prevStep();
+        }
+    };
 
     render() {
         const maxTime = this.props.breakpoints.length;
@@ -224,7 +245,7 @@ export class Player extends React.Component {
                     <StateVisualization
                         bp={bp}
                         epoch={this.state.breakpointsUpdatedCounter}
-                        innerRef={this.ref}
+                        innerRef={this.componentRef}
                         windowWidth={windowWidth}
                         windowHeight={windowHeight}
                         overflow={false}
