@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
-import {ForeverAnimation, dummyFormat, TetrisFactory, HashBoxesComponent} from './code_blocks';
+import {ForeverAnimation, dummyFormat, TetrisFactory, HashBoxesComponent, LineOfBoxesComponent} from './code_blocks';
 import {BubbleSort, InsertionSort, INSERTION_SORT_CODE} from './new_demos';
 import {Player} from './player';
 
@@ -21,7 +21,9 @@ function getWindowDimensions() {
 function logViewportStats() {
     console.log(`DIMENSIONS: window inner: ${window.innerWidth}x${window.innerHeight}`);
     console.log(
-        `DIMENSIONS: document.documentElement: ${document.documentElement.clientWidth}x${document.documentElement.clientHeight}`
+        `DIMENSIONS: document.documentElement: ${document.documentElement.clientWidth}x${
+            document.documentElement.clientHeight
+        }`
     );
     const vv = window.visualViewport;
     console.log(`DIMENSIONS: visualViewport: ${vv != null ? vv.width + 'x' + vv.height : vv}`);
@@ -115,9 +117,9 @@ export class App extends React.Component {
                 {this.state.isPlayer ? (
                     <Player
                         headerTitle="сортировку вставками"
-                        breakpoints={insertionSortRes.bp}
+                        breakpoints={insertionSortResGranular.bp}
                         formatBpDesc={dummyFormat}
-                        stateVisualization={MinimalSortVisualisation}
+                        stateVisualization={InsertionSortVisualisation}
                         code={INSERTION_SORT_CODE}
                     />
                 ) : (
@@ -136,16 +138,19 @@ function runBubbleSort(a) {
     return {bp};
 }
 
-function runInsertionSort(a) {
+function runInsertionSort(a, granular = false) {
     const is = new InsertionSort();
-    is.run(a);
+    is.run(a, granular);
     const bp = is.getBreakpoints();
     return {bp};
 }
 
+const InsertionSortVisualisation = TetrisFactory([[LineOfBoxesComponent, [{labels: [null]}, 'a', 'i', undefined]]]);
+
 const MAIN_PAGE_ARRAY = [42, 11, 92, 27, 87, 14, 67, 1];
 const bubbleSortRes = runBubbleSort(MAIN_PAGE_ARRAY);
 const insertionSortRes = runInsertionSort(MAIN_PAGE_ARRAY);
+const insertionSortResGranular = runInsertionSort(MAIN_PAGE_ARRAY, true);
 const MAX_PAGE_TIME = Math.max(...[bubbleSortRes, insertionSortRes].map(res => res.bp.length));
 console.log('Max page time', MAX_PAGE_TIME);
 
