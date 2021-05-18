@@ -1,4 +1,5 @@
 .player-header {
+    position: relative; /* for .player-buttons position:absolute to work */
     display: flex;
     align-items: center;
     height: 35px;
@@ -11,8 +12,22 @@
 }
 
 .player-buttons {
-    margin-left: auto;
-    margin-right: auto;
+    font-family: monospace;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.player-next {
+    margin-left: 10px;
+}
+
+.player-prev {
+    margin-right: 10px;
+}
+
+.player-play {
+    margin-right: 20px;
 }
 
 .rc-slider-handle-click-focused {
