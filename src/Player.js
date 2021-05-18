@@ -161,7 +161,7 @@ export class Player extends React.Component {
         const maxTime = this.props.breakpoints.length;
 
         const marks = {};
-        if (this.props.breakpoints.length < 80) {
+        if (this.props.breakpoints.length < 150) {
             for (let i = 0; i <= this.props.breakpoints.length; ++i) {
                 marks[i] = '';
             }
@@ -188,7 +188,9 @@ export class Player extends React.Component {
         return (
             <div className="player">
                 <div className="player-header">
-                    <div className="player-title">Объясняем</div>
+                    <div className="player-title" onClick={this.props.navigateHome}>
+                        Объясняем
+                    </div>
                     <div className="player-lesson-name">{this.props.headerTitle}</div>
                     <div className="player-buttons">
                         <img src={playArrow} className="player-play" onClick={this.toggleAutoPlay} />

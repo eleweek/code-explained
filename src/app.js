@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
 import {ForeverAnimation, dummyFormat, TetrisFactory, HashBoxesComponent, LineOfBoxesComponent} from './code_blocks';
-import {BubbleSort, InsertionSort, INSERTION_SORT_CODE} from './new_demos';
+import {BubbleSort, BUBBLE_SORT_CODE, InsertionSort, INSERTION_SORT_CODE} from './new_demos';
 import {Player} from './player';
 
 function getWindowDimensions() {
@@ -58,7 +58,7 @@ export class App extends React.Component {
             mounted: false,
             windowWidth: null,
             windowHeight: null,
-            isPlayer: true,
+            isPlayer: false,
         };
     }
 
@@ -107,6 +107,14 @@ export class App extends React.Component {
         window.removeEventListener('resize', this.windowSizeChangeHandle);
     }
 
+    navigateHome = () => {
+        this.setState({isPlayer: false});
+    };
+
+    navigatePlayer = () => {
+        this.setState({isPlayer: true});
+    };
+
     render() {
         console.log('App.render()');
         // Make sure SSR works
@@ -116,14 +124,15 @@ export class App extends React.Component {
             <React.Fragment>
                 {this.state.isPlayer ? (
                     <Player
-                        headerTitle="сортировку вставками"
-                        breakpoints={insertionSortResGranular.bp}
+                        headerTitle="сортировку пузырьком"
+                        breakpoints={bubbleSortResGranular.bp}
                         formatBpDesc={dummyFormat}
-                        stateVisualization={InsertionSortVisualisation}
-                        code={INSERTION_SORT_CODE}
+                        stateVisualization={MinimalSortVisualisation}
+                        code={BUBBLE_SORT_CODE}
+                        navigateHome={this.navigateHome}
                     />
                 ) : (
-                    <MainPage />
+                    <MainPage navigatePlayer={this.navigatePlayer} />
                 )}
                 <Footer />
             </React.Fragment>
@@ -131,9 +140,9 @@ export class App extends React.Component {
     }
 }
 
-function runBubbleSort(a) {
+function runBubbleSort(a, granular = false) {
     const bs = new BubbleSort();
-    bs.run(a);
+    bs.run(a, granular);
     const bp = bs.getBreakpoints();
     return {bp};
 }
@@ -149,6 +158,7 @@ const InsertionSortVisualisation = TetrisFactory([[LineOfBoxesComponent, [{label
 
 const MAIN_PAGE_ARRAY = [42, 11, 92, 27, 87, 14, 67, 1];
 const bubbleSortRes = runBubbleSort(MAIN_PAGE_ARRAY);
+const bubbleSortResGranular = runBubbleSort(MAIN_PAGE_ARRAY, true);
 const insertionSortRes = runInsertionSort(MAIN_PAGE_ARRAY);
 const insertionSortResGranular = runInsertionSort(MAIN_PAGE_ARRAY, true);
 const MAX_PAGE_TIME = Math.max(...[bubbleSortRes, insertionSortRes].map(res => res.bp.length));
@@ -189,7 +199,7 @@ export class MainPage extends React.Component {
                 <div className="sorts">
                     <h1>Сортировки</h1>
                     <div className="panes-container">
-                        <div className="pane bubble-sort">
+                        <div className="pane bubble-sort" onClick={this.props.navigatePlayer}>
                             <h2>Пузырьком</h2>
                             <div className="vis-wrapper">
                                 <ForeverAnimation
@@ -215,6 +225,10 @@ export class MainPage extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerId);
     }
 }
 
