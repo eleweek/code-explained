@@ -221,7 +221,7 @@ export class Player extends React.Component {
                             width: 10,
                             marginTop: -3.5,
                             backgroundColor: '#416287',
-                            border: '2px solid white',
+                            border: 'none',
                         }}
                         railStyle={{
                             height: 3,
