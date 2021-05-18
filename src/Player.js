@@ -128,6 +128,13 @@ export class Player extends React.Component {
     }
 
     render() {
+        const marks = {};
+        if (this.props.breakpoints.length < 80) {
+            for (let i = 0; i <= this.props.breakpoints.length; ++i) {
+                marks[i] = '';
+            }
+        }
+
         const StateVisualization = this.props.stateVisualization;
         const {windowHeight, windowWidth} = this.props;
 
@@ -154,15 +161,18 @@ export class Player extends React.Component {
                 </div>
                 <div className="player-slider-wrapper">
                     <Slider
-                        marks={undefined}
+                        marks={marks}
                         onChange={this.handleTimeChange}
                         min={0}
                         max={this.props.breakpoints.length - 1}
                         value={time}
                         dotStyle={{
-                            top: -1,
-                            height: 12,
-                            width: 12,
+                            top: 0,
+                            height: 3,
+                            width: 3,
+                            borderRadius: 0,
+                            backgroundColor: 'white',
+                            border: 'none',
                         }}
                         handleStyle={{
                             height: 10,
@@ -173,11 +183,11 @@ export class Player extends React.Component {
                         }}
                         railStyle={{
                             height: 3,
-                            backgroundColor: '#E6E6E6',
+                            backgroundColor: 'rgba(157, 187, 220, 0.5)',
                         }}
                         trackStyle={{
                             height: 3,
-                            backgroundColor: 'rgba(157, 187, 220, 0.5)',
+                            backgroundColor: '#416287',
                         }}
                     />
                 </div>
