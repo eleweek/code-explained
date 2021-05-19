@@ -167,6 +167,7 @@ export class Player extends React.Component {
     };
 
     render() {
+        console.log('Player', this.props, this.state);
         if (this.state.navigatingHome) {
             return <Redirect push to="/" />;
         }

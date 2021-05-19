@@ -43,6 +43,7 @@
     margin-right: 25px;
     width: 30%;
     height: 200px;
+    text-decoration: none !important;
 }
 
 .pane h2 {

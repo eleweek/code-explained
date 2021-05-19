@@ -5,7 +5,7 @@ import './styles.css';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Switch, Route, Link, Redirect} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter} from 'react-router-dom';
 
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
@@ -115,8 +115,8 @@ export class App extends React.Component {
         return (
             <Router>
                 <Switch>
-                    <Route path="/player">
-                        <Player {...LESSONS.bubbleSort} />
+                    <Route path="/lesson/:name">
+                        <Lesson />
                     </Route>
                     <Route path="/">
                         <MainPage />
@@ -157,7 +157,7 @@ console.log('IS res', insertionSortRes);
 export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
 
 const LESSONS = {
-    bubbleSort: {
+    bubble_sort: {
         headerTitle: 'сортировку пузырьком',
         breakpoints: bubbleSortResGranular.bp,
         formatBpDesc: dummyFormat,
@@ -166,20 +166,46 @@ const LESSONS = {
     },
 };
 
+class Pane extends React.Component {
+    constructor() {
+        this.state = {
+            navigatingPlayer: false,
+        };
+    }
+
+    render() {
+        if (this.state.navigatingPlayer) {
+            return <Redirect to={`lesson/${this.props.url}`} />;
+        }
+    }
+}
+
+const Lesson = withRouter(
+    class extends React.Component {
+        render() {
+            console.log('Lesson', this.props);
+            const name = this.props.match.params.name;
+            console.log('Lesson name', name, LESSONS[name]);
+            return <Player {...LESSONS[name]} />;
+        }
+    }
+);
+
 export class MainPage extends React.Component {
     constructor() {
         super();
         this.state = {
-            time: 0,
+            navigatingPlayer: false,
+            // time: 0,
         };
-        this.timerId = setInterval(() => {
-            const newTime = this.state.time + 1;
-            if (newTime <= MAX_PAGE_TIME) {
-                this.setState({time: newTime});
-            } else {
-                this.setState({time: 0});
-            }
-        }, 2000);
+        // this.timerId = setInterval(() => {
+        //     const newTime = this.state.time + 1;
+        //     if (newTime <= MAX_PAGE_TIME) {
+        //         this.setState({time: newTime});
+        //     } else {
+        //         this.setState({time: 0});
+        //     }
+        // }, 2000);
     }
 
     navigatePlayer = () => {
@@ -188,10 +214,8 @@ export class MainPage extends React.Component {
 
     render() {
         if (this.state.navigatingPlayer) {
-            console.log('Renderign redirect');
             return <Redirect push to="/player" />;
         }
-        console.log('render time', this.state.time);
         return (
             <div className="page">
                 <div className="header">
@@ -204,27 +228,11 @@ export class MainPage extends React.Component {
                 <div className="sorts">
                     <h1>Сортировки</h1>
                     <div className="panes-container">
-                        <a href="/player" className="pane bubble-sort" onClick={this.navigatePlayer}>
+                        <a href="/lesson/bubble_sort" className="pane bubble-sort" onClick={this.navigatePlayer}>
                             <h2>Пузырьком</h2>
-                            <div className="vis-wrapper">
-                                <ForeverAnimation
-                                    breakpoints={bubbleSortRes.bp}
-                                    stateVisualization={MinimalSortVisualisation}
-                                    time={Math.min(this.state.time, bubbleSortRes.bp.length - 1)}
-                                    {...this.props}
-                                />
-                            </div>
                         </a>
                         <div className="pane insertion-sort">
                             <h2>Вставками</h2>
-                            <div className="vis-wrapper">
-                                <ForeverAnimation
-                                    breakpoints={insertionSortRes.bp}
-                                    stateVisualization={MinimalSortVisualisation}
-                                    time={Math.min(this.state.time, insertionSortRes.bp.length - 1)}
-                                    {...this.props}
-                                />
-                            </div>
                         </div>
                     </div>
                 </div>
