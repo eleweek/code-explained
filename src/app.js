@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import './mainpage.css';
 import './styles.css';
+import classnames from 'classnames';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
@@ -158,7 +159,9 @@ export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{la
 
 const LESSONS = {
     bubble_sort: {
-        headerTitle: 'сортировку пузырьком',
+        mainPagePaneHeaderTitle: 'Пузырьком',
+        mainPagePaneClassName: 'bubble-sort',
+        playerHeaderTitle: 'сортировку пузырьком',
         breakpoints: bubbleSortResGranular.bp,
         formatBpDesc: dummyFormat,
         stateVisualization: MinimalSortVisualisation,
@@ -166,17 +169,30 @@ const LESSONS = {
     },
 };
 
-class Pane extends React.Component {
+class LessonPane extends React.Component {
     constructor() {
+        super();
         this.state = {
             navigatingPlayer: false,
         };
     }
 
     render() {
+        const {lessonId} = this.props;
+        const lesson = LESSONS[lessonId];
+
         if (this.state.navigatingPlayer) {
-            return <Redirect to={`lesson/${this.props.url}`} />;
+            return <Redirect to={`lesson/${lessonId}`} />;
         }
+        return (
+            <a
+                href={`/lesson/${lessonId}`}
+                className={classnames('pane', lesson.mainPagePaneClassName)}
+                onClick={this.navigatePlayer}
+            >
+                <h2>{lesson.mainPagePaneHeaderTitle}</h2>
+            </a>
+        );
     }
 }
 
@@ -194,10 +210,6 @@ const Lesson = withRouter(
 export class MainPage extends React.Component {
     constructor() {
         super();
-        this.state = {
-            navigatingPlayer: false,
-            // time: 0,
-        };
         // this.timerId = setInterval(() => {
         //     const newTime = this.state.time + 1;
         //     if (newTime <= MAX_PAGE_TIME) {
@@ -208,14 +220,7 @@ export class MainPage extends React.Component {
         // }, 2000);
     }
 
-    navigatePlayer = () => {
-        this.setState({navigatingPlayer: true});
-    };
-
     render() {
-        if (this.state.navigatingPlayer) {
-            return <Redirect push to="/player" />;
-        }
         return (
             <div className="page">
                 <div className="header">
@@ -228,9 +233,7 @@ export class MainPage extends React.Component {
                 <div className="sorts">
                     <h1>Сортировки</h1>
                     <div className="panes-container">
-                        <a href="/lesson/bubble_sort" className="pane bubble-sort" onClick={this.navigatePlayer}>
-                            <h2>Пузырьком</h2>
-                        </a>
+                        <LessonPane lessonId="bubble_sort" />
                         <div className="pane insertion-sort">
                             <h2>Вставками</h2>
                         </div>
