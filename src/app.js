@@ -116,13 +116,7 @@ export class App extends React.Component {
             <Router>
                 <Switch>
                     <Route path="/player">
-                        <Player
-                            headerTitle="сортировку пузырьком"
-                            breakpoints={bubbleSortResGranular.bp}
-                            formatBpDesc={dummyFormat}
-                            stateVisualization={MinimalSortVisualisation}
-                            code={BUBBLE_SORT_CODE}
-                        />
+                        <Player {...LESSONS.bubbleSort} />
                     </Route>
                     <Route path="/">
                         <MainPage />
@@ -161,6 +155,16 @@ console.log('BS res', bubbleSortRes);
 console.log('IS res', insertionSortRes);
 
 export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
+
+const LESSONS = {
+    bubbleSort: {
+        headerTitle: 'сортировку пузырьком',
+        breakpoints: bubbleSortResGranular.bp,
+        formatBpDesc: dummyFormat,
+        stateVisualization: MinimalSortVisualisation,
+        code: BUBBLE_SORT_CODE,
+    },
+};
 
 export class MainPage extends React.Component {
     constructor() {
