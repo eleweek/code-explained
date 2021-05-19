@@ -7,6 +7,7 @@ import 'rc-slider/assets/index.css';
 import rightArrow from './icons/keyboard_arrow_right.svg';
 import leftArrow from './icons/keyboard_arrow_left.svg';
 import playArrow from './icons/play_arrow.svg';
+import pauseButton from './icons/pause.svg';
 
 import {CodeBlockWithActiveLineAndAnnotations} from './code_blocks';
 import {Redirect} from 'react-router';
@@ -204,12 +205,21 @@ export class Player extends React.Component {
                     </a>
                     <div className="player-lesson-name">{this.props.headerTitle}</div>
                     <div className="player-buttons">
-                        <img src={playArrow} className="player-button player-play" onClick={this.toggleAutoPlay} />
-                        <img src={leftArrow} className="player-button player-prev" onClick={this.prevStep} />
-                        <span className="counters">
-                            {time}/{maxTime}
-                        </span>
-                        <img src={rightArrow} className="player-button player-next" onClick={this.nextStep} />
+                        <div class="player-play-button player-play-button">
+                            {' '}
+                            <img src={this.state.autoPlaying ? pauseButton : playArrow} onClick={this.toggleAutoPlay} />
+                        </div>
+                        <div className="player-button player-prev">
+                            <img src={leftArrow} onClick={this.prevStep} />
+                        </div>
+                        <div className="player-counters">
+                            <span>
+                                {time}/{maxTime}
+                            </span>
+                        </div>
+                        <div className="player-button player-next">
+                            <img src={rightArrow} onClick={this.nextStep} />
+                        </div>
                     </div>
                 </div>
                 <div className="player-slider-wrapper">

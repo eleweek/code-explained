@@ -14,6 +14,8 @@ a.player-title {
 }
 
 .player-buttons {
+    display: flex;
+    align-items: center;
     font-family: 'IBM Plex Mono', monospace;
     position: absolute;
     left: 50%;
@@ -21,18 +23,29 @@ a.player-title {
 }
 
 .player-button {
+    display: flex;
     cursor: pointer;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
 }
 
 .player-next {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .player-prev {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
-.player-play {
+.player-counters {
+    display: flex;
+    justify-content: center;
+    min-width: 65px;
+}
+
+.player-play-button {
+    width: 24px;
     margin-right: 20px;
 }
 
