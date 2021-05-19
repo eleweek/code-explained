@@ -206,7 +206,7 @@ export class Player extends React.Component {
                     </a>
                     <div className="player-lesson-name">{this.props.headerTitle}</div>
                     <div className="player-buttons">
-                        <div className="player-play-button player-play-button">
+                        <div className="player-button player-play-button">
                             <img src={this.state.autoPlaying ? pauseButton : playArrow} onClick={this.toggleAutoPlay} />
                         </div>
                         <div className="player-button player-prev">
