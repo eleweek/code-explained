@@ -5,10 +5,12 @@
     height: 35px;
 }
 
-.player-title {
+a.player-title {
     font-weight: 700;
     margin-left: 10px;
     margin-right: 10px;
+    text-decoration: none;
+    color: black;
 }
 
 .player-buttons {

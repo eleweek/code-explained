@@ -200,7 +200,7 @@ export class MainPage extends React.Component {
                 <div className="sorts">
                     <h1>Сортировки</h1>
                     <div className="panes-container">
-                        <div className="pane bubble-sort" onClick={this.navigatePlayer}>
+                        <a href="/player" className="pane bubble-sort" onClick={this.navigatePlayer}>
                             <h2>Пузырьком</h2>
                             <div className="vis-wrapper">
                                 <ForeverAnimation
@@ -210,7 +210,7 @@ export class MainPage extends React.Component {
                                     {...this.props}
                                 />
                             </div>
-                        </div>
+                        </a>
                         <div className="pane insertion-sort">
                             <h2>Вставками</h2>
                             <div className="vis-wrapper">

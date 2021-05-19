@@ -199,9 +199,9 @@ export class Player extends React.Component {
         return (
             <div className="player">
                 <div className="player-header">
-                    <div className="player-title" onClick={this.navigateHome}>
+                    <a className="player-title" href="/" onClick={this.navigateHome}>
                         Объясняем
-                    </div>
+                    </a>
                     <div className="player-lesson-name">{this.props.headerTitle}</div>
                     <div className="player-buttons">
                         <img src={playArrow} className="player-play" onClick={this.toggleAutoPlay} />
