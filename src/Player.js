@@ -204,12 +204,12 @@ export class Player extends React.Component {
                     </a>
                     <div className="player-lesson-name">{this.props.headerTitle}</div>
                     <div className="player-buttons">
-                        <img src={playArrow} className="player-play" onClick={this.toggleAutoPlay} />
-                        <img src={leftArrow} className="player-prev" onClick={this.prevStep} />
+                        <img src={playArrow} className="player-button player-play" onClick={this.toggleAutoPlay} />
+                        <img src={leftArrow} className="player-button player-prev" onClick={this.prevStep} />
                         <span className="counters">
                             {time}/{maxTime}
                         </span>
-                        <img src={rightArrow} className="player-next" onClick={this.nextStep} />
+                        <img src={rightArrow} className="player-button player-next" onClick={this.nextStep} />
                     </div>
                 </div>
                 <div className="player-slider-wrapper">

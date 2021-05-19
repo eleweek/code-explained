@@ -20,6 +20,10 @@ a.player-title {
     transform: translateX(-50%);
 }
 
+.player-button {
+    cursor: pointer;
+}
+
 .player-next {
     margin-left: 10px;
 }
