@@ -45,22 +45,18 @@
     height: 200px;
 }
 
-.pane > h2 {
+.pane h2 {
     padding: 10px;
-
+    color: white;
     line-height: 1.2;
 }
 
-.pane > .vis-wrapper {
+.pane .vis-wrapper {
     padding-left: 10px;
 }
 
 .bubble-sort {
     background-color: #8700ff;
-}
-
-.pane > h2 {
-    color: white;
 }
 
 .insertion-sort {

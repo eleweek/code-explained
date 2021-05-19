@@ -25,6 +25,10 @@ export class Player extends React.Component {
         this.componentRef = React.createRef();
     }
 
+    navigateHome = () => {
+        window.history.push('/');
+    };
+
     maxTime = () => {
         return this.props.breakpoints.length - 1;
     };
@@ -188,7 +192,7 @@ export class Player extends React.Component {
         return (
             <div className="player">
                 <div className="player-header">
-                    <div className="player-title" onClick={this.props.navigateHome}>
+                    <div className="player-title" onClick={this.navigateHome}>
                         Объясняем
                     </div>
                     <div className="player-lesson-name">{this.props.headerTitle}</div>

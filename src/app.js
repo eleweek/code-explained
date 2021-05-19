@@ -5,6 +5,7 @@ import './styles.css';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
@@ -58,7 +59,6 @@ export class App extends React.Component {
             mounted: false,
             windowWidth: null,
             windowHeight: null,
-            isPlayer: false,
         };
     }
 
@@ -107,35 +107,28 @@ export class App extends React.Component {
         window.removeEventListener('resize', this.windowSizeChangeHandle);
     }
 
-    navigateHome = () => {
-        this.setState({isPlayer: false});
-    };
-
-    navigatePlayer = () => {
-        this.setState({isPlayer: true});
-    };
-
     render() {
         console.log('App.render()');
         // Make sure SSR works
         const {windowWidth, windowHeight} = this.state.mounted ? this.state : {};
 
         return (
-            <React.Fragment>
-                {this.state.isPlayer ? (
-                    <Player
-                        headerTitle="сортировку пузырьком"
-                        breakpoints={bubbleSortResGranular.bp}
-                        formatBpDesc={dummyFormat}
-                        stateVisualization={MinimalSortVisualisation}
-                        code={BUBBLE_SORT_CODE}
-                        navigateHome={this.navigateHome}
-                    />
-                ) : (
-                    <MainPage navigatePlayer={this.navigatePlayer} />
-                )}
-                <Footer />
-            </React.Fragment>
+            <Router>
+                <Switch>
+                    <Route path="/player">
+                        <Player
+                            headerTitle="сортировку пузырьком"
+                            breakpoints={bubbleSortResGranular.bp}
+                            formatBpDesc={dummyFormat}
+                            stateVisualization={MinimalSortVisualisation}
+                            code={BUBBLE_SORT_CODE}
+                        />
+                    </Route>
+                    <Route path="/">
+                        <MainPage />
+                    </Route>
+                </Switch>
+            </Router>
         );
     }
 }
@@ -185,6 +178,12 @@ export class MainPage extends React.Component {
         }, 2000);
     }
 
+    navigatePlayer = () => {
+        console.log('navigatePlayer', window.history);
+        window.history.push('/player');
+        console.log('navigatePlayer history', window.history);
+    };
+
     render() {
         console.log('render time', this.state.time);
         return (
@@ -199,7 +198,7 @@ export class MainPage extends React.Component {
                 <div className="sorts">
                     <h1>Сортировки</h1>
                     <div className="panes-container">
-                        <div className="pane bubble-sort" onClick={this.props.navigatePlayer}>
+                        <div className="pane bubble-sort" onClick={this.navigatePlayer}>
                             <h2>Пузырьком</h2>
                             <div className="vis-wrapper">
                                 <ForeverAnimation
