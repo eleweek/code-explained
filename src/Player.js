@@ -9,6 +9,7 @@ import leftArrow from './icons/keyboard_arrow_left.svg';
 import playArrow from './icons/play_arrow.svg';
 
 import {CodeBlockWithActiveLineAndAnnotations} from './code_blocks';
+import {Redirect} from 'react-router';
 
 export class Player extends React.Component {
     AUTOPLAY_TIMEOUT = 1500;
@@ -20,13 +21,16 @@ export class Player extends React.Component {
             time: 0,
             autoPlaying: false,
             speed: 1,
+
+            // react router stuff
+            navigatingHome: false,
         };
 
         this.componentRef = React.createRef();
     }
 
     navigateHome = () => {
-        window.history.push('/');
+        this.setState({navigatingHome: true});
     };
 
     maxTime = () => {
@@ -162,6 +166,9 @@ export class Player extends React.Component {
     };
 
     render() {
+        if (this.state.navigatingHome) {
+            return <Redirect push to="/" />;
+        }
         const maxTime = this.props.breakpoints.length;
 
         const marks = {};

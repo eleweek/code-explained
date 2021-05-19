@@ -11,7 +11,11 @@ module.exports = merge(common, {
             filename: 'index.html',
         }),
     ],
+    output: {
+        publicPath: '/',
+    },
     devServer: {
         contentBase: './dist',
+        historyApiFallback: true,
     },
 });

@@ -5,7 +5,7 @@ import './styles.css';
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Link, Redirect} from 'react-router-dom';
 
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
@@ -179,12 +179,14 @@ export class MainPage extends React.Component {
     }
 
     navigatePlayer = () => {
-        console.log('navigatePlayer', window.history);
-        window.history.push('/player');
-        console.log('navigatePlayer history', window.history);
+        this.setState({navigatingPlayer: true});
     };
 
     render() {
+        if (this.state.navigatingPlayer) {
+            console.log('Renderign redirect');
+            return <Redirect push to="/player" />;
+        }
         console.log('render time', this.state.time);
         return (
             <div className="page">
