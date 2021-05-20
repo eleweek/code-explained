@@ -85,7 +85,7 @@ export function SimpleCodeInline(props) {
 }
 
 export const DEFAULT_BOX_GEOMETRY = {
-    boxGeometry: {boxSize: 40, boxPadding: 2, spacingX: 1, spacingY: 5, fontSize: 12, borderRadius: 10},
+    boxGeometry: {boxSize: 40, boxPadding: 2, spacingX: 1, spacingY: 5, fontSize: 16, borderRadius: 10},
     labelFontSize: 16,
 };
 export const SMALLER_BOX_GEOMETRY = {
