@@ -77,7 +77,7 @@ export class App extends React.Component {
         };
     }
 
-    windowSizeChangeHandle = () => {
+    handleWindowSizeChange = () => {
         logViewportStats();
         const dimensions = getWindowDimensions();
         const windowWidth = dimensions.width;
@@ -107,7 +107,7 @@ export class App extends React.Component {
         const windowHeight = dimensions.height;
         console.log('componentDidMount() window geometry', windowWidth, windowHeight);
 
-        window.addEventListener('resize', _.throttle(this.windowSizeChangeHandle, 500));
+        window.addEventListener('resize', _.throttle(this.handleWindowSizeChange, 500));
         globalSettings.maxCodePlaySpeed = getUxSettings().MAX_CODE_PLAY_SPEED;
 
         this.setState({
@@ -119,22 +119,22 @@ export class App extends React.Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.windowSizeChangeHandle);
+        window.removeEventListener('resize', this.handleWindowSizeChange);
     }
 
     render() {
         console.log('App.render()');
-        // Make sure SSR works
         const {windowWidth, windowHeight} = this.state.mounted ? this.state : {};
+        console.log('Window sizes', windowWidth, windowHeight);
 
         return (
             <Router>
                 <Switch>
                     <Route path="/lesson/:id">
-                        <Lesson />
+                        <Lesson windowWidth={windowWidth} windowHeight={windowHeight} />
                     </Route>
                     <Route path="/">
-                        <MainPage />
+                        <MainPage windowWidth={windowWidth} windowHeight={windowHeight} />
                     </Route>
                 </Switch>
             </Router>
@@ -261,9 +261,11 @@ class LessonPane extends React.Component {
 const Lesson = withRouter(
     class extends React.Component {
         render() {
+            console.log('withRouter', this.props);
             const id = this.props.match.params.id;
+            const {windowWidth, windowHeight} = this.props;
             console.log('Lesson', id, LESSONS[id]);
-            return <Player {...LESSONS[id]} />;
+            return <Player {...LESSONS[id]} windowWidth={windowWidth} windowHeight={windowHeight} />;
         }
     }
 );

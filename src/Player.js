@@ -11,6 +11,7 @@ import pauseButton from './icons/pause.svg';
 
 import {CodeBlockWithActiveLineAndAnnotations} from './code_blocks';
 import {Redirect} from 'react-router';
+import {isDefinedSmallBoxScreen} from './util';
 
 export class Player extends React.Component {
     AUTOPLAY_TIMEOUT = 1500;
@@ -182,6 +183,7 @@ export class Player extends React.Component {
 
         const StateVisualization = this.props.stateVisualization;
         const {windowHeight, windowWidth} = this.props;
+        console.log('Player window size', windowHeight, windowWidth);
 
         const time = this.state.time;
 
@@ -191,7 +193,7 @@ export class Player extends React.Component {
 
         let codeHeight;
         if (windowHeight) {
-            const approximateSliderAndControlsHeight = 100;
+            const approximateSliderAndControlsHeight = 45;
             codeHeight =
                 this.props.windowHeight -
                 StateVisualization.getExpectedHeight(windowWidth, windowHeight) -
@@ -259,8 +261,8 @@ export class Player extends React.Component {
                     time={time}
                     code={this.props.code}
                     overflow={false}
-                    fontSize={12}
-                    lineHeight={1.15}
+                    fontSize={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 10 : 14}
+                    lineHeight={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 1.0 : 1.15}
                     breakpoints={this.props.breakpoints}
                     formatBpDesc={this.props.formatBpDesc}
                 />

@@ -1215,7 +1215,7 @@ function selectGeometry(windowWidth, windowHeight) {
 }
 
 export class Tetris extends React.PureComponent {
-    static VIS_MARGIN = 10; // should match .hash-vis-wrapper margin
+    static VIS_MARGIN = 7; // should match .hash-vis-wrapper margin
 
     static _getExpectedHeight(windowWidth, windowHeight, lines, fixedGeometry) {
         // TODO: use linesData.marginBottom in computation
