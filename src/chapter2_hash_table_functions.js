@@ -153,7 +153,9 @@ export function formatHashCreateNewAndInsert(bp, prevBp) {
         case 'compute-hash':
             return `Compute the hash code: <code>${bp.hashCode}</code>`;
         case 'compute-idx':
-            return `Compute the starting slot index: <code>${bp.idx}</code> == <code>${bp.hashCode} % ${bp.keys.size}</code>`;
+            return `Compute the starting slot index: <code>${bp.idx}</code> == <code>${bp.hashCode} % ${
+                bp.keys.size
+            }</code>`;
         case 'check-collision':
             return chapter1_2_FormatCheckCollision(bp.keys, bp.idx, bp.fmtCollisionCount);
         case 'check-dup-hash':
@@ -181,7 +183,9 @@ export function formatHashCreateNewAndInsert(bp, prevBp) {
         case 'check-dup-return':
             return 'Because the key is found, stop';
         case 'next-idx':
-            return `Keep probing, the next slot will be <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${bp.keys.size}</code>`;
+            return `Keep probing, the next slot will be <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${
+                bp.keys.size
+            }</code>`;
         case 'assign-elem':
             if (prevBp.keys.get(bp.idx) === null) {
                 return `Put <code>${displayStr(bp.key)}</code> and its hash <code>${
@@ -209,12 +213,14 @@ export const HASH_SEARCH_CODE = [
     ['    return False', 'return-false', 1],
 ];
 
-function formatHashRemoveSearch(bp, prevBp) {
+export function formatHashRemoveSearch(bp, prevBp) {
     switch (bp.point) {
         case 'compute-hash':
             return `Compute the hash code: <code>${bp.hashCode}</code>`;
         case 'compute-idx':
-            return `Compute the starting slot index: <code>${bp.hashCode} % ${bp.keys.size}</code> == <code>${bp.idx}</code>`;
+            return `Compute the starting slot index: <code>${bp.hashCode} % ${bp.keys.size}</code> == <code>${
+                bp.idx
+            }</code>`;
         case 'check-not-found':
             return commonFormatCheckNotFound(bp.keys, bp.idx, bp.fmtCollisionCount);
         case 'check-hash':
@@ -240,7 +246,9 @@ function formatHashRemoveSearch(bp, prevBp) {
         case 'return':
             return `The key is removed, now return`;
         case 'next-idx':
-            return `Keep retracing probing steps, the next slot will be <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${bp.keys.size}</code>`;
+            return `Keep retracing probing steps, the next slot will be <code>${bp.idx}</code> == <code>(${
+                prevBp.idx
+            } + 1) % ${bp.keys.size}</code>`;
         case 'throw-key-error':
             return `Throw an exception, because no key was found`;
         /* search */
@@ -251,12 +259,12 @@ function formatHashRemoveSearch(bp, prevBp) {
     }
 }
 
-const HashNormalStateVisualization = TetrisFactory([
+export const HashNormalStateVisualization = TetrisFactory([
     [HashBoxesComponent, [{labels: ['keys'], marginBottom: 7}, 'keys', 'idx']],
     [HashBoxesComponent, [{labels: ['hash_codes']}, 'hashCodes', 'idx']],
 ]);
 
-const HashNormalStateVisualizationSmallBoxes = TetrisFactory(
+export const HashNormalStateVisualizationSmallBoxes = TetrisFactory(
     [
         [HashBoxesComponent, [{labels: ['keys'], marginBottom: 7}, 'keys', 'idx']],
         [HashBoxesComponent, [{labels: ['hash_codes']}, 'hashCodes', 'idx']],
@@ -400,7 +408,7 @@ class HashResize extends HashBreakpointFunction {
     }
 }
 
-function formatHashResize(bp, prevBp) {
+export function formatHashResize(bp, prevBp) {
     switch (bp.point) {
         case 'create-new-empty-hashes':
             return `Create a new list of size <code>${bp.newHashCodes.size}</code> for hash codes`;
@@ -425,7 +433,9 @@ function formatHashResize(bp, prevBp) {
         case 'check-collision':
             return chapter1_2_FormatCheckCollision(bp.newKeys, bp.idx, bp.fmtCollisionCount);
         case 'next-idx':
-            return `Keep probing, the next slot will be <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${bp.keys.size}</code>`;
+            return `Keep probing, the next slot will be <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${
+                bp.keys.size
+            }</code>`;
         case 'assign-elem':
             return `Put <code>${displayStr(bp.key)}</code> and its hash <code>${bp.hashCode}</code> in the empty slot ${
                 bp.idx
@@ -435,7 +445,7 @@ function formatHashResize(bp, prevBp) {
     }
 }
 
-const HashResizeStateVisualization = TetrisFactory([
+export const HashResizeStateVisualization = TetrisFactory([
     [
         HashBoxesComponent,
         [{labels: ['keys'], marginBottom: 7}, 'keys', 'oldIdx', undefined, {selection1color: COLOR_FOR_READ_OPS}],

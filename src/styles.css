@@ -129,7 +129,7 @@ div.hash-example-instance {
 
 .box {
     display: flex;
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     position: absolute;
     opacity: 1;
 
@@ -418,7 +418,7 @@ blockquote.blockquote {
 }
 
 .badge-undo-redo-count {
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     min-width: 22px;
 }
 

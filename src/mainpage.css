@@ -44,7 +44,6 @@
     align-items: center;
 
     border-radius: 14px;
-    margin-right: 15px;
     margin-bottom: 15px;
     text-decoration: none !important;
 }
@@ -70,6 +69,7 @@
 .simplified-hash-collisions {
     background-color: #4d9e38;
     width: 100%;
+    margin-right: 15px;
 }
 
 .simplified-hash-search {

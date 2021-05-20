@@ -27,6 +27,19 @@ import {
     SimplifiedSearchStateVisualization,
     SimplifiedInsertBrokenStateVisualization,
 } from './chapter1_simplified_hash';
+import {
+    Chapter2_HashTableFunctions,
+    HASH_CREATE_NEW_CODE,
+    HASH_SEARCH_CODE,
+    HASH_REMOVE_CODE,
+    HASH_RESIZE_CODE,
+    formatHashCreateNewAndInsert,
+    formatHashRemoveSearch,
+    formatHashResize,
+    HashCreateNewStateVisualization,
+    HashNormalStateVisualization,
+    HashResizeStateVisualization,
+} from './chapter2_hash_table_functions';
 
 function getWindowDimensions() {
     const width = document.documentElement.clientWidth;
@@ -178,6 +191,17 @@ const siaBrokenRes = chapter1.generateAlternativeDataForInsertAllBroken(chapter1
 const siaRes = chapter1.runSimplifiedInsertAll(chapter1.state.numbers);
 const ssRes = chapter1.runSimplifiedSearch(siaRes.keys, chapter1.state.simplifiedHashSearchNumber);
 
+const chapter2 = new Chapter2_HashTableFunctions();
+const newRes = chapter2.runCreateNew(chapter2.state.array);
+let {hashCodes, keys} = newRes;
+
+const searchRes = chapter2.runSearch(hashCodes, keys, chapter2.state.searchedObj);
+const removeRes = chapter2.runRemove(hashCodes, keys, chapter2.state.objToRemove);
+hashCodes = removeRes.hashCodes;
+keys = removeRes.keys;
+
+const resizeRes = chapter2.runResize(hashCodes, keys);
+
 const LESSONS = {
     bubble_sort: {
         mainPagePaneHeaderTitle: 'Пузырьком',
@@ -227,6 +251,47 @@ const LESSONS = {
         breakpoints: ssRes.bp,
         formatBpDesc: formatSimplifiedSearchDescription,
         stateVisualization: SimplifiedSearchStateVisualization,
+    },
+
+    hash_create: {
+        mainPagePaneHeaderTitle: 'Создание',
+        mainPagePaneClassName: 'hash-create',
+        playerHeaderTitle: 'создание хеш-таблицы',
+
+        code: HASH_CREATE_NEW_CODE,
+        breakpoints: newRes.bp,
+        formatBpDesc: formatHashCreateNewAndInsert,
+        stateVisualization: HashCreateNewStateVisualization,
+    },
+
+    hash_search: {
+        mainPagePaneHeaderTitle: 'Поиск',
+        mainPagePaneClassName: 'hash-search',
+        playerHeaderTitle: 'поиск в хеш-таблице',
+        code: HASH_SEARCH_CODE,
+        breakpoints: searchRes.bp,
+        formatBpDesc: formatHashRemoveSearch,
+        stateVisualization: HashNormalStateVisualization,
+    },
+
+    hash_remove: {
+        mainPagePaneHeaderTitle: 'Удаление',
+        mainPagePaneClassName: 'hash-remove',
+        playerHeaderTitle: 'удаление из хеш-таблицы',
+        code: HASH_REMOVE_CODE,
+        breakpoints: removeRes.bp,
+        formatBpDesc: formatHashRemoveSearch,
+        stateVisualization: HashNormalStateVisualization,
+    },
+
+    hash_resize: {
+        mainPagePaneHeaderTitle: 'Расширение',
+        mainPagePaneClassName: 'hash-resize',
+        playerHeaderTitle: 'расширение хеш-таблицы',
+        code: HASH_RESIZE_CODE,
+        breakpoints: resizeRes.bp,
+        formatBpDesc: formatHashResize,
+        stateVisualization: HashResizeStateVisualization,
     },
 };
 

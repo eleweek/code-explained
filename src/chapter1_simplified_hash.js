@@ -144,7 +144,7 @@ function UnnamedListVisualization(props) {
 }
 
 export const SIMPLIFIED_INSERT_ALL_BROKEN_CODE = [
-    ['def build_not_quite_what_we_want(original_list):', 'start-execution', 0],
+    ['def build_no_collision_resolution(original_list):', 'start-execution', 0],
     ['    new_list = [None] * len(original_list)', 'create-new-list', 1],
     ['', ''],
     ['    for number in original_list:', 'for-loop', 2],
