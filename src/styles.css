@@ -144,12 +144,12 @@ div.hash-example-instance {
 }
 
 .box-empty {
-    background: #f4f4ff;
+    background: #f4f4f7;
     z-index: -1;
 }
 
 .box-full {
-    background: #e5eafd;
+    background: #e5e6f1;
 }
 
 .box-animated {
