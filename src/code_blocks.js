@@ -93,9 +93,9 @@ export const SMALLER_BOX_GEOMETRY = {
     labelFontSize: 12,
 };
 
-function computeBoxTransformProperty(idx, y, boxSize, spacingX) {
+function computeBoxTransformProperty(idx, y, boxSize, spacingX, z = 0) {
     let x = (spacingX + boxSize) * idx;
-    return `translate(${x}px, ${y}px)`;
+    return `translate3d(${x}px, ${y}px, ${z}px)`;
 }
 
 function pyObjToReactKey(obj) {
@@ -336,6 +336,7 @@ class Box extends React.PureComponent {
         const yOffset = (this.props.yRel || 0) * (boxSize + spacingY);
 
         let classes = ['box', {'box-animated': status !== 'removed' && status !== 'created'}];
+        let classesContent = [...classes];
         let content;
         if (value != null) {
             const {shortenedValue, extraType} = this.shortDisplayedString(value);
@@ -369,17 +370,17 @@ class Box extends React.PureComponent {
 
         let y;
         let extraStyle;
-
+        let boxStatus;
         switch (status) {
             case 'removed':
-                classes.push('box-removed');
+                boxStatus = 'box-removed';
                 break;
             case 'removing':
-                classes.push('box-removing');
+                boxStatus = 'box-removing';
                 y = value != null ? yOffset - (removedOffset != null ? removedOffset : boxSize) : yOffset;
                 break;
             case 'created':
-                classes.push('box-created');
+                boxStatus = 'box-created';
                 y = value != null ? yOffset - (createdOffset != null ? createdOffset : boxSize) : yOffset;
                 break;
             case 'adding':
@@ -388,25 +389,50 @@ class Box extends React.PureComponent {
                 break;
         }
 
+        classes.push(boxStatus);
+        classesContent.push(boxStatus);
+
         return (
-            <div
-                style={{
-                    transform:
-                        status !== 'removed'
-                            ? computeBoxTransformProperty(idx, y, boxSize, spacingX)
-                            : 'translate(0px, 0px)',
-                    width: boxSize,
-                    height: boxSize,
-                    fontSize: fontSize,
-                    lineHeight: `${fontSize}px`,
-                    borderRadius,
-                    padding: boxPadding,
-                    ...extraStyle,
-                }}
-                className={classNames(classes)}
-            >
-                {content}
-            </div>
+            <>
+                <div
+                    style={{
+                        transform:
+                            status !== 'removed'
+                                ? computeBoxTransformProperty(idx, y, boxSize, spacingX, 0)
+                                : 'translate(0px, 0px)',
+                        width: boxSize,
+                        height: boxSize,
+                        fontSize: fontSize,
+                        lineHeight: `${fontSize}px`,
+                        borderRadius,
+                        padding: boxPadding,
+                        ...extraStyle,
+                    }}
+                    className={classNames(classes)}
+                >
+                    {content}
+                </div>
+                {content && (
+                    <div
+                        style={{
+                            transform:
+                                status !== 'removed'
+                                    ? computeBoxTransformProperty(idx, y, boxSize, spacingX, 5)
+                                    : 'translate(0px, 0px)',
+                            width: boxSize,
+                            height: boxSize,
+                            fontSize: fontSize,
+                            lineHeight: `${fontSize}px`,
+                            borderRadius,
+                            padding: boxPadding,
+                            ...extraStyle,
+                        }}
+                        className={classNames(classesContent, 'box-content-wrapper')}
+                    >
+                        {content}
+                    </div>
+                )}
+            </>
         );
     }
 }

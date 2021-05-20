@@ -142,7 +142,6 @@ div.hash-example-instance {
     word-wrap: break-word;
     min-width: 0;
     z-index: 2;
-    transform-style: preserve-3d;
     transform: translateZ(2px);
     position: relative;
 }
@@ -168,7 +167,7 @@ div.hash-example-instance {
 }
 
 .active-box-selection {
-    background: rgba(252, 233, 168, 0.75);
+    background: rgba(252, 233, 168, 0.85);
     width: 40px;
     height: 40px;
     z-index: 2;
