@@ -107,6 +107,10 @@ div.hash-example-instance {
     display: flex;
 }
 
+.hash-vis {
+    transform-style: preserve-3d;
+}
+
 .tetris-labels {
     display: flex;
     flex-direction: column;
@@ -137,6 +141,10 @@ div.hash-example-instance {
 .box-content {
     word-wrap: break-word;
     min-width: 0;
+    z-index: 2;
+    transform-style: preserve-3d;
+    transform: translateZ(2px);
+    position: relative;
 }
 
 .box-content-extra-type {
@@ -156,19 +164,20 @@ div.hash-example-instance {
     transition-property: opacity, transform;
     transition-duration: 1.3s;
     transition-timing-function: ease;
+    transform-style: preserve-3d;
 }
 
 .active-box-selection {
-    background: rgba(0, 0, 0, 0);
+    background: rgba(252, 233, 168, 0.75);
     width: 40px;
     height: 40px;
-    z-index: 1;
+    z-index: 2;
     position: absolute;
+    transform-style: preserve-3d;
 }
 
 .active-box-selection-1 {
-    border-style: solid;
-    border-width: 1px;
+    border: none;
 }
 
 .active-box-selection-2 {
