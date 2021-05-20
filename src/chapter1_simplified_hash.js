@@ -16,7 +16,7 @@ import {
     ChapterComponent,
     DynamicP,
     Subcontainerize,
-    singularOrPlural,
+    singularOrPluralRus,
     CrossFade,
     COLOR_FOR_READ_OPS,
     randint,
@@ -110,25 +110,25 @@ function simpleListSearch(l, key) {
 export let formatSimpleListSearchBreakpointDescription = function(bp) {
     switch (bp.point) {
         case 'iteration':
-            return `Check element in slot ${bp.idx} (<code>${bp.atIdx}</code>)`;
+            return `Проверим ячейку с индексом ${bp.idx} (<code>${bp.atIdx}</code>)`;
         case 'start-from-zero':
-            return `Start from the beginning of the list`;
+            return `Начинаем с нулевого элемента списка`;
         case 'check-boundary':
             return bp.idx < bp.size
-                ? `[Try #${bp.idx + 1}] <code>${bp.idx} < ${
+                ? `[Попытка №${bp.idx + 1}] <code>${bp.idx} < ${
                       bp.size
-                  }</code>, so some elements have not been processed yet, and the number may be there`
-                : `<code>${bp.idx} == ${bp.size}</code>, so all elements were processed`;
+                  }</code>, значит, обработаны еще не все элементы, и искомое число может находиться дальше`
+                : `<code>${bp.idx} == ${bp.size}</code>, значит все элементы обработаны`;
         case 'check-found':
             return bp.found
-                ? `<code>${bp.atIdx} == ${bp.arg}</code> &mdash; the wanted number is found`
-                : `<code>${bp.atIdx} != ${bp.arg}</code> &mdash; the wanted number has not been found so far`;
+                ? `<code>${bp.atIdx} == ${bp.arg}</code> &mdash; искомое число найдено`
+                : `<code>${bp.atIdx} != ${bp.arg}</code> &mdash; искомое число еще не найдено`;
         case 'found-key':
-            return `so return <code>True</code>`;
+            return `Поэтому возвращаем <code>True</code>`;
         case 'found-nothing':
-            return `The wanted number <code>${bp.arg}</code> was not found, so return <code>False</code>`;
+            return `Искомое число <code>${bp.arg}</code> не найдено, поэтому возвращаем значение<code>False</code>`;
         case 'next-idx':
-            return `Go to the next index: <code>${bp.idx}</code> == <code>${bp.idx - 1} + 1</code>`;
+            return `Переходим к следующему индексу: <code>${bp.idx}</code> == <code>${bp.idx - 1} + 1</code>`;
     }
 };
 
@@ -245,38 +245,38 @@ class SimplifiedInsertAll extends BreakpointFunction {
 export let formatSimplifiedInsertAllDescription = function(bp, prevBp) {
     switch (bp.point) {
         case 'create-new-list':
-            return `Create a new list of <code>${bp.newList.size}</code> empty slots`;
+            return `Создаем новый список из <code>${bp.newList.size}</code> пустых ячеек`;
         case 'for-loop':
-            return `[${bp.originalListIdx + 1}/${bp.originalList.size}] The number to insert is <code>${
-                bp.number
-            }</code>`;
+            return `[${bp.originalListIdx + 1}/${bp.originalList.size}] Вставляем <code>${bp.number}</code>`;
         case 'compute-idx':
-            return `Compute the slot index: <code>${bp.newListIdx}</code> == <code>${bp.number} % ${
+            return `Вычисляем индекс ячейки: <code>${bp.newListIdx}</code> == <code>${bp.number} % ${
                 bp.newList.size
             }</code>`;
         case 'check-collision':
             return chapter1_2_FormatCheckCollision(bp.newList, bp.newListIdx, bp.fmtCollisionCount);
         case 'next-idx':
-            return `Keep probing, the next slot will be <code>${bp.newListIdx}</code> == <code>(${
+            return `Продолжаем, индекс следующего элемента <code>${bp.newListIdx}</code> == <code>(${
                 prevBp.newListIdx
             } + 1) % ${bp.newList.size}</code>`;
         case 'assign-elem': {
             const prevNumber = prevBp.newList.get(bp.newListIdx);
             if (prevNumber != null) {
-                return `Collision of <code>${bp.number}</code> with <code>${prevNumber}</code> in slot <code>${
+                return `Коллизия чисел <code>${
+                    bp.number
+                }</code> и <code>${prevNumber}</code> в ячейке с индексом <code>${
                     bp.newListIdx
-                }</code> - the number is overwritten`;
+                }</code> — значение перезаписано`;
             } else {
-                return `Put <code>${bp.number}</code> in slot <code>${bp.newListIdx}</code>`;
+                return `Помещаем <code>${bp.number}</code> в ячейку с индексом <code>${bp.newListIdx}</code>`;
             }
         }
         case 'return-created-list':
             if (bp.fmtMissingNumbers && bp.fmtMissingNumbers.size > 0) {
-                return `Return created list with some numbers missing: ${bp.fmtMissingNumbers
+                return `Возвращаем созданный список, следующие числа в нем были перезаписаны: ${bp.fmtMissingNumbers
                     .map(number => `<code>${number}</code>`)
                     .join(', ')}`;
             } else {
-                return `Return created list with all original numbers present`;
+                return `Возвращаем созданный список со всеми исходными числами`;
             }
     }
 };
@@ -357,7 +357,7 @@ class SimplifiedSearch extends BreakpointFunction {
 export let formatSimplifiedSearchDescription = function(bp) {
     switch (bp.point) {
         case 'compute-idx':
-            return `Compute the slot index: <code>${bp.newListIdx}</code> == <code>${bp.number} % ${
+            return `Вычисляем индекс ячейки: <code>${bp.newListIdx}</code> == <code>${bp.number} % ${
                 bp.newList.size
             }</code>`;
         case 'check-not-found':
@@ -365,20 +365,18 @@ export let formatSimplifiedSearchDescription = function(bp) {
         case 'check-found':
             let found = EQ(bp.newList.get(bp.newListIdx), bp.number);
             if (found) {
-                return `The number is found: <code>${bp.newList.get(bp.newListIdx)} == ${bp.number}</code>`;
+                return `Число найдено: <code>${bp.newList.get(bp.newListIdx)} == ${bp.number}</code>`;
             } else {
-                return `The number has not been found yet: <code>${bp.newList.get(bp.newListIdx)} != ${
-                    bp.number
-                }</code>`;
+                return `Число пока не найдено: <code>${bp.newList.get(bp.newListIdx)} != ${bp.number}</code>`;
             }
         case 'found-key':
-            return 'Now simply return <code>True</code>';
+            return 'Теперь просто возвращаем <code>True</code>';
         case 'found-nothing':
-            return 'Now simply return <code>False</code>';
+            return 'Теперь просто возвращаем <code>False</code>';
         case 'next-idx':
-            return `Keep retracing probing steps, the next slot will be <code>${bp.newListIdx}</code>`;
+            return `Продолжаем, индекс следующего элемента <code>${bp.newListIdx}</code>`;
         case 'return-created-list':
-            return `Return created list`;
+            return `Возвращаем созданный список`;
     }
 };
 

@@ -460,6 +460,27 @@ export function singularOrPlural(num, singular, plural) {
     return num === 1 ? singular : plural;
 }
 
+export function singularOrPluralRus(num, singular, plural1, plural2) {
+    if (num < 0) {
+        throw new Error('Negative number');
+    }
+    const r100 = num % 100;
+    if (10 <= r100 && r100 <= 20) {
+        return plural2;
+    }
+
+    if (r100 % 10 === 1) {
+        return singular;
+    }
+
+    const r10 = r100 % 10;
+    if (2 <= r10 && r10 <= 4) {
+        return plural1;
+    }
+
+    return plural2;
+}
+
 export function randint(a, b) {
     if (b <= a) {
         throw new Error(`randInt called with b (${b}) <= a (${a})`);

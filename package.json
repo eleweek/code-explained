@@ -55,7 +55,7 @@
     "memoize-one": "^4.1.0",
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
-    "rc-slider": "^8.6.4",
+    "rc-slider": "^8.7.1",
     "react": "^16.6.3",
     "react-css-transition-replace": "^3.0.3",
     "react-dom": "^16.6.3",
