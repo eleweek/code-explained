@@ -175,7 +175,7 @@ export class Player extends React.Component {
 
         const marks = {};
         if (this.props.breakpoints.length < 150) {
-            for (let i = 0; i <= this.props.breakpoints.length; ++i) {
+            for (let i = 0; i < this.props.breakpoints.length; ++i) {
                 marks[i] = '';
             }
         }
