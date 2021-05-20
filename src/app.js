@@ -13,6 +13,20 @@ import {win, globalSettings} from './store';
 import {ForeverAnimation, dummyFormat, TetrisFactory, HashBoxesComponent, LineOfBoxesComponent} from './code_blocks';
 import {BubbleSort, BUBBLE_SORT_CODE, InsertionSort, INSERTION_SORT_CODE} from './new_demos';
 import {Player} from './player';
+import {
+    Chapter1_SimplifiedHash,
+    SIMPLE_LIST_SEARCH,
+    SIMPLIFIED_INSERT_ALL_BROKEN_CODE,
+    SIMPLIFIED_INSERT_ALL_CODE,
+    SIMPLIFIED_SEARCH_CODE,
+    formatSimpleListSearchBreakpointDescription,
+    formatSimplifiedInsertAllDescription,
+    formatSimplifiedSearchDescription,
+    SimpleListSearchStateVisualization,
+    SimplifiedInsertStateVisualization,
+    SimplifiedSearchStateVisualization,
+    SimplifiedInsertBrokenStateVisualization,
+} from './chapter1_simplified_hash';
 
 function getWindowDimensions() {
     const width = document.documentElement.clientWidth;
@@ -116,7 +130,7 @@ export class App extends React.Component {
         return (
             <Router>
                 <Switch>
-                    <Route path="/lesson/:name">
+                    <Route path="/lesson/:id">
                         <Lesson />
                     </Route>
                     <Route path="/">
@@ -157,6 +171,13 @@ console.log('IS res', insertionSortRes);
 
 export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
 
+const chapter1 = new Chapter1_SimplifiedHash();
+
+const slsRes = chapter1.runSimpleListSearch(chapter1.state.numbers, chapter1.state.simpleSearchNumber);
+const siaBrokenRes = chapter1.generateAlternativeDataForInsertAllBroken(chapter1.state.numbers);
+const siaRes = chapter1.runSimplifiedInsertAll(chapter1.state.numbers);
+const ssRes = chapter1.runSimplifiedSearch(siaRes.keys, chapter1.state.simplifiedHashSearchNumber);
+
 const LESSONS = {
     bubble_sort: {
         mainPagePaneHeaderTitle: 'Пузырьком',
@@ -166,6 +187,46 @@ const LESSONS = {
         formatBpDesc: dummyFormat,
         stateVisualization: MinimalSortVisualisation,
         code: BUBBLE_SORT_CODE,
+    },
+
+    linear_search: {
+        mainPagePaneHeaderTitle: 'Линейный поиск',
+        mainPagePaneClassName: 'linear-search',
+        playerHeaderTitle: 'линейный поиск',
+        code: SIMPLE_LIST_SEARCH,
+        breakpoints: slsRes.bp,
+        formatBpDesc: formatSimpleListSearchBreakpointDescription,
+        stateVisualization: SimpleListSearchStateVisualization,
+    },
+
+    simplified_hash_collisions: {
+        mainPagePaneHeaderTitle: 'Коллизии',
+        mainPagePaneClassName: 'simplified-hash-collisions',
+        playerHeaderTitle: 'коллизии в хеш-таблицах',
+        code: SIMPLIFIED_INSERT_ALL_BROKEN_CODE,
+        breakpoints: siaBrokenRes.bp,
+        formatBpDesc: formatSimplifiedInsertAllDescription,
+        stateVisualization: SimplifiedInsertBrokenStateVisualization,
+    },
+
+    simplified_hash_create: {
+        mainPagePaneHeaderTitle: 'Создание',
+        mainPagePaneClassName: 'simplified-hash-create',
+        playerHeaderTitle: 'создание простейшей хеш-таблицы',
+        code: SIMPLIFIED_INSERT_ALL_CODE,
+        breakpoints: siaRes.bp,
+        formatBpDesc: formatSimplifiedInsertAllDescription,
+        stateVisualization: SimplifiedInsertStateVisualization,
+    },
+
+    simplified_hash_search: {
+        mainPagePaneHeaderTitle: 'Поиск',
+        mainPagePaneClassName: 'simplified-hash-search',
+        playerHeaderTitle: 'поиск в простейшей хеш-таблице',
+        code: SIMPLIFIED_SEARCH_CODE,
+        breakpoints: ssRes.bp,
+        formatBpDesc: formatSimplifiedSearchDescription,
+        stateVisualization: SimplifiedSearchStateVisualization,
     },
 };
 
@@ -178,15 +239,16 @@ class LessonPane extends React.Component {
     }
 
     render() {
-        const {lessonId} = this.props;
-        const lesson = LESSONS[lessonId];
+        const id = this.props.id;
+        const lesson = LESSONS[id];
+        console.log('Lesson pane', id, LESSONS[id]);
 
         if (this.state.navigatingPlayer) {
-            return <Redirect to={`lesson/${lessonId}`} />;
+            return <Redirect to={`lesson/${id}`} />;
         }
         return (
             <a
-                href={`/lesson/${lessonId}`}
+                href={`/lesson/${id}`}
                 className={classnames('pane', lesson.mainPagePaneClassName)}
                 onClick={this.navigatePlayer}
             >
@@ -199,10 +261,9 @@ class LessonPane extends React.Component {
 const Lesson = withRouter(
     class extends React.Component {
         render() {
-            console.log('Lesson', this.props);
-            const name = this.props.match.params.name;
-            console.log('Lesson name', name, LESSONS[name]);
-            return <Player {...LESSONS[name]} />;
+            const id = this.props.match.params.id;
+            console.log('Lesson', id, LESSONS[id]);
+            return <Player {...LESSONS[id]} />;
         }
     }
 );
@@ -224,18 +285,31 @@ export class MainPage extends React.Component {
         return (
             <div className="page">
                 <div className="header">
-                    <div className="title">Объясняем</div>
+                    <div className="title">Объясняем код</div>
                     <div className="definition">
                         Интерактивные визуализации
                         <br /> с комментариями к коду
                     </div>
                 </div>
-                <div className="sorts">
+                {/* <div className="sorts">
                     <h1>Сортировки</h1>
                     <div className="panes-container">
                         <LessonPane lessonId="bubble_sort" />
                         <div className="pane insertion-sort">
                             <h2>Вставками</h2>
+                        </div>
+                    </div>
+                </div> */}
+                <div className="section">
+                    <h1>Простейшие хеш-таблицы</h1>
+                    <div className="pane-collection simplified-hash-collection">
+                        <div className="simplified-hash-collection-left">
+                            <LessonPane id="simplified_hash_collisions" />
+                        </div>
+
+                        <div className="simplified-hash-collection-right">
+                            <LessonPane id="simplified_hash_search" />
+                            <LessonPane id="simplified_hash_create" />
                         </div>
                     </div>
                 </div>

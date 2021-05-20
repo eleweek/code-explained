@@ -107,7 +107,7 @@ function simpleListSearch(l, key) {
     return {bp: breakpoints, result: false};
 }
 
-let formatSimpleListSearchBreakpointDescription = function(bp) {
+export let formatSimpleListSearchBreakpointDescription = function(bp) {
     switch (bp.point) {
         case 'iteration':
             return `Check element in slot ${bp.idx} (<code>${bp.atIdx}</code>)`;
@@ -132,7 +132,7 @@ let formatSimpleListSearchBreakpointDescription = function(bp) {
     }
 };
 
-const SimpleListSearchStateVisualization = TetrisFactory([
+export const SimpleListSearchStateVisualization = TetrisFactory([
     [LineOfBoxesComponent, [{labels: ['simple_list']}, 'data', 'idx']],
 ]);
 
@@ -242,7 +242,7 @@ class SimplifiedInsertAll extends BreakpointFunction {
     }
 }
 
-let formatSimplifiedInsertAllDescription = function(bp, prevBp) {
+export let formatSimplifiedInsertAllDescription = function(bp, prevBp) {
     switch (bp.point) {
         case 'create-new-list':
             return `Create a new list of <code>${bp.newList.size}</code> empty slots`;
@@ -251,15 +251,21 @@ let formatSimplifiedInsertAllDescription = function(bp, prevBp) {
                 bp.number
             }</code>`;
         case 'compute-idx':
-            return `Compute the slot index: <code>${bp.newListIdx}</code> == <code>${bp.number} % ${bp.newList.size}</code>`;
+            return `Compute the slot index: <code>${bp.newListIdx}</code> == <code>${bp.number} % ${
+                bp.newList.size
+            }</code>`;
         case 'check-collision':
             return chapter1_2_FormatCheckCollision(bp.newList, bp.newListIdx, bp.fmtCollisionCount);
         case 'next-idx':
-            return `Keep probing, the next slot will be <code>${bp.newListIdx}</code> == <code>(${prevBp.newListIdx} + 1) % ${bp.newList.size}</code>`;
+            return `Keep probing, the next slot will be <code>${bp.newListIdx}</code> == <code>(${
+                prevBp.newListIdx
+            } + 1) % ${bp.newList.size}</code>`;
         case 'assign-elem': {
             const prevNumber = prevBp.newList.get(bp.newListIdx);
             if (prevNumber != null) {
-                return `Collision of <code>${bp.number}</code> with <code>${prevNumber}</code> in slot <code>${bp.newListIdx}</code> - the number is overwritten`;
+                return `Collision of <code>${bp.number}</code> with <code>${prevNumber}</code> in slot <code>${
+                    bp.newListIdx
+                }</code> - the number is overwritten`;
             } else {
                 return `Put <code>${bp.number}</code> in slot <code>${bp.newListIdx}</code>`;
             }
@@ -275,7 +281,7 @@ let formatSimplifiedInsertAllDescription = function(bp, prevBp) {
     }
 };
 
-const SimplifiedInsertStateVisualization = TetrisFactory([
+export const SimplifiedInsertStateVisualization = TetrisFactory([
     [
         LineOfBoxesComponent,
         [
@@ -289,7 +295,7 @@ const SimplifiedInsertStateVisualization = TetrisFactory([
     [HashBoxesComponent, [{labels: ['new_list']}, 'newList', 'newListIdx']],
 ]);
 
-const SimplifiedInsertBrokenStateVisualization = TetrisFactory([
+export const SimplifiedInsertBrokenStateVisualization = TetrisFactory([
     [
         LineOfBoxesComponent,
         [
@@ -348,10 +354,12 @@ class SimplifiedSearch extends BreakpointFunction {
     }
 }
 
-let formatSimplifiedSearchDescription = function(bp) {
+export let formatSimplifiedSearchDescription = function(bp) {
     switch (bp.point) {
         case 'compute-idx':
-            return `Compute the slot index: <code>${bp.newListIdx}</code> == <code>${bp.number} % ${bp.newList.size}</code>`;
+            return `Compute the slot index: <code>${bp.newListIdx}</code> == <code>${bp.number} % ${
+                bp.newList.size
+            }</code>`;
         case 'check-not-found':
             return commonFormatCheckNotFound(bp.newList, bp.newListIdx, bp.fmtCollisionCount);
         case 'check-found':
@@ -374,7 +382,7 @@ let formatSimplifiedSearchDescription = function(bp) {
     }
 };
 
-const SimplifiedSearchStateVisualization = TetrisFactory([
+export const SimplifiedSearchStateVisualization = TetrisFactory([
     [HashBoxesComponent, [{labels: ['new_list']}, 'newList', 'newListIdx']],
 ]);
 
