@@ -469,14 +469,14 @@ blockquote.blockquote {
     transition-function: ease;
 }
 
-a {
+footer > a {
     color: rgba(65, 98, 135);
     border-bottom-color: rgba(65, 98, 135, 0.15);
     border-bottom-width: 1px;
     border-bottom-style: solid;
 }
 
-a:hover {
+footer > a:hover {
     text-decoration: none;
     color: #b03000;
     border-bottom-color: rgba(160, 48, 0, 0.15);
