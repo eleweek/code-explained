@@ -17,7 +17,7 @@ import {Redirect} from 'react-router';
 import {isDefinedSmallBoxScreen} from './util';
 
 export class Player extends React.Component {
-    AUTOPLAY_TIMEOUT = 1500;
+    AUTOPLAY_TIMEOUT = 1200;
     MAX_BREAKPOINTS_BEFORE_CONT = 300;
 
     constructor(props) {
