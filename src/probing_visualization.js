@@ -32,8 +32,8 @@ const SMALLER_PROBING_BOX_GEOMETRY = {
 };
 
 const TINY_PROBING_BOX_GEOMETRY = {
-    boxSize: 15,
-    boxSpacing: 3,
+    boxSize: 30,
+    boxSpacing: 1,
 };
 
 class ProbingVisualizationImpl extends React.Component {
@@ -111,8 +111,8 @@ class ProbingVisualizationImpl extends React.Component {
                                 id={`arrow-${color}`}
                                 key={`arrow-${color}`}
                                 markerUnits="strokeWidth"
-                                markerWidth="10"
-                                markerHeight="10"
+                                markerWidth="7"
+                                markerHeight="7"
                                 viewBox="0 0 12 12"
                                 refX="6"
                                 refY="6"
@@ -218,9 +218,11 @@ class ProbingVisualizationImpl extends React.Component {
             .attr('height', boxSize)*/
             .enter()
             .append('rect')
-            .style('fill', '#dadada')
+            .style('fill', '#e5e6f1')
             .attr('x', (d, i) => (boxSize + boxSpacing) * i)
             .attr('y', this.TOP_SPACE)
+            .attr('rx', 4)
+            .attr('ry', 4)
             .attr('width', boxSize)
             .attr('height', boxSize)
             .merge(rects)
@@ -247,7 +249,7 @@ class ProbingVisualizationImpl extends React.Component {
                 const yOffset = this.TOP_SPACE + boxSize;
                 ystart = yOffset;
                 yend = yOffset;
-                ymid = yOffset + this.BOTTOM_SPACE * ((Math.max(i1 - i2, 1) + repeatedAdj) / slotsCount);
+                ymid = yOffset + this.BOTTOM_SPACE * (/*Math.max(i1 - i2, 1)*/ (2 + repeatedAdj) / slotsCount);
                 xstartAdjust = boxSize * 0.33;
                 xendAdjust = boxSize * 0.66;
             }

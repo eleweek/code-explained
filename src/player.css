@@ -115,6 +115,7 @@ a.player-title {
 .player-theory p {
     font-size: 16px;
     line-height: 1.2;
+    margin-bottom: 8px;
 }
 
 .player-theory .scrollbar-track-y {
