@@ -90,7 +90,9 @@ export class Player extends React.Component {
         if (this.state.time < this.maxTime()) {
             let newTime = this.state.time + (fromNextStep ? 1 : 0);
             if (newTime < this.maxTime()) {
-                console.log('Launching autoplay');
+                if (this.timeoutId) {
+                    clearTimeout(this.timeoutId);
+                }
                 this.timeoutId = setTimeout(this.autoPlay, this.getAutoplayTimeout());
                 this.timeoutStarted = this.unixtimestamp();
             } else {
@@ -167,12 +169,14 @@ export class Player extends React.Component {
         const keyCode = event.keyCode;
         const isNext = keyCode === 38 || keyCode === 39;
         const isPrev = keyCode === 40 || keyCode === 37;
+        const isSpace = keyCode === 32;
 
         if (isNext) {
             this.nextStep();
-        }
-        if (isPrev) {
+        } else if (isPrev) {
             this.prevStep();
+        } else if (isSpace) {
+            this.autoPlay();
         }
     };
 
