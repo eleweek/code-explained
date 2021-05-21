@@ -109,6 +109,8 @@ function simpleListSearch(l, key) {
 
 export let formatSimpleListSearchBreakpointDescription = function(bp) {
     switch (bp.point) {
+        case 'start-execution':
+            return `Ищем <code>${bp.number}</code>`;
         case 'iteration':
             return `Проверим ячейку с индексом ${bp.idx} (<code>${bp.atIdx}</code>)`;
         case 'start-from-zero':
@@ -327,6 +329,7 @@ class SimplifiedSearch extends BreakpointFunction {
     run(_newList, _number) {
         this.newList = new ImmutableList(_newList);
         this.number = _number;
+        this.addBP('start-execution');
 
         this.fmtCollisionCount = 0;
         this.newListIdx = ((this.number % this.newList.size) + this.newList.size) % this.newList.size;
@@ -356,6 +359,8 @@ class SimplifiedSearch extends BreakpointFunction {
 
 export let formatSimplifiedSearchDescription = function(bp) {
     switch (bp.point) {
+        case 'start-execution':
+            return `Ищем <code>${bp.number}</code>`;
         case 'compute-idx':
             return `Вычисляем индекс ячейки: <code>${bp.newListIdx}</code> == <code>${bp.number} % ${
                 bp.newList.size
