@@ -143,17 +143,15 @@ export const HashCreateNewStateVisualization = TetrisFactory([
 export function formatHashCreateNewAndInsert(bp, prevBp) {
     switch (bp.point) {
         case 'create-new-empty-hashes':
-            return `Create a new list of size <code>${bp.hashCodes.size}</code> for hash codes`;
+            return `Создаем новый список размером <code>${bp.hashCodes.size}</code> для хеш-кодов`;
         case 'create-new-empty-keys':
-            return `Create a new list of size <code>${bp.keys.size}</code> for keys`;
+            return `Создаем новый список размером <code>${bp.keys.size}</code> для ключей`;
         case 'for-loop':
-            return `[${bp.fromKeysIdx + 1}/${bp.fromKeys.size}] The key to insert is <code>${displayStr(
-                bp.key
-            )}</code>`;
+            return `[${bp.fromKeysIdx + 1}/${bp.fromKeys.size}] Ключ для вставки <code>${displayStr(bp.key)}</code>`;
         case 'compute-hash':
-            return `Compute the hash code: <code>${bp.hashCode}</code>`;
+            return `Вычисляем хеш-код: <code>${bp.hashCode}</code>`;
         case 'compute-idx':
-            return `Compute the starting slot index: <code>${bp.idx}</code> == <code>${bp.hashCode} % ${
+            return `Вычисляем индекс начальной ячейки: <code>${bp.idx}</code> == <code>${bp.hashCode} % ${
                 bp.keys.size
             }</code>`;
         case 'check-collision':
@@ -162,42 +160,40 @@ export function formatHashCreateNewAndInsert(bp, prevBp) {
             if (EQ(bp.hashCodes.get(bp.idx), bp.hashCode)) {
                 return `<code>${bp.hashCodes.get(bp.idx)} == ${
                     bp.hashCode
-                }</code>, we cannot rule out the slot being occupied by the same key`;
+                }</code>, мы не можем исключить, что ячейка занята тем же ключом`;
             } else {
                 return `<code>${bp.hashCodes.get(bp.idx)} != ${
                     bp.hashCode
-                }</code>, so there is a collision with a different key`;
+                }</code>, значит, возникла коллизия с другим ключом`;
             }
         case 'check-dup-key':
             if (EQ(bp.keys[bp.idx], bp.key)) {
                 return `<code>${displayStr(bp.keys.get(bp.idx))} == ${displayStr(
                     bp.key
-                )}</code>, so the key is already in the table`;
+                )}</code>, значит, ключ уже в таблице`;
             } else {
-                return `<code>${displayStr(bp.keys.get(bp.idx))} != ${displayStr(
-                    bp.key
-                )}</code>, so there is a collision`;
+                return `<code>${displayStr(bp.keys.get(bp.idx))} != ${displayStr(bp.key)}</code>, значит, это коллизия`;
             }
         case 'check-dup-break':
-            return 'Because the key is found, stop';
+            return 'Потому что ключ найден, стоп';
         case 'check-dup-return':
-            return 'Because the key is found, stop';
+            return 'Потому что ключ найден, стоп';
         case 'next-idx':
-            return `Keep probing, the next slot will be <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${
+            return `Продолжаем, индекс следующего элемента <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${
                 bp.keys.size
             }</code>`;
         case 'assign-elem':
             if (prevBp.keys.get(bp.idx) === null) {
-                return `Put <code>${displayStr(bp.key)}</code> and its hash <code>${
+                return `Поместим элемент <code>${displayStr(bp.key)}</code> и его хеш-код <code>${
                     bp.hashCode
-                }</code> in the empty slot <code>${bp.idx}</code>`;
+                }</code> в пустую ячейку <code>${bp.idx}</code>`;
             } else {
-                return `<code>${displayStr(bp.key)}</code> and its hash <code>${
+                return `<code>${displayStr(bp.key)}</code> и его хеш-код <code>${
                     bp.hashCode
-                }</code> is already in the slot, overwriting it anyway`;
+                }</code> уже в ячейке, в любом случае перезаписываем`;
             }
         case 'return-lists':
-            return `The hash table is complete, return the lists`;
+            return `Хеш-таблица создана, возвращаем списки`;
     }
 }
 
@@ -216,9 +212,9 @@ export const HASH_SEARCH_CODE = [
 export function formatHashRemoveSearch(bp, prevBp) {
     switch (bp.point) {
         case 'compute-hash':
-            return `Compute the hash code: <code>${bp.hashCode}</code>`;
+            return `Вычисляем хеш-код: <code>${bp.hashCode}</code>`;
         case 'compute-idx':
-            return `Compute the starting slot index: <code>${bp.hashCode} % ${bp.keys.size}</code> == <code>${
+            return `Вычисляем индекс начальной ячейки: <code>${bp.hashCode} % ${bp.keys.size}</code> == <code>${
                 bp.idx
             }</code>`;
         case 'check-not-found':
@@ -227,35 +223,35 @@ export function formatHashRemoveSearch(bp, prevBp) {
             if (bp.hashCodes.get(bp.idx).eq(bp.hashCode)) {
                 return `<code>${bp.hashCodes.get(bp.idx)} == ${
                     bp.hashCode
-                }</code>, so the slot might contain the same key`;
+                }</code>, поэтому ячейка может содержать тот же ключ`;
             } else {
                 return `<code>${bp.hashCodes.get(bp.idx)} != ${
                     bp.hashCode
-                }</code>, so the slot definitely contains a different key`;
+                }</code>, поэтому ячейка определенно содержит другой ключ`;
             }
         case 'check-key':
             if (EQ(bp.keys.get(bp.idx), bp.key)) {
-                return `<code>${displayStr(bp.keys.get(bp.idx))} == ${displayStr(bp.key)}</code>, so the key is found`;
+                return `<code>${displayStr(bp.keys.get(bp.idx))} == ${displayStr(bp.key)}</code>, ключ найден`;
             } else {
                 return `<code>${displayStr(bp.keys.get(bp.idx))} != ${
                     bp.key
-                }</code>, so there is a different key with the same hash`;
+                }</code>, это другой ключ с тем же хеш-кодом`;
             }
         case 'assign-dummy':
-            return `Replace key in slot <code>${bp.idx}</code> with <code>DUMMY</code> placeholder`;
+            return `Перемещаем в ячейку <code>${bp.idx}</code> с <code>фиктивным</code> объектом`;
         case 'return':
-            return `The key is removed, now return`;
+            return `Ключ удален`;
         case 'next-idx':
-            return `Keep retracing probing steps, the next slot will be <code>${bp.idx}</code> == <code>(${
-                prevBp.idx
-            } + 1) % ${bp.keys.size}</code>`;
+            return `Продолжаем, индекс следующего элемента <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${
+                bp.keys.size
+            }</code>`;
         case 'throw-key-error':
-            return `Throw an exception, because no key was found`;
+            return `Бросаем исключение, потому что ключ не найден`;
         /* search */
         case 'return-true':
-            return `so return <code>True</code>`;
+            return `Возвращаем значение <code>True</code>`;
         case 'return-false':
-            return `We hit an empty slot, so the key is not there. Return <code>False</code>`;
+            return `Мы попали в пустую ячейку, значит ключ не здесь. Возвращаем значение <code>False</code>`;
     }
 }
 
@@ -411,37 +407,37 @@ class HashResize extends HashBreakpointFunction {
 export function formatHashResize(bp, prevBp) {
     switch (bp.point) {
         case 'create-new-empty-hashes':
-            return `Create a new list of size <code>${bp.newHashCodes.size}</code> for hash codes`;
+            return `Создаем новый список размером <code>${bp.newHashCodes.size}</code> для хеш-кодов`;
         case 'create-new-empty-keys':
-            return `Create a new list of size <code>${bp.newKeys.size}</code> for keys`;
+            return `Создаем новый список размером <code>${bp.newKeys.size}</code> для ключей`;
         case 'for-loop':
-            return `[${bp.oldIdx + 1}/${bp.keys.size}] The current key to insert is <code>${
+            return `[${bp.oldIdx + 1}/${bp.keys.size}] Ключ для вставки <code>${
                 bp.key === null ? 'EMPTY' : bp.key
-            }</code>, its hash is <code>${bp.hashCode === null ? 'EMPTY' : bp.hashCode}</code>`;
+            }</code>, хеш-код <code>${bp.hashCode === null ? 'EMPTY' : bp.hashCode}</code>`;
         case 'compute-idx':
-            return `Compute the starting slot index: <code>${bp.idx} == ${bp.hashCode} % ${bp.newKeys.size}</code>`;
+            return `Вычисляем индекс начальной ячейки: <code>${bp.idx} == ${bp.hashCode} % ${bp.newKeys.size}</code>`;
         case 'check-skip-empty-dummy':
             if (bp.keys.get(bp.oldIdx) === null) {
-                return `The current slot is empty`;
+                return `Текущяя ячейка пуста`;
             } else if (bp.keys.get(bp.oldIdx) === DUMMY) {
-                return `The current slot contains a <code>DUMMY</code> placeholder`;
+                return `Текущая ячейка содержит <code>DUMMY</code>-плейсхолдер`;
             } else {
-                return `The current slot is occupied by an actually existing key`;
+                return `Текущая ячейка занята реально существующим ключом`;
             }
         case 'continue':
-            return 'So skip it';
+            return 'Пропустим ее';
         case 'check-collision':
             return chapter1_2_FormatCheckCollision(bp.newKeys, bp.idx, bp.fmtCollisionCount);
         case 'next-idx':
-            return `Keep probing, the next slot will be <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${
+            return `Продолжаем, индекс следующего элемента <code>${bp.idx}</code> == <code>(${prevBp.idx} + 1) % ${
                 bp.keys.size
             }</code>`;
         case 'assign-elem':
-            return `Put <code>${displayStr(bp.key)}</code> and its hash <code>${bp.hashCode}</code> in the empty slot ${
-                bp.idx
-            }`;
+            return `Поместим <code>${displayStr(bp.key)}</code> и его хеш-код <code>${
+                bp.hashCode
+            }</code> в пустую ячейку ${bp.idx}`;
         case 'return-lists':
-            return `The hash table has been rebuilt, return the lists`;
+            return `Хеш-таблица была перестроена, вернем списки`;
     }
 }
 
