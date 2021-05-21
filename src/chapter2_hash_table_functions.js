@@ -129,14 +129,14 @@ export const HashCreateNewStateVisualization = TetrisFactory([
     [
         LineOfBoxesComponent,
         [
-            {labels: ['from_keys'], marginBottom: 20},
+            {labels: ['from_keys'], marginBottom: 10},
             'fromKeys',
             'fromKeysIdx',
             undefined,
             {selection1color: COLOR_FOR_READ_OPS},
         ],
     ],
-    [HashBoxesComponent, [{labels: ['keys'], marginBottom: 7}, 'keys', 'idx']],
+    [HashBoxesComponent, [{labels: ['keys'], marginBottom: 5}, 'keys', 'idx']],
     [HashBoxesComponent, [{labels: ['hash_codes']}, 'hashCodes', 'idx']],
 ]);
 
@@ -260,13 +260,13 @@ export function formatHashRemoveSearch(bp, prevBp) {
 }
 
 export const HashNormalStateVisualization = TetrisFactory([
-    [HashBoxesComponent, [{labels: ['keys'], marginBottom: 7}, 'keys', 'idx']],
+    [HashBoxesComponent, [{labels: ['keys'], marginBottom: 5}, 'keys', 'idx']],
     [HashBoxesComponent, [{labels: ['hash_codes']}, 'hashCodes', 'idx']],
 ]);
 
 export const HashNormalStateVisualizationSmallBoxes = TetrisFactory(
     [
-        [HashBoxesComponent, [{labels: ['keys'], marginBottom: 7}, 'keys', 'idx']],
+        [HashBoxesComponent, [{labels: ['keys'], marginBottom: 5}, 'keys', 'idx']],
         [HashBoxesComponent, [{labels: ['hash_codes']}, 'hashCodes', 'idx']],
     ],
     {fixedGeometry: SMALLER_BOX_GEOMETRY}
@@ -448,19 +448,19 @@ export function formatHashResize(bp, prevBp) {
 export const HashResizeStateVisualization = TetrisFactory([
     [
         HashBoxesComponent,
-        [{labels: ['keys'], marginBottom: 7}, 'keys', 'oldIdx', undefined, {selection1color: COLOR_FOR_READ_OPS}],
+        [{labels: ['keys'], marginBottom: 5}, 'keys', 'oldIdx', undefined, {selection1color: COLOR_FOR_READ_OPS}],
     ],
     [
         HashBoxesComponent,
         [
-            {labels: ['hash_codes'], marginBottom: 20},
+            {labels: ['hash_codes'], marginBottom: 10},
             'hashCodes',
             'oldIdx',
             undefined,
             {selection1color: COLOR_FOR_READ_OPS},
         ],
     ],
-    [HashBoxesComponent, [{labels: ['new_keys'], marginBottom: 7}, 'newKeys', 'idx']],
+    [HashBoxesComponent, [{labels: ['new_keys'], marginBottom: 5}, 'newKeys', 'idx']],
     [HashBoxesComponent, [{labels: ['new_hash_codes']}, 'newHashCodes', 'idx']],
 ]);
 
