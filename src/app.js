@@ -76,7 +76,7 @@ function Footer() {
 }
 
 // mainly to prevent addressbar stuff on mobile changing things excessively
-const SIGNIFICANT_HEIGHT_CHANGE = 100;
+const SIGNIFICANT_HEIGHT_CHANGE = 0;
 export class App extends React.Component {
     constructor() {
         super();
