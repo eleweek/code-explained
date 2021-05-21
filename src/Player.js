@@ -299,12 +299,17 @@ export class Player extends React.Component {
                         </div>
                     </div>
                     {this.state.showingTheory && (
-                        <div
-                            className="player-theory"
-                            style={{height: this.props.windowHeight - approximateSliderAndControlsHeight}}
-                        >
-                            {' '}
-                            <SmoothScrollbar alwaysShowTracks={true}>{this.props.theory}</SmoothScrollbar>
+                        <div className="player-theory">
+                            <div className="player-theory-border-wrapper">
+                                <SmoothScrollbar alwaysShowTracks={true}>
+                                    <div
+                                        className="player-theory-inner"
+                                        style={{height: this.props.windowHeight - approximateSliderAndControlsHeight}}
+                                    >
+                                        {this.props.theory}
+                                    </div>
+                                </SmoothScrollbar>
+                            </div>
                         </div>
                     )}
                 </div>

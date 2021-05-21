@@ -89,11 +89,17 @@ a.player-title {
 }
 
 .player-theory {
-    border-left: 1px rgba(128, 128, 128, 0.15) solid;
     margin-left: 20px;
-    padding-left: 10px;
     min-width: 200px;
     width: 30%;
+}
+
+.player-theory-border-wrapper {
+    border-left: 1px rgba(128, 128, 128, 0.15) solid;
+}
+
+.player-theory-inner {
+    padding-left: 10px;
 }
 
 .player-theory h1 {
@@ -109,4 +115,9 @@ a.player-title {
 .player-theory p {
     font-size: 16px;
     line-height: 1.2;
+}
+
+.player-theory .scrollbar-track-y {
+    left: 0px !important;
+    right: none !important;
 }
