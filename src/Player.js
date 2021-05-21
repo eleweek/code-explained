@@ -20,13 +20,13 @@ export class Player extends React.Component {
     AUTOPLAY_TIMEOUT = 1500;
     MAX_BREAKPOINTS_BEFORE_CONT = 300;
 
-    constructor() {
+    constructor(props) {
         super();
 
         this.state = {
             time: 0,
             autoPlaying: false,
-            showingTheory: true,
+            showingTheory: !!props.theory,
             speed: 1,
 
             // react router stuff
@@ -201,14 +201,21 @@ export class Player extends React.Component {
 
         const smallerFont = false;
 
-        let codeHeight;
-        const approximateSliderAndControlsHeight = 45;
+        let codeHeight, innerTheoryHeight, theoryWidth, codeVisWidth;
+        const approximateSliderAndControlsHeight = 51;
+        const approximateHorizontalPaddings = 24;
+        const MIN_THEORY_WIDTH = 300;
         if (windowHeight) {
             codeHeight =
                 this.props.windowHeight -
                 StateVisualization.getExpectedHeight(windowWidth, windowHeight) -
                 approximateSliderAndControlsHeight;
+            innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight;
+            theoryWidth = Math.max(0.3 * windowWidth, MIN_THEORY_WIDTH);
+            codeVisWidth = this.props.windowWidth - approximateHorizontalPaddings - theoryWidth;
         }
+
+        console.log('Inner theory height', innerTheoryHeight);
 
         return (
             <div className="player">
@@ -233,15 +240,17 @@ export class Player extends React.Component {
                             <img src={rightArrow} onClick={this.nextStep} />
                         </div>
                     </div>
-                    <div
-                        className={classnames(
-                            'player-theory-button',
-                            this.state.showingTheory && 'player-theory-button-active'
-                        )}
-                        onClick={this.toggleTheory}
-                    >
-                        {this.state.showingTheory ? 'Убрать теорию' : 'Теория'}
-                    </div>
+                    {this.props.theory && (
+                        <div
+                            className={classnames(
+                                'player-theory-button',
+                                this.state.showingTheory && 'player-theory-button-active'
+                            )}
+                            onClick={this.toggleTheory}
+                        >
+                            {this.state.showingTheory ? 'Убрать теорию' : 'Теория'}
+                        </div>
+                    )}
                 </div>
                 <div className="player-slider-wrapper">
                     <Slider
@@ -276,7 +285,7 @@ export class Player extends React.Component {
                     />
                 </div>
                 <div className="player-main">
-                    <div className="player-code-and-visualisation">
+                    <div className="player-code-and-visualisation" style={{width: codeVisWidth}}>
                         <CodeBlockWithActiveLineAndAnnotations
                             height={codeHeight}
                             time={time}
@@ -299,13 +308,10 @@ export class Player extends React.Component {
                         </div>
                     </div>
                     {this.state.showingTheory && (
-                        <div className="player-theory">
+                        <div className="player-theory" style={{width: theoryWidth, minWidth: MIN_THEORY_WIDTH}}>
                             <div className="player-theory-border-wrapper">
                                 <SmoothScrollbar alwaysShowTracks={true}>
-                                    <div
-                                        className="player-theory-inner"
-                                        style={{height: this.props.windowHeight - approximateSliderAndControlsHeight}}
-                                    >
+                                    <div className="player-theory-inner" style={{height: innerTheoryHeight}}>
                                         {this.props.theory}
                                     </div>
                                 </SmoothScrollbar>
