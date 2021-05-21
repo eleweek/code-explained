@@ -99,3 +99,42 @@
     flex-direction: column;
     width: 50%;
 }
+
+.hash-collection {
+    display: flex;
+    flex-direction: column;
+}
+
+.hash-collection-top {
+    display: flex;
+    flex-direction: row;
+    height: 150px;
+}
+
+.hash-collection-bottom {
+    display: flex;
+    flex-direction: row;
+    height: 150px;
+}
+
+.hash-create {
+    width: 55%;
+    background-color: #3faaef;
+    margin-right: 15px;
+}
+
+.hash-search {
+    width: 45%;
+    background-color: #f5c451;
+}
+
+.hash-remove {
+    width: 45%;
+    background-color: #1f7a78;
+    margin-right: 15px;
+}
+
+.hash-resize {
+    width: 55%;
+    background-color: #e3444a;
+}

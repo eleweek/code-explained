@@ -368,7 +368,7 @@ export class MainPage extends React.Component {
                     </div>
                 </div> */}
                 <div className="section">
-                    <h1>Простейшие хеш-таблицы</h1>
+                    <h1>Простейшие хеш-таблицы с открытой адресацией</h1>
                     <div className="pane-collection simplified-hash-collection">
                         <div className="simplified-hash-collection-left">
                             <LessonPane id="simplified_hash_collisions" />
@@ -377,6 +377,21 @@ export class MainPage extends React.Component {
                         <div className="simplified-hash-collection-right">
                             <LessonPane id="simplified_hash_search" />
                             <LessonPane id="simplified_hash_create" />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="section">
+                    <h1>Хеш-таблицы с открытой адресацией</h1>
+                    <div className="pane-collection hash-collection">
+                        <div className="hash-collection-top">
+                            <LessonPane id="hash_create" />
+                            <LessonPane id="hash_search" />
+                        </div>
+
+                        <div className="hash-collection-bottom">
+                            <LessonPane id="hash_remove" />
+                            <LessonPane id="hash_resize" />
                         </div>
                     </div>
                 </div>
