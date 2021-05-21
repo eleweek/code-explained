@@ -40,6 +40,7 @@ import {
     HashNormalStateVisualization,
     HashResizeStateVisualization,
 } from './chapter2_hash_table_functions';
+import {CollisionsTheory, SimplifiedCreateTheory} from './theory';
 
 function getWindowDimensions() {
     const width = document.documentElement.clientWidth;
@@ -231,6 +232,8 @@ const LESSONS = {
         breakpoints: siaBrokenRes.bp,
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertBrokenStateVisualization,
+
+        theory: <CollisionsTheory />,
     },
 
     simplified_hash_create: {
@@ -241,6 +244,8 @@ const LESSONS = {
         breakpoints: siaRes.bp,
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertStateVisualization,
+
+        theory: <SimplifiedCreateTheory />,
     },
 
     simplified_hash_search: {

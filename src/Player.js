@@ -1,5 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
+import SmoothScrollbar from 'react-smooth-scrollbar';
+
 import './player.css';
 
 import Slider from 'rc-slider/lib/Slider';
@@ -200,8 +202,8 @@ export class Player extends React.Component {
         const smallerFont = false;
 
         let codeHeight;
+        const approximateSliderAndControlsHeight = 45;
         if (windowHeight) {
-            const approximateSliderAndControlsHeight = 45;
             codeHeight =
                 this.props.windowHeight -
                 StateVisualization.getExpectedHeight(windowWidth, windowHeight) -
@@ -296,7 +298,15 @@ export class Player extends React.Component {
                             />
                         </div>
                     </div>
-                    {this.state.showingTheory && <div className="player-theory">Теория</div>}
+                    {this.state.showingTheory && (
+                        <div
+                            className="player-theory"
+                            style={{height: this.props.windowHeight - approximateSliderAndControlsHeight}}
+                        >
+                            {' '}
+                            <SmoothScrollbar alwaysShowTracks={true}>{this.props.theory}</SmoothScrollbar>
+                        </div>
+                    )}
                 </div>
             </div>
         );

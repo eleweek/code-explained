@@ -57,7 +57,7 @@ a.player-title {
 }
 
 .player-theory-button.player-theory-button-active {
-    color: #e0af00;
+    color: #d1750c;
 }
 
 .rc-slider-handle-click-focused {
@@ -93,5 +93,20 @@ a.player-title {
     margin-left: 20px;
     padding-left: 10px;
     min-width: 200px;
-    flex-grow: 1;
+    width: 30%;
+}
+
+.player-theory h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.player-theory h2 {
+    font-size: 16px;
+    margin-bottom: 3px;
+}
+
+.player-theory p {
+    font-size: 16px;
+    line-height: 1.2;
 }

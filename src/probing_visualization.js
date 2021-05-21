@@ -31,6 +31,11 @@ const SMALLER_PROBING_BOX_GEOMETRY = {
     boxSpacing: 6,
 };
 
+const TINY_PROBING_BOX_GEOMETRY = {
+    boxSize: 15,
+    boxSpacing: 3,
+};
+
 class ProbingVisualizationImpl extends React.Component {
     TRANSITION_TIME = 500;
     TOP_SPACE = 66;
@@ -364,11 +369,12 @@ class ProbingVisualizationImpl extends React.Component {
 }
 
 function selectProbingGeometry(windowWidth, windowHeight) {
-    if (windowWidth == null) return null;
+    return TINY_PROBING_BOX_GEOMETRY;
+    /*if (windowWidth == null) return null;
     const smallBoxScreen = windowWidth == null || windowHeight == null || Math.min(windowWidth, windowHeight) < 550;
     console.log('selectProbingGeometry()', windowWidth, windowHeight, smallBoxScreen);
 
-    return smallBoxScreen ? SMALLER_PROBING_BOX_GEOMETRY : DEFAULT_PROBING_BOX_GEOMETRY;
+    return smallBoxScreen ? SMALLER_PROBING_BOX_GEOMETRY : DEFAULT_PROBING_BOX_GEOMETRY;*/
 }
 
 export class ProbingStateVisualization extends React.Component {
