@@ -40,7 +40,7 @@ export function CollisionsTheory() {
 
 const {links: probingLinks} = new GenerateProbingLinks().run(8, '', 'i+1');
 
-export function SimplifiedHashTheory() {
+export function SimplifiedHashTheory(props) {
     return (
         <>
             <h1>Простейшие хеш-таблицы</h1>
@@ -70,18 +70,26 @@ export function SimplifiedHashTheory() {
             </p>
             <p>На нашей визуализации размер таблицы выбран так, чтобы таблица была заполнена наполовину.</p>
             <h2>
-                <a href="/lesson/simplified_hash_create" className="link">
-                    Создание хеш-таблицы
-                </a>
+                {props.active !== 'simplified_hash_create' ? (
+                    <a href="/lesson/simplified_hash_create" className="link">
+                        Создание хеш-таблицы
+                    </a>
+                ) : (
+                    'Создание хеш-таблицы'
+                )}
             </h2>
             <p>
                 Для создания хеш-таблицы мы последовательно вставляем ключи один за другим. При возникновении коллизии
                 переходим к соседней ячейке. Вставляем ключ в первую свободную ячейку.
             </p>
             <h2>
-                <a href="/lesson/simplified_hash_search" className="link">
-                    Поиск в хеш-таблице
-                </a>
+                {props.active !== 'simplified_hash_search' ? (
+                    <a href="/lesson/simplified_hash_search" className="link">
+                        Поиск в хеш-таблице
+                    </a>
+                ) : (
+                    'Поиск в хеш-таблице'
+                )}
             </h2>
             <p>
                 Поиск ключа аналогичен вставке. Вычисляем индекс и ищем пустой слот, как при разрешении коллизий. Если

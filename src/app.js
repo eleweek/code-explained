@@ -241,7 +241,7 @@ const LESSONS = {
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertStateVisualization,
 
-        theory: <SimplifiedHashTheory />,
+        theory: <SimplifiedHashTheory active="simplified_hash_create" />,
     },
 
     simplified_hash_search: {
@@ -253,7 +253,7 @@ const LESSONS = {
         formatBpDesc: formatSimplifiedSearchDescription,
         stateVisualization: SimplifiedSearchStateVisualization,
 
-        theory: <SimplifiedHashTheory />,
+        theory: <SimplifiedHashTheory active="simplified_hash_search" />,
     },
 
     hash_create: {
