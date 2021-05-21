@@ -219,6 +219,22 @@ div.hash-example-instance {
     right: none !important;
 }
 
+.scrollbar-track-y {
+    width: 4px !important;
+}
+
+.scrollbar-thumb-y {
+    width: 4px !important;
+}
+
+.scrollbar-track-x {
+    height: 4px !important;
+}
+
+.scrollbar-thumb-x {
+    height: 4px !important;
+}
+
 .visualized-code > .code-block-row {
     margin-top: 20px;
 }
