@@ -512,7 +512,7 @@ class HashInsert extends HashBreakpointFunction {
     }
 }
 
-class HashExamples extends React.Component {
+export class HashExamples extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -529,9 +529,9 @@ class HashExamples extends React.Component {
             display: 'inline-block',
         };
         return (
-            <div>
+            <div className="hash-examples">
                 <div className="div-p">
-                    <span style={style}>Strings:</span>
+                    {/* <span style={style}>Strings:</span> */}
                     <code>hash(</code>
                     <PyStringInput
                         inline={true}
@@ -541,7 +541,7 @@ class HashExamples extends React.Component {
                     <code>)</code> = <code>{pyHashUnicode(this.state.string)}</code>
                 </div>
                 <div className="div-p">
-                    <span style={style}>Integers:</span>
+                    {/* <span style={style}>Integers:</span> */}
                     <code>hash(</code>
                     <PyNumberInput
                         inline={true}
@@ -551,15 +551,15 @@ class HashExamples extends React.Component {
                     <code>)</code> = <code>{pyHashLong(BigNumber(this.state.integer)).toFixed()}</code>
                 </div>
                 <p>
-                    <span style={style}>Floats:</span>
+                    {/* <span style={style}>Floats:</span> */}
                     <code>hash(42.5)</code> = <code>1426259968</code>
                 </p>
                 <p>
-                    <span style={style}>Tuples: </span>
+                    {/* <span style={style}>Tuples: </span> */}
                     <code>hash(("Hi", 11))</code> = <code>4421265786515608844</code>
                 </p>
                 <p>
-                    <span style={style}>None: </span>
+                    {/* <span style={style}>None: </span> */}
                     <code>hash(None)</code> = <code>-9223372036581563745</code>
                 </p>
             </div>

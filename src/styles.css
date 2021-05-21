@@ -280,7 +280,7 @@ pre.code-line-container {
 
 .fc-inline {
     display: inline-block !important;
-    width: 120px !important;
+    width: 75px !important;
     line-height: 1 !important;
     margin-left: 5px;
     margin-right: 5px;
@@ -487,4 +487,8 @@ a.link:hover {
 footer {
     margin-top: 30px;
     margin-bottom: 10px;
+}
+
+.hash-examples {
+    margin-top: 8px;
 }

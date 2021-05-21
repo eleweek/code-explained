@@ -160,6 +160,10 @@ export class Player extends React.Component {
 
     handleKeyboard = event => {
         console.log('keyboard', event);
+        if (event.target.nodeName === 'INPUT') {
+            return; // Don't mess with inputs
+        }
+
         event.preventDefault();
         const keyCode = event.keyCode;
         const isNext = keyCode == 38 || keyCode == 39;

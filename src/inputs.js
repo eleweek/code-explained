@@ -260,8 +260,8 @@ class ParsableInputInlineImpl extends React.Component {
         const divClassNames = classNames(
             'parsable-input-with-error-div',
             'inline-block',
-            'parsable-input-inline',
-            'mr-3'
+            'parsable-input-inline'
+            // 'mr-3'
         );
         return (
             <div className={divClassNames}>
@@ -382,6 +382,18 @@ export function PyStringInput({inputComponentRef, ...restProps}) {
             {...restProps}
             dumpValue={_dumpStringOrNumOrNone}
             parseValue={parsePyString}
+            inputComponentRef={inputComponentRef}
+        />
+    );
+}
+
+const _stringAsIs = s => s;
+export function PyStringNoQuotesInput({inputComponentRef, ...restProps}) {
+    return (
+        <ParsableInput
+            {...restProps}
+            dumpValue={_stringAsIs}
+            parseValue={_stringAsIs}
             inputComponentRef={inputComponentRef}
         />
     );

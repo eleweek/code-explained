@@ -40,7 +40,7 @@ import {
     HashNormalStateVisualization,
     HashResizeStateVisualization,
 } from './chapter2_hash_table_functions';
-import {CollisionsTheory, SimplifiedHashTheory} from './theory';
+import {CollisionsTheory, SimplifiedHashTheory, HashTheory} from './theory';
 
 function getWindowDimensions() {
     const width = document.documentElement.clientWidth;
@@ -265,6 +265,8 @@ const LESSONS = {
         breakpoints: newRes.bp,
         formatBpDesc: formatHashCreateNewAndInsert,
         stateVisualization: HashCreateNewStateVisualization,
+
+        theory: <HashTheory />,
     },
 
     hash_search: {
@@ -275,6 +277,8 @@ const LESSONS = {
         breakpoints: searchRes.bp,
         formatBpDesc: formatHashRemoveSearch,
         stateVisualization: HashNormalStateVisualization,
+
+        theory: <HashTheory />,
     },
 
     hash_remove: {
@@ -285,6 +289,8 @@ const LESSONS = {
         breakpoints: removeRes.bp,
         formatBpDesc: formatHashRemoveSearch,
         stateVisualization: HashNormalStateVisualization,
+
+        theory: <HashTheory />,
     },
 
     hash_resize: {
@@ -295,6 +301,8 @@ const LESSONS = {
         breakpoints: resizeRes.bp,
         formatBpDesc: formatHashResize,
         stateVisualization: HashResizeStateVisualization,
+
+        theory: <HashTheory />,
     },
 };
 
