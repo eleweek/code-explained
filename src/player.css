@@ -49,6 +49,17 @@ a.player-title {
     margin-right: 20px;
 }
 
+.player-theory-button {
+    margin-left: auto;
+    cursor: pointer;
+    color: #416287;
+    margin-right: 10px;
+}
+
+.player-theory-button.player-theory-button-active {
+    color: #e0af00;
+}
+
 .rc-slider-handle-click-focused {
     /* box-shadow: 0 0 0 1px #a0b1c3 !important;*/
     box-shadow: unset !important;

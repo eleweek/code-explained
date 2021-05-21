@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import './player.css';
 
 import Slider from 'rc-slider/lib/Slider';
@@ -15,6 +16,7 @@ import {isDefinedSmallBoxScreen} from './util';
 
 export class Player extends React.Component {
     AUTOPLAY_TIMEOUT = 1500;
+    MAX_BREAKPOINTS_BEFORE_CONT = 300;
 
     constructor() {
         super();
@@ -22,6 +24,7 @@ export class Player extends React.Component {
         this.state = {
             time: 0,
             autoPlaying: false,
+            showingTheory: false,
             speed: 1,
 
             // react router stuff
@@ -167,6 +170,10 @@ export class Player extends React.Component {
         }
     };
 
+    toggleTheory = () => {
+        this.setState({showingTheory: !this.state.showingTheory});
+    };
+
     render() {
         console.log('Player', this.props, this.state);
         if (this.state.navigatingHome) {
@@ -175,8 +182,9 @@ export class Player extends React.Component {
         const maxTime = this.props.breakpoints.length;
 
         const marks = {};
-        if (this.props.breakpoints.length < 150) {
-            for (let i = 0; i < this.props.breakpoints.length; ++i) {
+        if (this.props.breakpoints.length < this.MAX_BREAKPOINTS_BEFORE_CONT) {
+            // Skip erasing the last mark
+            for (let i = 1; i < this.props.breakpoints.length - 1; ++i) {
                 marks[i] = '';
             }
         }
@@ -222,6 +230,15 @@ export class Player extends React.Component {
                         <div className="player-button player-next">
                             <img src={rightArrow} onClick={this.nextStep} />
                         </div>
+                    </div>
+                    <div
+                        className={classnames(
+                            'player-theory-button',
+                            this.state.showingTheory && 'player-theory-button-active'
+                        )}
+                        onClick={this.toggleTheory}
+                    >
+                        {this.state.showingTheory ? 'Убрать теорию' : 'Теория'}
                     </div>
                 </div>
                 <div className="player-slider-wrapper">
