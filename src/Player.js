@@ -18,13 +18,14 @@ import {isDefinedSmallBoxScreen} from './util';
 
 export class Player extends React.Component {
     AUTOPLAY_TIMEOUT = 1200;
-    MAX_BREAKPOINTS_BEFORE_CONT = 300;
+    SLIDER_MULTIPLIER = 1000;
 
     constructor(props) {
         super();
 
         this.state = {
             time: 0,
+            sliderTime: 0,
             autoPlaying: false,
             showingTheory: !!props.theory,
             speed: 1,
@@ -54,11 +55,14 @@ export class Player extends React.Component {
 
     handleSliderValueChange = value => {
         this.stop();
-        this.handleTimeChange(value);
+        const sliderTime = value / this.SLIDER_MULTIPLIER;
+        this.handleTimeChange(sliderTime);
     };
 
     handleTimeChange = (value, autoPlaying = false) => {
-        this.setState(state => ({time: value, autoPlaying}));
+        const sliderTime = value;
+        const time = Math.round(sliderTime);
+        this.setState(state => ({time, sliderTime, autoPlaying}));
         // this.props.handleTimeChange(value);
     };
 
@@ -147,11 +151,6 @@ export class Player extends React.Component {
 
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyboard);
-
-        /*if (this.props.autoplayByDefault) {
-            this.autoPlay();
-        }*/
-        this.forceAutoPlay(false);
     }
 
     componentWillUnmount() {
@@ -166,8 +165,8 @@ export class Player extends React.Component {
 
         event.preventDefault();
         const keyCode = event.keyCode;
-        const isNext = keyCode == 38 || keyCode == 39;
-        const isPrev = keyCode == 40 || keyCode == 37;
+        const isNext = keyCode === 38 || keyCode === 39;
+        const isPrev = keyCode === 40 || keyCode === 37;
 
         if (isNext) {
             this.nextStep();
@@ -187,14 +186,6 @@ export class Player extends React.Component {
             return <Redirect push to="/" />;
         }
         const maxTime = this.props.breakpoints.length;
-
-        const marks = {};
-        if (this.props.breakpoints.length < this.MAX_BREAKPOINTS_BEFORE_CONT) {
-            // Skip erasing the last mark
-            for (let i = 1; i < this.props.breakpoints.length - 1; ++i) {
-                marks[i] = '';
-            }
-        }
 
         const StateVisualization = this.props.stateVisualization;
         const {windowHeight, windowWidth} = this.props;
@@ -259,11 +250,11 @@ export class Player extends React.Component {
                 </div>
                 <div className="player-slider-wrapper">
                     <Slider
-                        marks={marks}
-                        onChange={this.handleTimeChange}
+                        // marks={marks}
+                        onChange={this.handleSliderValueChange}
                         min={0}
-                        max={this.props.breakpoints.length - 1}
-                        value={time}
+                        max={this.maxTime() * this.SLIDER_MULTIPLIER}
+                        value={this.state.sliderTime * this.SLIDER_MULTIPLIER}
                         dotStyle={{
                             top: 0,
                             height: 3,
