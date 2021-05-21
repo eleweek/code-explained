@@ -40,7 +40,7 @@ import {
     HashNormalStateVisualization,
     HashResizeStateVisualization,
 } from './chapter2_hash_table_functions';
-import {CollisionsTheory, SimplifiedCreateTheory} from './theory';
+import {CollisionsTheory, SimplifiedHashTheory} from './theory';
 
 function getWindowDimensions() {
     const width = document.documentElement.clientWidth;
@@ -241,7 +241,7 @@ const LESSONS = {
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertStateVisualization,
 
-        theory: <SimplifiedCreateTheory />,
+        theory: <SimplifiedHashTheory />,
     },
 
     simplified_hash_search: {
@@ -252,6 +252,8 @@ const LESSONS = {
         breakpoints: ssRes.bp,
         formatBpDesc: formatSimplifiedSearchDescription,
         stateVisualization: SimplifiedSearchStateVisualization,
+
+        theory: <SimplifiedHashTheory />,
     },
 
     hash_create: {
@@ -376,8 +378,8 @@ export class MainPage extends React.Component {
                         </div>
 
                         <div className="simplified-hash-collection-right">
-                            <LessonPane id="simplified_hash_search" />
                             <LessonPane id="simplified_hash_create" />
+                            <LessonPane id="simplified_hash_search" />
                         </div>
                     </div>
                 </div>

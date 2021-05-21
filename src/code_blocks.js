@@ -1401,7 +1401,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.Component {
                             style={{fontSize: this.props.fontSize}}
                             key="explanation"
                             className="code-explanation"
-                            dangerouslySetInnerHTML={{__html: `\u00A0\u00A0\u00A0~ ${desc}`}}
+                            dangerouslySetInnerHTML={{__html: `\u00A0\u00A0\u00A0\u00A0\u00A0${desc}`}}
                         />
                     );
                 }

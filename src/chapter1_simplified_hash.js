@@ -114,7 +114,7 @@ export let formatSimpleListSearchBreakpointDescription = function(bp) {
         case 'iteration':
             return `Проверим ячейку с индексом ${bp.idx} (<code>${bp.atIdx}</code>)`;
         case 'start-from-zero':
-            return `Начинаем с нулевого элемента списка`;
+            return `Начинаем с нулевого элемента массива`;
         case 'check-boundary':
             return bp.idx < bp.size
                 ? `[Попытка №${bp.idx + 1}] <code>${bp.idx} < ${
@@ -247,7 +247,7 @@ class SimplifiedInsertAll extends BreakpointFunction {
 export let formatSimplifiedInsertAllDescription = function(bp, prevBp) {
     switch (bp.point) {
         case 'create-new-list':
-            return `Создаем новый список из <code>${bp.newList.size}</code> пустых ячеек`;
+            return `Создаем новый массив из <code>${bp.newList.size}</code> пустых ячеек`;
         case 'for-loop':
             return `[${bp.originalListIdx + 1}/${bp.originalList.size}] Вставляем <code>${bp.number}</code>`;
         case 'compute-idx':
@@ -274,11 +274,11 @@ export let formatSimplifiedInsertAllDescription = function(bp, prevBp) {
         }
         case 'return-created-list':
             if (bp.fmtMissingNumbers && bp.fmtMissingNumbers.size > 0) {
-                return `Возвращаем созданный список, следующие числа в нем были перезаписаны: ${bp.fmtMissingNumbers
+                return `Возвращаем созданный массив, следующие числа в нем были перезаписаны: ${bp.fmtMissingNumbers
                     .map(number => `<code>${number}</code>`)
                     .join(', ')}`;
             } else {
-                return `Возвращаем созданный список со всеми исходными числами`;
+                return `Возвращаем созданный массив со всеми исходными числами`;
             }
     }
 };
@@ -381,7 +381,7 @@ export let formatSimplifiedSearchDescription = function(bp) {
         case 'next-idx':
             return `Продолжаем, индекс следующего элемента <code>${bp.newListIdx}</code>`;
         case 'return-created-list':
-            return `Возвращаем созданный список`;
+            return `Возвращаем созданный массив`;
     }
 };
 

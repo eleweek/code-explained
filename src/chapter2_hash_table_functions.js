@@ -143,9 +143,9 @@ export const HashCreateNewStateVisualization = TetrisFactory([
 export function formatHashCreateNewAndInsert(bp, prevBp) {
     switch (bp.point) {
         case 'create-new-empty-hashes':
-            return `Создаем новый список размером <code>${bp.hashCodes.size}</code> для хеш-кодов`;
+            return `Создаем новый массив размером <code>${bp.hashCodes.size}</code> для хеш-кодов`;
         case 'create-new-empty-keys':
-            return `Создаем новый список размером <code>${bp.keys.size}</code> для ключей`;
+            return `Создаем новый массив размером <code>${bp.keys.size}</code> для ключей`;
         case 'for-loop':
             return `[${bp.fromKeysIdx + 1}/${bp.fromKeys.size}] Ключ для вставки <code>${displayStr(bp.key)}</code>`;
         case 'compute-hash':
@@ -193,7 +193,7 @@ export function formatHashCreateNewAndInsert(bp, prevBp) {
                 }</code> уже в ячейке, в любом случае перезаписываем`;
             }
         case 'return-lists':
-            return `Хеш-таблица создана, возвращаем списки`;
+            return `Хеш-таблица создана, возвращаем массивы`;
     }
 }
 
@@ -407,9 +407,9 @@ class HashResize extends HashBreakpointFunction {
 export function formatHashResize(bp, prevBp) {
     switch (bp.point) {
         case 'create-new-empty-hashes':
-            return `Создаем новый список размером <code>${bp.newHashCodes.size}</code> для хеш-кодов`;
+            return `Создаем новый массив размером <code>${bp.newHashCodes.size}</code> для хеш-кодов`;
         case 'create-new-empty-keys':
-            return `Создаем новый список размером <code>${bp.newKeys.size}</code> для ключей`;
+            return `Создаем новый массив размером <code>${bp.newKeys.size}</code> для ключей`;
         case 'for-loop':
             return `[${bp.oldIdx + 1}/${bp.keys.size}] Ключ для вставки <code>${
                 bp.key === null ? 'EMPTY' : bp.key
@@ -437,7 +437,7 @@ export function formatHashResize(bp, prevBp) {
                 bp.hashCode
             }</code> в пустую ячейку ${bp.idx}`;
         case 'return-lists':
-            return `Хеш-таблица была перестроена, вернем списки`;
+            return `Хеш-таблица была перестроена, вернем массивы`;
     }
 }
 
