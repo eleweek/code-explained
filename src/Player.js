@@ -82,12 +82,12 @@ export class Player extends React.Component {
         return this.AUTOPLAY_TIMEOUT;
     };
 
-    autoPlayNextStep = () => {
+    autoPlay = (fromNextStep = true) => {
         if (this.state.time < this.maxTime()) {
-            let newTime = this.state.time + 1;
+            let newTime = this.state.time + (fromNextStep ? 1 : 0);
             if (newTime < this.maxTime()) {
                 console.log('Launching autoplay');
-                this.timeoutId = setTimeout(this.autoPlayNextStep, this.getAutoplayTimeout());
+                this.timeoutId = setTimeout(this.autoPlay, this.getAutoplayTimeout());
                 this.timeoutStarted = this.unixtimestamp();
             } else {
                 this.timeoutId = null;
@@ -98,14 +98,14 @@ export class Player extends React.Component {
 
     repeatPlay = () => {
         this.handleTimeChange(0, true);
-        this.timeoutId = setTimeout(this.autoPlayNextStep, this.getAutoplayTimeout());
+        this.timeoutId = setTimeout(this.autoPlay, this.getAutoplayTimeout());
         this.timeoutStarted = this.unixtimestamp();
     };
 
-    autoPlay = () => {
+    forceAutoPlay = fromNextStep => {
         console.log('autoplay');
         if (this.state.time < this.maxTime()) {
-            this.autoPlayNextStep();
+            this.autoPlay(fromNextStep);
         } else {
             this.repeatPlay();
         }
@@ -114,7 +114,7 @@ export class Player extends React.Component {
     toggleAutoPlay = () => {
         console.log('toggleAutoPlay', this.state.autoPlaying);
         if (!this.state.autoPlaying) {
-            this.autoPlay();
+            this.forceAutoPlay();
         } else {
             this.stop();
         }
@@ -148,9 +148,10 @@ export class Player extends React.Component {
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyboard);
 
-        if (this.props.autoplayByDefault) {
+        /*if (this.props.autoplayByDefault) {
             this.autoPlay();
-        }
+        }*/
+        this.forceAutoPlay(false);
     }
 
     componentWillUnmount() {

@@ -274,7 +274,7 @@ export let formatSimplifiedInsertAllDescription = function(bp, prevBp) {
         }
         case 'return-created-list':
             if (bp.fmtMissingNumbers && bp.fmtMissingNumbers.size > 0) {
-                return `Возвращаем созданный массив, следующие числа в нем были перезаписаны: ${bp.fmtMissingNumbers
+                return `Возвращаем созданный массив. Потеряны числа: ${bp.fmtMissingNumbers
                     .map(number => `<code>${number}</code>`)
                     .join(', ')}`;
             } else {
