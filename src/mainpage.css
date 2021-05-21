@@ -13,6 +13,7 @@
 .header > .title {
     font-size: 104px;
     line-height: 123px;
+    font-weight: 700;
 }
 
 .header > .definition {

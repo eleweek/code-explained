@@ -468,3 +468,24 @@ blockquote.blockquote {
     transition-duration: 750ms;
     transition-function: ease;
 }
+
+a {
+    color: rgba(65, 98, 135);
+    border-bottom-color: rgba(65, 98, 135, 0.15);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #b03000;
+    border-bottom-color: rgba(160, 48, 0, 0.15);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+footer {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}

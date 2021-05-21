@@ -69,12 +69,8 @@ function logViewportStats() {
 
 function Footer() {
     return (
-        <footer className="footer">
-            <div className="footer-container container-fluid">
-                <div className="footer-list">
-                    {/* <div className="footer-list-item">Сделано в Школе Бюро Горбунова</div> */}
-                </div>
-            </div>
+        <footer>
+            Сделано в 2021 году <a href="https://bureau.ru/school/designers/12/">в Школе Бюро Горбунова</a>
         </footer>
     );
 }
@@ -400,6 +396,7 @@ export class MainPage extends React.Component {
                         </div>
                     </div>
                 </div>
+                <Footer />
             </div>
         );
     }
