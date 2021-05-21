@@ -292,7 +292,7 @@ export const SimplifiedInsertStateVisualization = TetrisFactory([
             {selection1color: COLOR_FOR_READ_OPS},
         ],
     ],
-    [HashBoxesComponent, [{labels: ['new_list']}, 'newList', 'newListIdx']],
+    [HashBoxesComponent, [{labels: ['new_list']}, 'newList', 'newListIdx', undefined, {boxFontSizeOverride: 16}]],
 ]);
 
 export const SimplifiedInsertBrokenStateVisualization = TetrisFactory([

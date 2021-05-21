@@ -85,9 +85,10 @@ export function SimpleCodeInline(props) {
 }
 
 export const DEFAULT_BOX_GEOMETRY = {
-    boxGeometry: {boxSize: 40, boxPadding: 2, spacingX: 1, spacingY: 5, fontSize: 16, borderRadius: 10},
+    boxGeometry: {boxSize: 40, boxPadding: 2, spacingX: 1, spacingY: 5, fontSize: 12, borderRadius: 10},
     labelFontSize: 16,
 };
+
 export const SMALLER_BOX_GEOMETRY = {
     boxGeometry: {boxSize: 30, boxPadding: 1, spacingX: 1, spacingY: 4, fontSize: 9, borderRadius: 7.5},
     labelFontSize: 12,
@@ -587,11 +588,19 @@ class BaseBoxesComponent extends React.PureComponent {
         const boxFactory = nextProps.boxFactory;
         const boxGeometry = nextProps.boxGeometry;
 
+        const boxFontSizeOverride = nextProps.boxFontSizeOverride;
+        console.log('BOX FONT SIZE OVERRIDE', boxFontSizeOverride, nextProps);
+
+        const actualGeometry = {...boxGeometry};
+        if (boxFontSizeOverride) {
+            actualGeometry.fontSize = boxFontSizeOverride;
+        }
+
         const geometryChanged = !state.firstRender && boxGeometry !== state.boxGeometry;
         if (geometryChanged) {
             const toMerge = {};
             for (const [key, data] of state.keyData.entries()) {
-                toMerge[key] = {box: React.cloneElement(data.box, {...boxGeometry})};
+                toMerge[key] = {box: React.cloneElement(data.box, {...actualGeometry})};
             }
             state = {...state, keyData: state.keyData.mergeDeep(toMerge), boxGeometry};
         }
@@ -651,7 +660,7 @@ class BaseBoxesComponent extends React.PureComponent {
                     needProcessCreatedAfterRender = true;
                     needReflow = true;
                     const id = (++lastBoxId).toString();
-                    const box = <Box idx={idx} status="created" key={id} {...boxGeometry} {...someProps} />;
+                    const box = <Box idx={idx} status="created" key={id} {...actualGeometry} {...someProps} />;
                     toMerge[key] = new BBRecord({
                         status: 'created',
                         id,
