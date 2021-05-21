@@ -78,3 +78,20 @@ a.player-title {
 .player-state-vis-wrapper {
     padding: 10px;
 }
+
+.player-main {
+    display: flex;
+    flex-direction: row;
+}
+
+.player-code-and-visualisation {
+    flex-grow: 1;
+}
+
+.player-theory {
+    border-left: 1px rgba(128, 128, 128, 0.15) solid;
+    margin-left: 20px;
+    padding-left: 10px;
+    min-width: 200px;
+    flex-grow: 1;
+}

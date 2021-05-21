@@ -24,7 +24,7 @@ export class Player extends React.Component {
         this.state = {
             time: 0,
             autoPlaying: false,
-            showingTheory: false,
+            showingTheory: true,
             speed: 1,
 
             // react router stuff
@@ -273,25 +273,30 @@ export class Player extends React.Component {
                         }}
                     />
                 </div>
-                <CodeBlockWithActiveLineAndAnnotations
-                    height={codeHeight}
-                    time={time}
-                    code={this.props.code}
-                    overflow={false}
-                    fontSize={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 10 : 14}
-                    lineHeight={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 1.0 : 1.15}
-                    breakpoints={this.props.breakpoints}
-                    formatBpDesc={this.props.formatBpDesc}
-                />
-                <div className="player-state-vis-wrapper">
-                    <StateVisualization
-                        bp={bp}
-                        epoch={this.state.breakpointsUpdatedCounter}
-                        innerRef={this.componentRef}
-                        windowWidth={windowWidth}
-                        windowHeight={windowHeight}
-                        overflow={false}
-                    />
+                <div className="player-main">
+                    <div className="player-code-and-visualisation">
+                        <CodeBlockWithActiveLineAndAnnotations
+                            height={codeHeight}
+                            time={time}
+                            code={this.props.code}
+                            overflow={false}
+                            fontSize={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 10 : 14}
+                            lineHeight={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 1.0 : 1.15}
+                            breakpoints={this.props.breakpoints}
+                            formatBpDesc={this.props.formatBpDesc}
+                        />
+                        <div className="player-state-vis-wrapper">
+                            <StateVisualization
+                                bp={bp}
+                                epoch={this.state.breakpointsUpdatedCounter}
+                                innerRef={this.componentRef}
+                                windowWidth={windowWidth}
+                                windowHeight={windowHeight}
+                                overflow={false}
+                            />
+                        </div>
+                    </div>
+                    {this.state.showingTheory && <div className="player-theory">Теория</div>}
                 </div>
             </div>
         );
