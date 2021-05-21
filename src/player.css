@@ -91,6 +91,7 @@ a.player-title {
 .player-theory {
     margin-left: 20px;
     min-width: 200px;
+    margin-right: 2px;
 }
 
 .player-theory-border-wrapper {
@@ -99,6 +100,7 @@ a.player-title {
 
 .player-theory-inner {
     padding-left: 10px;
+    padding-right: 8px;
 }
 
 .player-theory h1 {
@@ -117,7 +119,7 @@ a.player-title {
     margin-bottom: 8px;
 }
 
-.player-theory .scrollbar-track-y {
+/*.player-theory .scrollbar-track-y {
     left: 0px !important;
     right: none !important;
-}
+}*/
