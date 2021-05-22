@@ -361,7 +361,7 @@ export class MainPage extends React.Component {
 
     render() {
         return (
-            <div className="page">
+            <div className="frontpage">
                 <div className="header">
                     <div className="title">Объясняем код</div>
                     <div className="definition">

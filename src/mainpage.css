@@ -1,46 +1,46 @@
-.page {
+.frontpage {
     padding-left: 10px;
     padding-right: 10px;
 }
 
-.header {
+.frontpage .header {
     font-family: 'IBM Plex Sans', sans-serif;
     line-height: 1.2;
     display: flex;
     align-items: center;
 }
 
-.header > .title {
+.frontpage .header > .title {
     font-size: 70px;
     line-height: 1.3;
     font-weight: 700;
 }
 
-.header > .definition {
+.frontpage .header > .definition {
     padding-top: 20px;
     font-size: 21px;
     line-height: 1.2;
     margin-left: auto;
 }
 
-.page h1 {
+.frontpage h1 {
     font-size: 60px;
     font-weight: 400;
 
     line-height: 1.2;
 }
 
-.section {
+.frontpage .section {
     margin-top: 90px;
 }
 
-.panes-container {
+.frontpage .panes-container {
     margin-top: 15px;
     display: flex;
     flex-direction: row;
 }
 
-.pane {
+.frontpage .pane {
     display: flex;
 
     border-radius: 7px;
@@ -50,7 +50,7 @@
     color: white !important;
 }
 
-.pane h2 {
+.frontpage .pane h2 {
     margin-top: 6px;
     margin-left: 10px;
     font-weight: 100;
@@ -58,88 +58,88 @@
     line-height: 1.2;
 }
 
-.pane .vis-wrapper {
+.frontpage .pane .vis-wrapper {
     padding-left: 10px;
 }
 
-.bubble-sort {
+.frontpage .bubble-sort {
     background-color: #8700ff;
 }
 
-.insertion-sort {
+.frontpage .insertion-sort {
     background-color: #dc151d;
 }
 
-.simplified-hash-collisions {
+.frontpage .simplified-hash-collisions {
     background-color: #4d9e38;
     width: 100%;
     margin-right: 10px;
 }
 
-.simplified-hash-search {
+.frontpage .simplified-hash-search {
     background-color: #f45c26;
     height: 50%;
 }
 
-.simplified-hash-create {
+.frontpage .simplified-hash-create {
     background-color: #8700ff;
     height: 50%;
 }
 
-.simplified-hash-collection {
+.frontpage .simplified-hash-collection {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 370px;
 }
 
-.simplified-hash-collection-left {
+.frontpage .simplified-hash-collection-left {
     display: flex;
     width: 50%;
 }
 
-.simplified-hash-collection-right {
+.frontpage .simplified-hash-collection-right {
     display: flex;
     flex-direction: column;
     width: 50%;
 }
 
-.hash-collection {
+.frontpage .hash-collection {
     display: flex;
     flex-direction: column;
 }
 
-.hash-collection-top {
+.frontpage .hash-collection-top {
     display: flex;
     flex-direction: row;
     height: 180px;
 }
 
-.hash-collection-bottom {
+.frontpage .hash-collection-bottom {
     display: flex;
     flex-direction: row;
     height: 180px;
 }
 
-.hash-create {
+.frontpage .hash-create {
     width: 58%;
     background-color: #f5c451;
     color: black !important;
     margin-right: 10px;
 }
 
-.hash-search {
+.frontpage .hash-search {
     width: 42%;
     background-color: #3faaef;
 }
 
-.hash-remove {
+.frontpage .hash-remove {
     width: 42%;
     background-color: #1f7a78;
     margin-right: 10px;
 }
 
-.hash-resize {
+.frontpage .hash-resize {
     width: 58%;
     background-color: #e3444a;
 }
