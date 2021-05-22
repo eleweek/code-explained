@@ -1415,16 +1415,16 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.Component {
             let formattedLine = (
                 <pre className="code-line-container" key="pre">
                     <code>
-                        <span
-                            style={{fontSize: this.props.fontSize}}
-                            className={isCurrentLineHighlighted ? 'code-highlight' : undefined}
-                            dangerouslySetInnerHTML={{__html: hlCodeHtml}}
-                        />
+                        <span style={{fontSize: this.props.fontSize}} dangerouslySetInnerHTML={{__html: hlCodeHtml}} />
                     </code>
                 </pre>
             );
             lines.push(
-                <span className="line-with-annotation inline-block" key={`line-${i}`}>
+                <span
+                    className="line-with-annotation inline-block"
+                    key={`line-${i}`}
+                    className={isCurrentLineHighlighted ? 'current-line-highlight' : undefined}
+                >
                     {formattedLine}
                     {explanation}
                 </span>

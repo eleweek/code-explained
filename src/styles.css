@@ -253,7 +253,7 @@ pre.code-line-container {
     display: inline;
 }
 
-.code-highlight {
+.current-line-highlight {
     background-color: #c2dfff;
 }
 
