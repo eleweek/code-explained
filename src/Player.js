@@ -165,12 +165,14 @@ export class Player extends React.Component {
             return; // Don't mess with inputs
         }
 
-        event.preventDefault();
         const keyCode = event.keyCode;
         const isNext = keyCode === 38 || keyCode === 39;
         const isPrev = keyCode === 40 || keyCode === 37;
         const isSpace = keyCode === 32;
 
+        if (isNext || isPrev || isSpace) {
+            event.preventDefault();
+        }
         if (isNext) {
             this.nextStep();
         } else if (isPrev) {
