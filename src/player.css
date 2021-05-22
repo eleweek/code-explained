@@ -8,7 +8,6 @@
 a.player-title {
     font-weight: 700;
     margin-left: 10px;
-    margin-right: 10px;
     text-decoration: none;
     color: black;
 }
@@ -56,7 +55,8 @@ a.player-title {
     margin-right: 10px;
 }
 
-.player-theory-button.player-theory-button-active {
+.player-theory-button.player-button-active,
+a.player-title:hover {
     color: #d1750c;
 }
 

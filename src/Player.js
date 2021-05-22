@@ -223,7 +223,10 @@ export class Player extends React.Component {
                     <a className="player-title" href="/" onClick={this.navigateHome}>
                         Объясняем
                     </a>
-                    <div className="player-lesson-name">{this.props.playerHeaderTitle}</div>
+                    <div className="player-lesson-name">
+                        {'\u00A0'}
+                        {this.props.playerHeaderTitle}
+                    </div>
                     <div className="player-buttons">
                         <div className="player-button player-play-button">
                             <img src={this.state.autoPlaying ? pauseButton : playArrow} onClick={this.toggleAutoPlay} />
@@ -244,11 +247,11 @@ export class Player extends React.Component {
                         <div
                             className={classnames(
                                 'player-theory-button',
-                                this.state.showingTheory && 'player-theory-button-active'
+                                this.state.showingTheory && 'player-button-active'
                             )}
                             onClick={this.toggleTheory}
                         >
-                            {this.state.showingTheory ? 'Убрать теорию' : 'Теория'}
+                            Теория
                         </div>
                     )}
                 </div>
