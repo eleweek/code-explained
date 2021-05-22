@@ -27,7 +27,7 @@ export class Player extends React.Component {
             time: 0,
             sliderTime: 0,
             autoPlaying: false,
-            showingTheory: !!props.theory,
+            showingTheory: false,
             speed: 1,
 
             // react router stuff
