@@ -415,9 +415,7 @@ class Box extends React.PureComponent {
                         ...extraStyle,
                     }}
                     className={classNames(classes)}
-                >
-                    {content}
-                </div>
+                />
                 {content && (
                     <div
                         style={{
