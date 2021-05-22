@@ -11,20 +11,21 @@
 }
 
 .header > .title {
-    font-size: 104px;
-    line-height: 123px;
+    font-size: 70px;
+    line-height: 1.3;
     font-weight: 700;
 }
 
 .header > .definition {
     padding-top: 20px;
-    font-size: 30px;
+    font-size: 21px;
+    line-height: 1.2;
     margin-left: auto;
 }
 
 .page h1 {
-    font-size: 65px;
-    font-weight: 700;
+    font-size: 60px;
+    font-weight: 400;
 
     line-height: 1.2;
 }
@@ -41,17 +42,19 @@
 
 .pane {
     display: flex;
-    justify-content: center;
-    align-items: center;
 
-    border-radius: 14px;
-    margin-bottom: 15px;
+    border-radius: 7px;
+    margin-bottom: 10px;
     text-decoration: none !important;
+
+    color: white !important;
 }
 
 .pane h2 {
-    padding: 10px;
-    color: white;
+    margin-top: 6px;
+    margin-left: 10px;
+    font-weight: 100;
+    font-size: 60px;
     line-height: 1.2;
 }
 
@@ -70,7 +73,7 @@
 .simplified-hash-collisions {
     background-color: #4d9e38;
     width: 100%;
-    margin-right: 15px;
+    margin-right: 10px;
 }
 
 .simplified-hash-search {
@@ -120,19 +123,20 @@
 
 .hash-create {
     width: 55%;
-    background-color: #3faaef;
-    margin-right: 15px;
+    background-color: #f5c451;
+    color: black !important;
+    margin-right: 10px;
 }
 
 .hash-search {
     width: 45%;
-    background-color: #f5c451;
+    background-color: #3faaef;
 }
 
 .hash-remove {
     width: 45%;
     background-color: #1f7a78;
-    margin-right: 15px;
+    margin-right: 10px;
 }
 
 .hash-resize {
