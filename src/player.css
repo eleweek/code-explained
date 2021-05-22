@@ -92,6 +92,7 @@ a.player-title:hover {
     margin-left: 20px;
     min-width: 200px;
     margin-right: 2px;
+    padding-bottom: 15px;
 }
 
 .player-theory-border-wrapper {
@@ -105,18 +106,20 @@ a.player-title:hover {
 
 .player-theory h1 {
     font-size: 24px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    margin-top: 16px;
 }
 
 .player-theory h2 {
     font-size: 16px;
-    margin-bottom: 3px;
+    margin-bottom: 6px;
+    margin-top: 16px;
 }
 
 .player-theory p {
     font-size: 16px;
-    line-height: 1.2;
-    margin-bottom: 8px;
+    line-height: 1.15;
+    margin-bottom: 4px;
 }
 
 /*.player-theory .scrollbar-track-y {
