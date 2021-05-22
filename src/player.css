@@ -70,6 +70,10 @@ a.player-title:hover {
     box-shadow: unset !important;
 }
 
+.slider-transition {
+    transition: all 0.1s linear 0s;
+}
+
 .player-slider-wrapper {
     padding-left: 10px;
     padding-right: 10px;

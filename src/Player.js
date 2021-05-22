@@ -14,7 +14,8 @@ import pauseButton from './icons/pause.svg';
 
 import {CodeBlockWithActiveLineAndAnnotations} from './code_blocks';
 import {Redirect} from 'react-router';
-import {isDefinedSmallBoxScreen} from './util';
+import {doubleRAF, isDefinedSmallBoxScreen} from './util';
+import _ from 'lodash';
 
 export class Player extends React.Component {
     AUTOPLAY_TIMEOUT = 1200;
@@ -146,6 +147,7 @@ export class Player extends React.Component {
     }
 
     componentDidUpdate() {
+        setTimeout(() => this.removeHackTransition(), 200);
         if (!this.state.autoPlaying && this.timeoutId) {
             this.stop();
         }
@@ -158,6 +160,24 @@ export class Player extends React.Component {
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleKeyboard);
     }
+
+    hackTransition = () => {
+        const track = document.getElementsByClassName('rc-slider-track')[0];
+        const handle = document.getElementsByClassName('rc-slider-handle')[0];
+        if (track && handle) {
+            track.classList.add('slider-transition');
+            handle.classList.add('slider-transition');
+        }
+    };
+
+    removeHackTransition = _.debounce(() => {
+        const track = document.getElementsByClassName('rc-slider-track')[0];
+        const handle = document.getElementsByClassName('rc-slider-handle')[0];
+        if (track && handle) {
+            track.classList.remove('slider-transition');
+            handle.classList.remove('slider-transition');
+        }
+    }, 250);
 
     handleKeyboard = event => {
         console.log('keyboard', event);
@@ -172,13 +192,14 @@ export class Player extends React.Component {
 
         if (isNext || isPrev || isSpace) {
             event.preventDefault();
-        }
-        if (isNext) {
-            this.nextStep();
-        } else if (isPrev) {
-            this.prevStep();
-        } else if (isSpace) {
-            this.autoPlay();
+            this.hackTransition();
+            if (isNext) {
+                this.nextStep();
+            } else if (isPrev) {
+                this.prevStep();
+            } else if (isSpace) {
+                this.autoPlay();
+            }
         }
     };
 
