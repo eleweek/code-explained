@@ -94,6 +94,11 @@ export const SMALLER_BOX_GEOMETRY = {
     labelFontSize: 12,
 };
 
+export const LARGER_BOX_GEOMETRY = {
+    boxGeometry: {boxSize: 60, boxPadding: 1, spacingX: 1, spacingY: 4, fontSize: 16, borderRadius: 10},
+    labelFontSize: 16,
+};
+
 function computeBoxTransformProperty(idx, y, boxSize, spacingX, z = 0) {
     let x = (spacingX + boxSize) * idx;
     return `translate3d(${x}px, ${y}px, ${z}px)`;

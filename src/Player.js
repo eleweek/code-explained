@@ -212,7 +212,7 @@ export class Player extends React.Component {
                 this.props.windowHeight -
                 StateVisualization.getExpectedHeight(windowWidth, windowHeight) -
                 approximateSliderAndControlsHeight;
-            innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight;
+            innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight - 15 /* IDK why 15 */;
             theoryWidth = Math.max(0.3 * windowWidth, MIN_THEORY_WIDTH);
             codeVisWidth = this.props.windowWidth - approximateHorizontalPaddings - theoryWidth;
         }

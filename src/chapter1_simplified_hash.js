@@ -294,7 +294,7 @@ export const SimplifiedInsertStateVisualization = TetrisFactory([
             {selection1color: COLOR_FOR_READ_OPS},
         ],
     ],
-    [HashBoxesComponent, [{labels: ['new_list']}, 'newList', 'newListIdx', undefined, {boxFontSizeOverride: 16}]],
+    [HashBoxesComponent, [{labels: ['new_list']}, 'newList', 'newListIdx', undefined]],
 ]);
 
 export const SimplifiedInsertBrokenStateVisualization = TetrisFactory([
@@ -308,7 +308,7 @@ export const SimplifiedInsertBrokenStateVisualization = TetrisFactory([
             {selection1color: COLOR_FOR_READ_OPS},
         ],
     ],
-    [HashBoxesBrokenComponent, [{labels: ['new_list']}, 'newListWithReplacements', 'newListIdx']],
+    [HashBoxesBrokenComponent, [{labels: ['new_list']}, 'newListWithReplacements', 'newListIdx', undefined]],
 ]);
 
 export const SIMPLIFIED_SEARCH_CODE = [

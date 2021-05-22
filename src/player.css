@@ -92,7 +92,6 @@ a.player-title:hover {
     margin-left: 20px;
     min-width: 200px;
     margin-right: 2px;
-    padding-bottom: 15px;
 }
 
 .player-theory-border-wrapper {
@@ -102,6 +101,7 @@ a.player-title:hover {
 .player-theory-inner {
     padding-left: 10px;
     padding-right: 8px;
+    padding-bottom: 15px;
 }
 
 .player-theory h1 {
