@@ -1984,7 +1984,7 @@ export class HashBoxesComponent extends React.PureComponent {
 }
 
 export class HashBoxesBrokenComponent extends React.PureComponent {
-    static MAX_BOXES = 4;
+    static MAX_BOXES = 5;
 
     static height(boxSize) {
         return (HashBoxesBrokenComponent.MAX_BOXES - 0.5) * boxSize;
@@ -2016,7 +2016,7 @@ export class HashBoxesBrokenComponent extends React.PureComponent {
                     keys[i],
                     {
                         value: subValue,
-                        yRel: 0.7 * (i > 0 ? 1 : 0) + (1 / 3) * 2 * i,
+                        yRel: 0.7 * (i > 0 ? 1 : 0) + i,
                         extraStyleWhenAdding: {opacity: 1.0 / Math.pow(2.5, i)},
                         removedOffset: i === 0 ? undefined : 0,
                         createdOffset: i === 0 ? undefined : 0,
