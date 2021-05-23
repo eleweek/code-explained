@@ -236,6 +236,7 @@ export class Player extends React.Component {
 
         let codeHeight, innerTheoryHeight, theoryWidth, codeVisWidth;
         const approximateSliderAndControlsHeight = 51;
+        const adjustTheoryTop = 5;
         const approximateHorizontalPaddings = 24;
         const MIN_THEORY_WIDTH = 300;
         if (windowHeight) {
@@ -247,6 +248,8 @@ export class Player extends React.Component {
             theoryWidth = Math.max(0.3 * windowWidth, MIN_THEORY_WIDTH);
             codeVisWidth = this.props.windowWidth - approximateHorizontalPaddings - theoryWidth;
         }
+
+        const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
 
         console.log('Inner theory height', innerTheoryHeight);
 
@@ -345,7 +348,17 @@ export class Player extends React.Component {
                         </div>
                     </div>
                     {this.state.showingTheory && (
-                        <div className="player-theory" style={{width: theoryWidth, minWidth: MIN_THEORY_WIDTH}}>
+                        <div
+                            className="player-theory"
+                            style={{
+                                position: 'absolute',
+                                background: 'white',
+                                zIndex: 1,
+                                right: 1,
+                                width: theoryWidth,
+                                minWidth: MIN_THEORY_WIDTH,
+                            }}
+                        >
                             <div className="player-theory-border-wrapper">
                                 <SmoothScrollbar alwaysShowTracks={true}>
                                     <div className="player-theory-inner" style={{height: innerTheoryHeight}}>
