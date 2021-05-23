@@ -5,6 +5,18 @@
     height: 35px;
 }
 
+.player-header {
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.player-main {
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 a.player-title {
     font-weight: 700;
     margin-left: 10px;

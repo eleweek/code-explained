@@ -22,6 +22,8 @@ export class Player extends React.Component {
     SLIDER_AUTOPLAY_UPDATE_MS = 50;
     SLIDER_AUTOPLAY_BASE_MS = 750;
 
+    MAX_WIDTH = 1300;
+
     constructor(props) {
         super();
 
@@ -227,6 +229,7 @@ export class Player extends React.Component {
         const StateVisualization = this.props.stateVisualization;
         const {windowHeight, windowWidth} = this.props;
         console.log('Player window size', windowHeight, windowWidth);
+        const totalWidth = Math.max(this.MAX_WIDTH, windowWidth);
 
         const time = this.state.time;
 
@@ -242,11 +245,11 @@ export class Player extends React.Component {
         if (windowHeight) {
             codeHeight =
                 this.props.windowHeight -
-                StateVisualization.getExpectedHeight(windowWidth, windowHeight) -
+                StateVisualization.getExpectedHeight(this.MAX_WIDTH, windowHeight) -
                 approximateSliderAndControlsHeight;
             innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight - 15 /* IDK why 15 */;
-            theoryWidth = Math.max(0.3 * windowWidth, MIN_THEORY_WIDTH);
-            codeVisWidth = this.props.windowWidth - approximateHorizontalPaddings - theoryWidth;
+            theoryWidth = Math.max(0.3 * this.MAX_WIDTH, MIN_THEORY_WIDTH);
+            codeVisWidth = this.MAX_WIDTH - approximateHorizontalPaddings - theoryWidth;
         }
 
         const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
