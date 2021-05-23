@@ -250,10 +250,10 @@ export class Player extends React.Component {
                 approximateSliderAndControlsHeight;
             innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight - 15 /* IDK why 15 */;
             theoryWidth = Math.max(0.3 * this.MAX_WIDTH, MIN_THEORY_WIDTH);
-            codeVisWidth = this.MAX_WIDTH - approximateHorizontalPaddings - theoryWidth;
+            codeVisWidth = this.MAX_WIDTH - approximateHorizontalPaddings;
         }
 
-        const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
+        // const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
 
         console.log('Inner theory height', innerTheoryHeight);
 
