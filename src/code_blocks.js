@@ -1258,7 +1258,7 @@ export class Tetris extends React.PureComponent {
 
     render() {
         const props = this.props;
-        console.log('PROPS', this.props);
+        console.log('Tetris render with', this.props);
         let elems = [];
         let labels = [];
         let labelsEnabled = false;
@@ -1349,7 +1349,7 @@ export class Tetris extends React.PureComponent {
     }
 }
 
-export class CodeBlockWithActiveLineAndAnnotations extends React.Component {
+export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
     constructor() {
         super();
         this.ssRef = React.createRef();

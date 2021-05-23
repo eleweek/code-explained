@@ -18,8 +18,9 @@ import {doubleRAF, isDefinedSmallBoxScreen} from './util';
 import _ from 'lodash';
 
 export class Player extends React.Component {
-    AUTOPLAY_TIMEOUT = 1200;
     SLIDER_MULTIPLIER = 1000;
+    SLIDER_AUTOPLAY_UPDATE_MS = 50;
+    SLIDER_AUTOPLAY_BASE_MS = 750;
 
     constructor(props) {
         super();
@@ -60,10 +61,10 @@ export class Player extends React.Component {
         this.handleTimeChange(sliderTime);
     };
 
-    handleTimeChange = (value, autoPlaying = false) => {
-        const sliderTime = value;
+    handleTimeChange = (sliderTime, autoPlaying = false, onStateChange) => {
+        console.log('handleTimeChange', sliderTime, autoPlaying);
         const time = Math.round(sliderTime);
-        this.setState(state => ({time, sliderTime, autoPlaying}));
+        this.setState(() => ({time, sliderTime, autoPlaying}), onStateChange);
         // this.props.handleTimeChange(value);
     };
 
@@ -83,36 +84,40 @@ export class Player extends React.Component {
         }
     };
 
-    getAutoplayTimeout = speed => {
-        return this.AUTOPLAY_TIMEOUT;
+    singleAutoPlayIteration = () => {
+        console.log('autoplay iteration', this.state);
+        this.timeoutId = setTimeout(this.autoPlay, this.SLIDER_AUTOPLAY_UPDATE_MS);
     };
 
-    autoPlay = (fromNextStep = true) => {
-        if (this.state.time < this.maxTime()) {
-            let newTime = this.state.time + (fromNextStep ? 1 : 0);
-            if (newTime < this.maxTime()) {
+    autoPlay = () => {
+        if (this.state.sliderTime < this.maxTime()) {
+            const delta =
+                (1.0 / this.SLIDER_AUTOPLAY_BASE_MS) *
+                (performance.now() - (this.lastTimeChange ? this.lastTimeChange : performance.now()));
+            console.log('autoPlay', this.state.time, delta);
+            let newSliderTime = Math.min(this.maxTime(), this.state.sliderTime + delta);
+            if (newSliderTime < this.maxTime()) {
                 if (this.timeoutId) {
                     clearTimeout(this.timeoutId);
                 }
-                this.timeoutId = setTimeout(this.autoPlay, this.getAutoplayTimeout());
-                this.timeoutStarted = this.unixtimestamp();
+                this.lastTimeChange = performance.now();
+                this.handleTimeChange(newSliderTime, true, this.singleAutoPlayIteration);
             } else {
-                this.timeoutId = null;
+                this.resetTimer();
+                this.handleTimeChange(newSliderTime, false);
             }
-            this.handleTimeChange(newTime, newTime < this.maxTime());
         }
     };
 
     repeatPlay = () => {
         this.handleTimeChange(0, true);
-        this.timeoutId = setTimeout(this.autoPlay, this.getAutoplayTimeout());
-        this.timeoutStarted = this.unixtimestamp();
+        this.timeoutId = setTimeout(this.autoPlay, this.SLIDER_AUTOPLAY_UPDATE_MS);
     };
 
-    forceAutoPlay = fromNextStep => {
+    forceAutoPlay = () => {
         console.log('autoplay');
         if (this.state.time < this.maxTime()) {
-            this.autoPlay(fromNextStep);
+            this.autoPlay();
         } else {
             this.repeatPlay();
         }
@@ -127,11 +132,15 @@ export class Player extends React.Component {
         }
     };
 
+    resetTimer = () => {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = null;
+        this.lastTimeChange = null;
+    };
+
     stop = () => {
         if (this.timeoutId != null) {
-            clearTimeout(this.timeoutId);
-            this.timeoutId = null;
-            this.timeoutStarted = null;
+            this.resetTimer();
         }
         if (this.state.autoPlaying) {
             this.setState({autoPlaying: false});
@@ -199,7 +208,7 @@ export class Player extends React.Component {
             } else if (isPrev) {
                 this.prevStep();
             } else if (isSpace) {
-                this.autoPlay();
+                this.toggleAutoPlay();
             }
         }
     };
