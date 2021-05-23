@@ -422,7 +422,7 @@ export function formatHashResize(bp, prevBp) {
             return `Вычисляем индекс начальной ячейки: <code>${bp.idx} == ${bp.hashCode} % ${bp.newKeys.size}</code>`;
         case 'check-skip-empty-dummy':
             if (bp.keys.get(bp.oldIdx) === null) {
-                return `Текущяя ячейка пуста`;
+                return `Текущая ячейка пуста`;
             } else if (bp.keys.get(bp.oldIdx) === DUMMY) {
                 return `Текущая ячейка содержит <code>DUMMY</code>-плейсхолдер`;
             } else {

@@ -592,7 +592,6 @@ class BaseBoxesComponent extends React.PureComponent {
         const boxGeometry = nextProps.boxGeometry;
 
         const boxFontSizeOverride = nextProps.boxFontSizeOverride;
-        console.log('BOX FONT SIZE OVERRIDE', boxFontSizeOverride, nextProps);
 
         const actualGeometry = {...boxGeometry};
         if (boxFontSizeOverride) {
@@ -1352,7 +1351,11 @@ export class Tetris extends React.PureComponent {
 export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
     constructor() {
         super();
+        this.state = {
+            mouseHighlightLine: null,
+        };
         this.ssRef = React.createRef();
+        this.mouseOverHandlers = [];
     }
 
     _highlightLines = memoizeOne(code => {
@@ -1373,8 +1376,6 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
         const code = this.props.code;
         const hlLines = this._highlightLines(code);
 
-        const lineHeight = this.props.fontSize + this.props.verticalPadding;
-
         let linesCode = [];
         let linesExplanation = [];
 
@@ -1386,9 +1387,9 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
             let isCurrentLineHighlighted = bpPoint === activeBp.point;
             isAnyLineHighlighted |= isCurrentLineHighlighted;
 
+            let desc = null;
             if (bpPoint in visibleBreakpoints) {
                 const {bp, prevBp} = visibleBreakpoints[bpPoint];
-                let desc = null;
                 if (typeof this.props.formatBpDesc === 'function') {
                     desc = this.props.formatBpDesc(bp, prevBp);
                 } else {
@@ -1401,10 +1402,8 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                 if (desc == null) {
                     throw new Error('Unknown bp type: ' + bpPoint);
                 }
-
                 explanation = (
                     <span
-                        style={{fontSize: this.props.fontSize}}
                         key="explanation"
                         className="code-explanation"
                         dangerouslySetInnerHTML={{__html: `${desc}`}}
@@ -1417,15 +1416,28 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
             let formattedLine = (
                 <pre className="code-line-container" key="pre">
                     <code>
-                        <span style={{fontSize: this.props.fontSize}} dangerouslySetInnerHTML={{__html: hlCodeHtml}} />
+                        <span dangerouslySetInnerHTML={{__html: hlCodeHtml}} />
                     </code>
                 </pre>
             );
+
+            if (i >= this.mouseOverHandlers.length) {
+                this.mouseOverHandlers.push(() => this.setState({mouseHighlightLine: i}));
+            }
+
+            const mouseHighlightClass =
+                !isCurrentLineHighlighted && this.state.mouseHighlightLine === i && 'mouse-highlight-line';
+
             linesCode.push(
                 <div
-                    className={classNames('code-line', isCurrentLineHighlighted && 'current-line-highlight')}
-                    style={{height: lineHeight}}
+                    className={classNames(
+                        'code-line',
+                        isCurrentLineHighlighted && 'current-line-highlight',
+                        mouseHighlightClass
+                    )}
                     key={`code-line-${i}`}
+                    onMouseOver={this.mouseOverHandlers[i]}
+                    style={{height: this.props.fontSize * 1.2}}
                 >
                     {formattedLine}
                 </div>
@@ -1434,15 +1446,20 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                 <div
                     className={classNames(
                         'code-line-explanation',
-                        isCurrentLineHighlighted && 'current-line-highlight'
+                        isCurrentLineHighlighted && 'current-line-highlight',
+                        mouseHighlightClass
                     )}
                     key={`code-line-explanation-${i}`}
-                    style={{height: lineHeight, paddingLeft: this.props.annotationsPadding}}
+                    onMouseOver={this.mouseOverHandlers[i]}
+                    style={{
+                        paddingLeft: this.props.annotationsPadding,
+                        height: this.props.fontSize * 1.2,
+                        fontSize: this.props.fontSize,
+                    }}
                 >
                     {explanation}
                 </div>
             );
-            console.log('highlight', linesCode, linesExplanation);
         }
         if (!isAnyLineHighlighted) {
             throw new Error(`No line found corresponding to "${activeBp.point}`);
@@ -1507,7 +1524,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                     }}
                     className="code-block-with-annotations fix-animation"
                 >
-                    <div className="code-block-with-annotations-inner">
+                    <div className="code-block-with-annotations-inner" style={{fontSize: this.props.fontSize}}>
                         <div className="code-block-with-annotations-code">{linesCode}</div>
                         <div className="code-block-with-annotations-expalanations">{linesExplanation}</div>
                     </div>
@@ -1855,7 +1872,6 @@ export class VisualizedCode extends React.Component {
         const smallerFont = tallScreen || serverSide;
 
         let bp = this.props.breakpoints[this.state.time];
-        console.log('VC time', this.state.time, bp);
         const StateVisualization = this.props.stateVisualization;
 
         let codeHeight;
@@ -1880,7 +1896,6 @@ export class VisualizedCode extends React.Component {
                 ? this.props.breakpoints.length - 1
                 : Math.min(this.state.time, this.props.breakpoints.length - 1)
             : this.state.time;
-        console.log('Time time', time);
 
         return (
             <MyErrorBoundary>
@@ -1942,7 +1957,6 @@ export class ForeverAnimation extends React.Component {
 
     render() {
         let bp = this.props.breakpoints[this.props.time];
-        console.log('BP', this.props.breakpoints, this.props.time, bp);
 
         const windowWidth = this.props.windowWidth;
         const windowHeight = this.props.windowHeight;
