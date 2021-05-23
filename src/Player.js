@@ -25,11 +25,12 @@ export class Player extends React.Component {
     MAX_WIDTH = 1300;
 
     constructor(props) {
-        super();
+        super(props);
 
+        const time = props.breakpoints.length - 1;
         this.state = {
-            time: 0,
-            sliderTime: 0,
+            time: time,
+            sliderTime: time,
             autoPlaying: false,
             showingTheory: false,
             speed: 1,
