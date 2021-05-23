@@ -256,8 +256,12 @@ div.hash-example-instance {
     width: 100%;
 }
 
+.code-block-with-annotations-code {
+    width: 50%;
+}
+
 .code-block-with-annotations-expalanations {
-    width: 100%;
+    width: 50%;
 }
 
 .code-line,
