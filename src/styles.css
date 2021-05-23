@@ -10,6 +10,10 @@
     }
 }
 
+body #root {
+    color: black;
+}
+
 .app-container,
 .footer-container {
     padding-right: 30px;
