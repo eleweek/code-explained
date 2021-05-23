@@ -1421,9 +1421,8 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.Component {
             );
             lines.push(
                 <div
-                    className="line-with-annotation inline-block"
+                    className={classNames('line-with-annotation', isCurrentLineHighlighted && 'current-line-highlight')}
                     key={`line-${i}`}
-                    className={isCurrentLineHighlighted ? 'current-line-highlight' : undefined}
                 >
                     {formattedLine}
                     {explanation}

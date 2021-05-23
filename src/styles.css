@@ -257,7 +257,8 @@ pre.code-line-container {
     display: inline;
 }
 
-.current-line-highlight {
+.line-with-annotation.current-line-highlight,
+.line-with-annotation.current-line-highlight:hover {
     background-color: rgba(252, 233, 168);
 }
 
