@@ -236,21 +236,18 @@ export class Player extends React.Component {
 
         const bp = this.props.breakpoints[time];
 
-        const smallerFont = false;
-
         let codeHeight, innerTheoryHeight, theoryWidth, codeVisWidth;
         const approximateSliderAndControlsHeight = 51;
         const adjustTheoryTop = 5;
         const approximateHorizontalPaddings = 24;
         const MIN_THEORY_WIDTH = 300;
         if (windowHeight) {
-            codeHeight =
-                this.props.windowHeight -
-                StateVisualization.getExpectedHeight(this.MAX_WIDTH, windowHeight) -
-                approximateSliderAndControlsHeight;
+            const expectedVisHeight = 1.1 * StateVisualization.getExpectedHeight(totalWidth, windowHeight);
+            codeHeight = this.props.windowHeight - expectedVisHeight - approximateSliderAndControlsHeight;
+            console.log('Expected vis height', expectedVisHeight);
             innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight - 15 /* IDK why 15 */;
-            theoryWidth = Math.max(0.3 * this.MAX_WIDTH, MIN_THEORY_WIDTH);
-            codeVisWidth = this.MAX_WIDTH - approximateHorizontalPaddings;
+            theoryWidth = Math.max(0.3 * totalWidth, MIN_THEORY_WIDTH);
+            codeVisWidth = totalWidth - approximateHorizontalPaddings;
         }
 
         // const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;

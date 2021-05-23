@@ -1231,7 +1231,9 @@ export class Tetris extends React.PureComponent {
     static _getExpectedHeight(windowWidth, windowHeight, lines, fixedGeometry) {
         // TODO: use linesData.marginBottom in computation
         const {boxGeometry} = fixedGeometry || selectGeometry(windowWidth, windowHeight);
+        const hackyPaddingSize = boxGeometry.boxSize * 0.75;
         return (
+            hackyPaddingSize +
             this.VIS_MARGIN * (lines.length - 1) +
             _.sum(
                 lines.map(
