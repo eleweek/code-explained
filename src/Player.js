@@ -168,12 +168,13 @@ export class Player extends React.Component {
             track.classList.add('slider-transition');
             handle.classList.add('slider-transition');
         }
+        this._transitionHackStarted = performance.now();
     };
 
     removeHackTransition = _.debounce(() => {
         const track = document.getElementsByClassName('rc-slider-track')[0];
         const handle = document.getElementsByClassName('rc-slider-handle')[0];
-        if (track && handle) {
+        if (track && handle && performance.now() - this._transitionHackStarted > 150) {
             track.classList.remove('slider-transition');
             handle.classList.remove('slider-transition');
         }
