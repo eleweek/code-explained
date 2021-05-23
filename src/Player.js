@@ -306,16 +306,16 @@ export class Player extends React.Component {
                         handleStyle={{
                             height: 10,
                             width: 10,
-                            marginTop: -3.5,
+                            marginTop: -4.5,
                             backgroundColor: '#416287',
                             border: 'none',
                         }}
                         railStyle={{
-                            height: 3,
+                            height: 1,
                             backgroundColor: 'rgba(157, 187, 220, 0.5)',
                         }}
                         trackStyle={{
-                            height: 3,
+                            height: 1,
                             backgroundColor: '#416287',
                         }}
                     />
