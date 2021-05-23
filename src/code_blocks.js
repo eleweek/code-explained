@@ -1420,16 +1420,15 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.Component {
                 </pre>
             );
             lines.push(
-                <span
+                <div
                     className="line-with-annotation inline-block"
                     key={`line-${i}`}
                     className={isCurrentLineHighlighted ? 'current-line-highlight' : undefined}
                 >
                     {formattedLine}
                     {explanation}
-                </span>
+                </div>
             );
-            lines.push(<br key={`br-${i}`} />);
         }
         if (!isAnyLineHighlighted) {
             throw new Error(`No line found corresponding to "${activeBp.point}`);
