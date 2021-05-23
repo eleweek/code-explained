@@ -70,7 +70,9 @@ function logViewportStats() {
 function Footer() {
     return (
         <footer>
-            <a href="https://bureau.ru/school/designers/12/">Сделано в 2021 году в Школе Бюро Горбунова</a>
+            <a className="link" href="https://bureau.ru/school/designers/12/">
+                Сделано в 2021 году в Школе Бюро Горбунова
+            </a>
         </footer>
     );
 }
