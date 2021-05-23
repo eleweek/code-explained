@@ -211,6 +211,8 @@ export const HASH_SEARCH_CODE = [
 
 export function formatHashRemoveSearch(bp, prevBp) {
     switch (bp.point) {
+        case 'start-execution':
+            return `${bp.fmtIsRemove ? 'Удаляем' : 'Ищем'} ключ: <code>${bp.key}</code>`;
         case 'compute-hash':
             return `Вычисляем хеш-код: <code>${bp.hashCode}</code>`;
         case 'compute-idx':
@@ -285,9 +287,11 @@ export const HASH_REMOVE_CODE = [
 
 class HashRemoveOrSearch extends HashBreakpointFunction {
     run(_hashCodes, _keys, _key, isRemoveMode) {
+        this.fmtIsRemove = isRemoveMode;
         this.hashCodes = new List(_hashCodes);
         this.keys = new List(_keys);
         this.key = _key;
+        this.addBP('start-execution');
 
         this.fmtCollisionCount = 0;
 
@@ -689,8 +693,8 @@ export class Chapter2_HashTableFunctions extends ChapterComponent {
 
         this.state = {
             array: ['uname', 'mv', 1, 'time', -6, 'ps', 'mkdir', 'less'],
-            searchedObj: 'uname',
-            objToRemove: 'mv',
+            searchedObj: 'less',
+            objToRemove: 1,
         };
     }
 
