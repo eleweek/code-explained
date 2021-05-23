@@ -170,7 +170,7 @@ div.hash-example-instance {
 }
 
 .active-box-selection {
-    background: rgba(252, 233, 168, 0.85);
+    background: rgba(252, 233, 168);
     width: 40px;
     height: 40px;
     z-index: 2;
@@ -258,7 +258,7 @@ pre.code-line-container {
 }
 
 .current-line-highlight {
-    background-color: rgba(252, 233, 168, 0.85);
+    background-color: rgba(252, 233, 168);
 }
 
 .cross-fade-leave {
