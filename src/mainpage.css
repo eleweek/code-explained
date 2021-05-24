@@ -169,14 +169,14 @@
     }
 
     .frontpage h1 {
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 400;
 
         line-height: 1.2;
     }
 
     .frontpage .section {
-        margin-top: 15px;
+        margin-top: 45px;
     }
 
     .frontpage .panes-container {
@@ -199,19 +199,38 @@
         margin-top: 6px;
         margin-left: 10px;
         font-weight: 100;
-        font-size: 20px;
+        font-size: 26px;
+    }
+
+    .frontpage .hash-collection {
+        height: 300px;
     }
 
     .frontpage .hash-collection-top {
-        height: 60px;
+        width: 100%;
+        height: 50%;
+        flex-direction: column;
     }
 
     .frontpage .hash-collection-bottom {
-        height: 60px;
+        width: 100%;
+        height: 50%;
+        flex-direction: column;
+    }
+
+    .frontpage .hash-collection-bottom > *,
+    .frontpage .hash-collection-top > * {
+        height: 50%;
+        width: 100%;
     }
 
     .frontpage .simplified-hash-collection {
-        height: 125px;
+        height: 280px;
+        flex-direction: column;
+    }
+
+    .frontpage .simplified-hash-collection > * {
+        width: 100%;
     }
 
     .frontpage .hash-remove {
@@ -223,7 +242,14 @@
     }
 
     .frontpage .simplified-hash-collisions {
-        margin-right: 5px;
+        margin-right: 0px;
+        height: 140px;
+    }
+
+    .frontpage .simplified-hash-search,
+    .frontpage .simplified-hash-create {
+        margin-right: 0px;
+        height: 70px;
     }
 
     .frontpage .hash-create {
