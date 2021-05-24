@@ -457,9 +457,11 @@ blockquote.blockquote {
     text-decoration: underline !important;
 }
 
-.line-with-annotation:hover {
-    background: #e9ecef;
-    width: 100%;
+@media screen and (min-width: 481px) {
+    .line-with-annotation:hover {
+        background: #e9ecef;
+        width: 100%;
+    }
 }
 
 .line-with-annotation {
