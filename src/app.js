@@ -82,6 +82,7 @@ const SIGNIFICANT_HEIGHT_CHANGE = 0;
 export class App extends React.Component {
     constructor() {
         super();
+
         this.state = {
             mounted: false,
             windowWidth: null,
@@ -139,6 +140,9 @@ export class App extends React.Component {
         const {windowWidth, windowHeight} = this.state.mounted ? this.state : {};
         console.log('Window sizes', windowWidth, windowHeight);
 
+        if (!this.state.mounted) {
+            return <div>Loading...</div>;
+        }
         return (
             <Router>
                 <Switch>
