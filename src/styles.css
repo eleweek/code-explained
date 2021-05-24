@@ -465,10 +465,6 @@ blockquote.blockquote {
 }
 
 .line-with-annotation {
-    display: flex;
-    align-items: center;
-    padding-top: 1px;
-    padding-bottom: 1px;
     width: 100%;
 }
 
