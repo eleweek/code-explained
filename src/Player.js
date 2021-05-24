@@ -278,6 +278,7 @@ export class Player extends React.Component {
 
         console.log('mobile header title', mobileHeaderTitle);
 
+        const biggerFont = !isDefinedSmallBoxScreen(windowWidth, windowHeight) || isMobile;
         return (
             <div className="player">
                 <div
@@ -373,7 +374,8 @@ export class Player extends React.Component {
                             time={time}
                             code={this.props.code}
                             overflow={false}
-                            fontSize={!isDefinedSmallBoxScreen(windowWidth, windowHeight) || isMobile ? 14 : 10}
+                            fontSize={14}
+                            lineVerticalPadding={2}
                             breakpoints={this.props.breakpoints}
                             formatBpDesc={this.props.formatBpDesc}
                             withShortExplanation={isMobile}

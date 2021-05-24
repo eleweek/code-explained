@@ -15,6 +15,10 @@ body #root {
     font-family: 'IBM Plex Sans';
 }
 
+pre {
+    font-family: 'IBM Plex Mono';
+}
+
 .app-container,
 .footer-container {
     padding-right: 30px;
@@ -466,6 +470,13 @@ blockquote.blockquote {
 
 .line-with-annotation {
     width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.code-line-container,
+.code-explanation {
+    flex-shrink: 0;
 }
 
 .dynamic-p {
