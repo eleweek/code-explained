@@ -238,7 +238,7 @@ export class Player extends React.Component {
         const StateVisualization = this.props.stateVisualization;
         const {windowHeight, windowWidth} = this.props;
         console.log('Player window size', windowHeight, windowWidth);
-        const totalWidth = Math.max(this.MAX_WIDTH, windowWidth);
+        const totalWidth = Math.min(this.MAX_WIDTH, windowWidth);
 
         const time = this.state.time;
 
@@ -271,7 +271,7 @@ export class Player extends React.Component {
         let playerHeaderStyle, mobileVisWrapperStyle, mobileHeaderTitle;
         if (isMobile) {
             playerHeaderStyle = {position: 'absolute', bottom: 0};
-            mobileVisWrapperStyle = {position: 'absolute', bottom: 76, width: '100%'};
+            mobileVisWrapperStyle = {position: 'absolute', bottom: 80, width: '100%'};
             mobileHeaderTitle = this.props.mobileHeaderTitle || this.props.playerHeaderTitle;
             mobileHeaderTitle = mobileHeaderTitle.charAt(0).toUpperCase() + mobileHeaderTitle.slice(1);
         }
