@@ -241,13 +241,20 @@ export class Player extends React.Component {
         const adjustTheoryTop = 5;
         const approximateHorizontalPaddings = 24;
         const MIN_THEORY_WIDTH = 300;
+        let isMobile = false;
         if (windowHeight) {
             const expectedVisHeight = 1.1 * StateVisualization.getExpectedHeight(totalWidth, windowHeight);
             codeHeight = this.props.windowHeight - expectedVisHeight - approximateSliderAndControlsHeight;
             console.log('Expected vis height', expectedVisHeight);
-            innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight - 15 /* IDK why 15 */;
-            theoryWidth = Math.max(0.3 * totalWidth, MIN_THEORY_WIDTH);
             codeVisWidth = totalWidth - approximateHorizontalPaddings;
+
+            if (windowWidth <= 480) {
+                isMobile = true;
+                theoryWidth = windowWidth - 1;
+            } else {
+                theoryWidth = Math.max(0.3 * totalWidth, MIN_THEORY_WIDTH);
+            }
+            innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight - 15 /* IDK why 15 */;
         }
 
         // const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
@@ -260,10 +267,12 @@ export class Player extends React.Component {
                     <a className="player-title" href="/" onClick={this.navigateHome}>
                         Объясняем
                     </a>
-                    <div className="player-lesson-name">
-                        {'\u00A0'}
-                        {this.props.playerHeaderTitle}
-                    </div>
+                    {!isMobile && (
+                        <div className="player-lesson-name">
+                            {'\u00A0'}
+                            {this.props.playerHeaderTitle}
+                        </div>
+                    )}
                     <div className="player-buttons">
                         <div className="player-button player-play-button">
                             <img src={this.state.autoPlaying ? pauseButton : playArrow} onClick={this.toggleAutoPlay} />
@@ -335,6 +344,7 @@ export class Player extends React.Component {
                             lineHeight={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 1.0 : 1.15}
                             breakpoints={this.props.breakpoints}
                             formatBpDesc={this.props.formatBpDesc}
+                            withShortExplanation={isMobile}
                         />
                         <div className="player-state-vis-wrapper">
                             <StateVisualization

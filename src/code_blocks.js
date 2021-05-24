@@ -1427,7 +1427,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                     key={`line-${i}`}
                 >
                     {formattedLine}
-                    {explanation}
+                    {!this.props.withShortExplanation && explanation}
                 </div>
             );
         }
