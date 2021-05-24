@@ -213,6 +213,11 @@ div.hash-example-instance {
     font-size: 12px !important;
 }*/
 
+.code-block {
+    /*line-height: 1.15;*/
+    margin-bottom: 15px;
+}
+
 .code-block-with-annotations-scrollbar-container .scrollbar-track-y {
     left: 0px !important;
     right: none !important;
@@ -241,6 +246,7 @@ div.hash-example-instance {
 .code-block-with-annotations-inner {
     display: flex;
     flex-direction: row;
+    line-height: 1.15;
     padding-top: 10px;
     padding-right: 10px;
     padding-bottom: 7px;
@@ -263,13 +269,12 @@ div.hash-example-instance {
     display: flex;
     align-items: center;
 
-    overflow: hidden;
-
     width: 100%;
 }
 
 pre.code-line-container {
     margin: 0px;
+    display: inline;
 }
 
 .current-line-highlight,
