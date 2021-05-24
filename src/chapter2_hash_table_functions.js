@@ -453,7 +453,7 @@ export const HashResizeStateVisualization = TetrisFactory([
     [
         HashBoxesComponent,
         [
-            {labels: ['hash_codes'], marginBottom: 10},
+            {labels: ['hash_codes'], marginBottom: 10, maxBoxSizeIsDefault: true},
             'hashCodes',
             'oldIdx',
             undefined,

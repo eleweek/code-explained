@@ -95,7 +95,7 @@ export const SMALLER_BOX_GEOMETRY = {
 };
 
 export const LARGER_BOX_GEOMETRY = {
-    boxGeometry: {boxSize: 60, boxPadding: 1, spacingX: 1, spacingY: 4, fontSize: 16, borderRadius: 10},
+    boxGeometry: {boxSize: 50, boxPadding: 1, spacingX: 1, spacingY: 4, fontSize: 15, borderRadius: 12},
     labelFontSize: 16,
 };
 
@@ -1218,11 +1218,25 @@ export function TetrisFactory(lines, opts) {
     };
 }
 
-function selectGeometry(windowWidth, windowHeight) {
-    if (isDefinedSmallBoxScreen(windowWidth, windowHeight)) {
-        return SMALLER_BOX_GEOMETRY;
-    } else {
+function selectGeometry(windowWidth, windowHeight, lines) {
+    // if (isDefinedSmallBoxScreen(windowWidth, windowHeight)) {
+    //     return SMALLER_BOX_GEOMETRY;
+    // } else {
+    //     return LARGER_BOX_GEOMETRY;
+    // }
+
+    // VERY HACKY
+    let maxBoxSizeIsDefault = false;
+    for (const line of lines) {
+        maxBoxSizeIsDefault = maxBoxSizeIsDefault || lines[1][0].maxBoxSizeIsDefault;
+    }
+
+    if (windowWidth > 1000 && !maxBoxSizeIsDefault) {
+        return LARGER_BOX_GEOMETRY;
+    } else if (windowWidth > 800) {
         return DEFAULT_BOX_GEOMETRY;
+    } else {
+        return SMALLER_BOX_GEOMETRY;
     }
 }
 
@@ -1231,7 +1245,7 @@ export class Tetris extends React.PureComponent {
 
     static _getExpectedHeight(windowWidth, windowHeight, lines, fixedGeometry) {
         // TODO: use linesData.marginBottom in computation
-        const {boxGeometry} = fixedGeometry || selectGeometry(windowWidth, windowHeight);
+        const {boxGeometry} = fixedGeometry || selectGeometry(windowWidth, windowHeight, lines);
         const hackyPaddingSize = boxGeometry.boxSize * 0.75;
         return (
             hackyPaddingSize +
@@ -1265,7 +1279,7 @@ export class Tetris extends React.PureComponent {
         let labels = [];
         let labelsEnabled = false;
         const {boxGeometry, labelFontSize} =
-            this.props.fixedGeometry || selectGeometry(props.windowWidth, props.windowHeight);
+            this.props.fixedGeometry || selectGeometry(props.windowWidth, props.windowHeight, this.props.lines);
         // console.log('selectBoxGeometry', boxGeometry, props.windowWidth, props.windowHeight);
         for (let [i, [Component, [linesData, dataName, idxName, idx2Name, subProps]]] of props.lines.entries()) {
             console.log('array', deepGet(props.bp, dataName));
