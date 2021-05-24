@@ -345,6 +345,7 @@ export class Player extends React.Component {
                         min={0}
                         max={this.maxTime() * this.SLIDER_MULTIPLIER}
                         value={this.state.sliderTime * this.SLIDER_MULTIPLIER}
+                        style={{paddingBottom: 15, paddingTop: 20}}
                         dotStyle={{
                             top: 0,
                             height: 3,
