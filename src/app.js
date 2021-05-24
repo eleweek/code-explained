@@ -349,7 +349,7 @@ const Lesson = withRouter(
             const id = this.props.match.params.id;
             const {windowWidth, windowHeight} = this.props;
             console.log('Lesson', id, LESSONS[id]);
-            return <Player {...LESSONS[id]} windowWidth={windowWidth} windowHeight={windowHeight} />;
+            return <Player {...LESSONS[id]} windowWidth={windowWidth} windowHeight={windowHeight} lessonId={id} />;
         }
     }
 );

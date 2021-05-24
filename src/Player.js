@@ -27,13 +27,13 @@ export class Player extends React.Component {
     constructor(props) {
         super(props);
 
-        const time = props.breakpoints.length - 1;
+        const timeStr = localStorage.getItem(props.lessonId + '_time');
+        const sliderTime = Math.min(+timeStr || 0, this.maxTime());
         this.state = {
-            time: time,
-            sliderTime: time,
+            time: Math.round(sliderTime),
+            sliderTime: sliderTime,
             autoPlaying: false,
             showingTheory: false,
-            speed: 1,
 
             // react router stuff
             navigatingHome: false,
@@ -68,6 +68,10 @@ export class Player extends React.Component {
         console.log('handleTimeChange', sliderTime, autoPlaying);
         const time = Math.round(sliderTime);
         this.setState(() => ({time, sliderTime, autoPlaying}), onStateChange);
+        setTimeout(
+            _.throttle(() => localStorage.setItem(this.props.lessonId + '_time', sliderTime.toString()), 500),
+            0
+        );
         // this.props.handleTimeChange(value);
     };
 
