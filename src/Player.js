@@ -268,9 +268,10 @@ export class Player extends React.Component {
 
         // const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
 
-        let playerHeaderStyle;
+        let playerHeaderStyle, mobileVisWrapperStyle;
         if (isMobile) {
             playerHeaderStyle = {position: 'absolute', bottom: 0};
+            mobileVisWrapperStyle = {position: 'absolute', bottom: 76, width: '100%'};
         }
 
         return (
@@ -279,36 +280,43 @@ export class Player extends React.Component {
                     className={classnames('player-header', !isMobile && 'player-header-desktop')}
                     style={playerHeaderStyle}
                 >
-                    <a className="player-title" href="/" onClick={this.navigateHome}>
-                        Объясняем
-                    </a>
+                    {!this.state.showingTheory && (
+                        <a className="player-title" href="/" onClick={this.navigateHome}>
+                            Объясняем
+                        </a>
+                    )}
                     {!isMobile && (
                         <div className="player-lesson-name">
                             {'\u00A0'}
                             {this.props.playerHeaderTitle}
                         </div>
                     )}
-                    <div
-                        className={classnames(
-                            'player-buttons',
-                            isMobile ? 'player-buttons-mobile' : 'player-buttons-desktop'
-                        )}
-                    >
-                        <div className="player-button player-play-button">
-                            <img src={this.state.autoPlaying ? pauseButton : playArrow} onClick={this.toggleAutoPlay} />
+                    {!this.state.showingTheory && (
+                        <div
+                            className={classnames(
+                                'player-buttons',
+                                isMobile ? 'player-buttons-mobile' : 'player-buttons-desktop'
+                            )}
+                        >
+                            <div className="player-button player-play-button">
+                                <img
+                                    src={this.state.autoPlaying ? pauseButton : playArrow}
+                                    onClick={this.toggleAutoPlay}
+                                />
+                            </div>
+                            <div className="player-button player-prev">
+                                <img src={leftArrow} onClick={this.prevStep} />
+                            </div>
+                            <div className="player-counters">
+                                <span>
+                                    {time + 1}/{maxTime}
+                                </span>
+                            </div>
+                            <div className="player-button player-next">
+                                <img src={rightArrow} onClick={this.nextStep} />
+                            </div>
                         </div>
-                        <div className="player-button player-prev">
-                            <img src={leftArrow} onClick={this.prevStep} />
-                        </div>
-                        <div className="player-counters">
-                            <span>
-                                {time + 1}/{maxTime}
-                            </span>
-                        </div>
-                        <div className="player-button player-next">
-                            <img src={rightArrow} onClick={this.nextStep} />
-                        </div>
-                    </div>
+                    )}
                     {this.props.theory && (
                         <div
                             className={classnames(
@@ -361,13 +369,12 @@ export class Player extends React.Component {
                             time={time}
                             code={this.props.code}
                             overflow={false}
-                            fontSize={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 10 : 14}
-                            lineHeight={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 1.0 : 1.15}
+                            fontSize={!isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 14 : 10}
                             breakpoints={this.props.breakpoints}
                             formatBpDesc={this.props.formatBpDesc}
                             withShortExplanation={isMobile}
                         />
-                        <div className="player-state-vis-wrapper">
+                        <div className="player-state-vis-wrapper" style={mobileVisWrapperStyle}>
                             <StateVisualization
                                 bp={bp}
                                 epoch={this.state.breakpointsUpdatedCounter}

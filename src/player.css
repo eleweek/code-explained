@@ -47,6 +47,15 @@ a.player-title {
     width: calc(100% - 20px) !important;
 }
 
+.mobile-short-explanation {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 7px;
+
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 .player-button {
     display: flex;
     cursor: pointer;

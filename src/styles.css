@@ -258,7 +258,8 @@ pre.code-line-container {
 }
 
 .line-with-annotation.current-line-highlight,
-.line-with-annotation.current-line-highlight:hover {
+.line-with-annotation.current-line-highlight:hover,
+.mobile-short-explanation {
     background-color: rgba(252, 233, 168);
 }
 

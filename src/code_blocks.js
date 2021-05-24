@@ -1377,6 +1377,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
         let lines = [];
 
         let isAnyLineHighlighted = false;
+        let highlightedExplanationContent;
         for (let i = 0; i < code.length; ++i) {
             const bpPoint = code[i][1];
 
@@ -1409,6 +1410,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                             dangerouslySetInnerHTML={{__html: `\u00A0\u00A0\u00A0\u00A0\u00A0${desc}`}}
                         />
                     );
+                    highlightedExplanationContent = desc;
                 }
             }
 
@@ -1435,7 +1437,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
             throw new Error(`No line found corresponding to "${activeBp.point}`);
         }
 
-        return lines;
+        return {lines, highlightedExplanationContent};
     }
 
     getVisibleBreakpoints(activeBp) {
@@ -1479,25 +1481,36 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
         let activeBp = this.props.breakpoints[this.props.time];
 
         const visibleBreakpoints = this.getVisibleBreakpoints(activeBp);
-        const lines = this.getCodeWithExplanationHtmlLines(visibleBreakpoints, activeBp);
+        const {lines, highlightedExplanationContent} = this.getCodeWithExplanationHtmlLines(
+            visibleBreakpoints,
+            activeBp
+        );
 
         return (
-            <SmoothScrollbar
-                ref={this.ssRef}
-                alwaysShowTracks={true}
-                className="code-block-with-annotations-scrollbar-container"
-            >
-                <div
-                    style={{
-                        maxHeight: this.props.height,
-                        lineHeight: this.props.lineHeight,
-                        overflowX: this.props.overflow && 'scroll',
-                    }}
-                    className="code-block-with-annotations fix-animation"
+            <>
+                <SmoothScrollbar
+                    ref={this.ssRef}
+                    alwaysShowTracks={true}
+                    className="code-block-with-annotations-scrollbar-container"
                 >
-                    {lines}
-                </div>
-            </SmoothScrollbar>
+                    <div
+                        style={{
+                            maxHeight: this.props.height,
+                            lineHeight: this.props.lineHeight,
+                            overflowX: this.props.overflow && 'scroll',
+                        }}
+                        className="code-block-with-annotations fix-animation"
+                    >
+                        {lines}
+                    </div>
+                </SmoothScrollbar>
+                {this.props.withShortExplanation && (
+                    <div
+                        className="mobile-short-explanation"
+                        dangerouslySetInnerHTML={{__html: highlightedExplanationContent}}
+                    />
+                )}
+            </>
         );
     }
 
