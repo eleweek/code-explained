@@ -157,14 +157,14 @@
     }
 
     .frontpage .header > .title {
-        font-size: 26px;
+        font-size: 20px;
         line-height: 1.3;
         font-weight: 700;
     }
 
     .frontpage .header > .definition {
         padding-top: 7px;
-        font-size: 9px;
+        font-size: 12px;
         line-height: 1.2;
         margin-left: auto;
     }
@@ -197,9 +197,10 @@
     }
 
     .frontpage .pane h2 {
+        font-weight: 200;
+
         margin-top: 6px;
         margin-left: 10px;
-        font-weight: 100;
         font-size: 26px;
     }
 
@@ -226,7 +227,7 @@
     }
 
     .frontpage .simplified-hash-collection {
-        height: 280px;
+        height: 210px;
         flex-direction: column;
     }
 
@@ -244,7 +245,7 @@
 
     .frontpage .simplified-hash-collisions {
         margin-right: 0px;
-        height: 140px;
+        height: 70px;
     }
 
     .frontpage .simplified-hash-search,
@@ -259,6 +260,6 @@
     }
 
     a.link {
-        font-size: 10px;
+        font-size: 12px;
     }
 }
