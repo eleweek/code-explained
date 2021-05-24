@@ -243,29 +243,13 @@ div.hash-example-instance {
     margin-top: 20px;
 }
 
-.code-block-with-annotations-inner {
-    display: flex;
-    flex-direction: row;
+.code-block-with-annotations {
     line-height: 1.15;
     padding-top: 10px;
     padding-right: 10px;
     padding-bottom: 7px;
     padding-left: 10px;
     white-space: nowrap;
-
-    width: 100%;
-}
-
-.code-block-with-annotations-expalanations {
-    width: 100%;
-}
-
-.code-line,
-.code-line-explanation {
-    display: flex;
-    align-items: center;
-
-    width: 100%;
 }
 
 pre.code-line-container {
@@ -273,8 +257,8 @@ pre.code-line-container {
     display: inline;
 }
 
-.current-line-highlight,
-.current-line-highlight:hover {
+.line-with-annotation.current-line-highlight,
+.line-with-annotation.current-line-highlight:hover {
     background-color: rgba(252, 233, 168);
 }
 
@@ -479,6 +463,8 @@ blockquote.blockquote {
 .line-with-annotation {
     display: flex;
     align-items: center;
+    padding-top: 1px;
+    padding-bottom: 1px;
     width: 100%;
 }
 

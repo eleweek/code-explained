@@ -1374,11 +1374,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
         const t1 = performance.now();
         const code = this.props.code;
         const hlLines = this._highlightLines(code);
-
-        const lineHeight = this.props.fontSize + this.props.verticalPadding;
-
-        let linesCode = [];
-        let linesExplanation = [];
+        let lines = [];
 
         let isAnyLineHighlighted = false;
         for (let i = 0; i < code.length; ++i) {
@@ -1404,14 +1400,16 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                     throw new Error('Unknown bp type: ' + bpPoint);
                 }
 
-                explanation = (
-                    <span
-                        style={{fontSize: this.props.fontSize}}
-                        key="explanation"
-                        className="code-explanation"
-                        dangerouslySetInnerHTML={{__html: `${desc}`}}
-                    />
-                );
+                if (desc) {
+                    explanation = (
+                        <span
+                            style={{fontSize: this.props.fontSize}}
+                            key="explanation"
+                            className="code-explanation"
+                            dangerouslySetInnerHTML={{__html: `\u00A0\u00A0\u00A0\u00A0\u00A0${desc}`}}
+                        />
+                    );
+                }
             }
 
             let hlCodeHtml = hlLines[i];
@@ -1423,34 +1421,21 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                     </code>
                 </pre>
             );
-            linesCode.push(
+            lines.push(
                 <div
-                    className={classNames('code-line', isCurrentLineHighlighted && 'current-line-highlight')}
-                    style={{height: lineHeight}}
-                    key={`code-line-${i}`}
+                    className={classNames('line-with-annotation', isCurrentLineHighlighted && 'current-line-highlight')}
+                    key={`line-${i}`}
                 >
                     {formattedLine}
-                </div>
-            );
-            linesExplanation.push(
-                <div
-                    className={classNames(
-                        'code-line-explanation',
-                        isCurrentLineHighlighted && 'current-line-highlight'
-                    )}
-                    key={`code-line-explanation-${i}`}
-                    style={{height: lineHeight, paddingLeft: this.props.annotationsPadding}}
-                >
                     {explanation}
                 </div>
             );
-            console.log('highlight', linesCode, linesExplanation);
         }
         if (!isAnyLineHighlighted) {
             throw new Error(`No line found corresponding to "${activeBp.point}`);
         }
 
-        return {linesCode, linesExplanation};
+        return lines;
     }
 
     getVisibleBreakpoints(activeBp) {
@@ -1494,7 +1479,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
         let activeBp = this.props.breakpoints[this.props.time];
 
         const visibleBreakpoints = this.getVisibleBreakpoints(activeBp);
-        const {linesCode, linesExplanation} = this.getCodeWithExplanationHtmlLines(visibleBreakpoints, activeBp);
+        const lines = this.getCodeWithExplanationHtmlLines(visibleBreakpoints, activeBp);
 
         return (
             <SmoothScrollbar
@@ -1505,14 +1490,12 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                 <div
                     style={{
                         maxHeight: this.props.height,
+                        lineHeight: this.props.lineHeight,
                         overflowX: this.props.overflow && 'scroll',
                     }}
                     className="code-block-with-annotations fix-animation"
                 >
-                    <div className="code-block-with-annotations-inner">
-                        <div className="code-block-with-annotations-code">{linesCode}</div>
-                        <div className="code-block-with-annotations-expalanations">{linesExplanation}</div>
-                    </div>
+                    {lines}
                 </div>
             </SmoothScrollbar>
         );
