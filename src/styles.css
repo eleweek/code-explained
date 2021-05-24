@@ -12,6 +12,7 @@
 
 body #root {
     color: black;
+    font-family: 'IBM Plex Sans';
 }
 
 .app-container,
