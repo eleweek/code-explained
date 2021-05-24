@@ -275,12 +275,13 @@ export class Player extends React.Component {
 
         // const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
 
-        let playerHeaderStyle, mobileVisWrapperStyle, mobileHeaderTitle;
+        let playerHeaderStyle, mobileVisWrapperStyle, mobileHeaderTitle, mobileSliderStyle;
         if (isMobile) {
             playerHeaderStyle = {position: 'absolute', bottom: 0};
             mobileVisWrapperStyle = {position: 'absolute', bottom: 80, width: '100%'};
             mobileHeaderTitle = this.props.mobileHeaderTitle || this.props.playerHeaderTitle;
             mobileHeaderTitle = mobileHeaderTitle.charAt(0).toUpperCase() + mobileHeaderTitle.slice(1);
+            mobileSliderStyle = {paddingBottom: 15, paddingTop: 20};
         }
 
         console.log('mobile header title', mobileHeaderTitle);
@@ -345,7 +346,7 @@ export class Player extends React.Component {
                         min={0}
                         max={this.maxTime() * this.SLIDER_MULTIPLIER}
                         value={this.state.sliderTime * this.SLIDER_MULTIPLIER}
-                        style={{paddingBottom: 15, paddingTop: 20}}
+                        style={mobileSliderStyle}
                         dotStyle={{
                             top: 0,
                             height: 3,

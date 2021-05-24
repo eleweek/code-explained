@@ -373,8 +373,8 @@ export class MainPage extends React.Component {
                 <div className="header">
                     <div className="title">Объясняем код</div>
                     <div className="definition">
-                        Интерактивные визуализации
-                        <br /> с комментариями к коду
+                        <div className="definition-1">Интерактивные визуализации</div>
+                        <div className="definition-2">с комментариями к коду</div>
                     </div>
                 </div>
                 {/* <div className="sorts">
