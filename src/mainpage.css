@@ -54,6 +54,12 @@
     text-decoration: none !important;
 
     color: white !important;
+
+    transition: transform 0.3s ease;
+}
+
+.frontpage .pane:hover {
+    transform: scale(1.01);
 }
 
 .frontpage .pane h2 {
