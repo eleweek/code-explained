@@ -22,7 +22,7 @@
 .frontpage .header > .definition {
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
+    padding-top: 14px;
     font-size: 21px;
     line-height: 1.2;
     margin-left: auto;
