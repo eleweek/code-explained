@@ -592,7 +592,6 @@ class BaseBoxesComponent extends React.PureComponent {
         const boxGeometry = nextProps.boxGeometry;
 
         const boxFontSizeOverride = nextProps.boxFontSizeOverride;
-        console.log('BOX FONT SIZE OVERRIDE', boxFontSizeOverride, nextProps);
 
         const actualGeometry = {...boxGeometry};
         if (boxFontSizeOverride) {
@@ -1274,7 +1273,6 @@ export class Tetris extends React.PureComponent {
 
     render() {
         const props = this.props;
-        console.log('Tetris render with', this.props);
         let elems = [];
         let labels = [];
         let labelsEnabled = false;
@@ -1282,7 +1280,6 @@ export class Tetris extends React.PureComponent {
             this.props.fixedGeometry || selectGeometry(props.windowWidth, props.windowHeight, this.props.lines);
         // console.log('selectBoxGeometry', boxGeometry, props.windowWidth, props.windowHeight);
         for (let [i, [Component, [linesData, dataName, idxName, idx2Name, subProps]]] of props.lines.entries()) {
-            console.log('array', deepGet(props.bp, dataName));
             const component = (
                 <Component
                     onExpectedWidthChange={this.updateScrollbar}
@@ -1896,7 +1893,6 @@ export class VisualizedCode extends React.Component {
                 ? this.props.breakpoints.length - 1
                 : Math.min(this.state.time, this.props.breakpoints.length - 1)
             : this.state.time;
-        console.log('Time time', time);
 
         return (
             <MyErrorBoundary>
@@ -1958,7 +1954,6 @@ export class ForeverAnimation extends React.Component {
 
     render() {
         let bp = this.props.breakpoints[this.props.time];
-        console.log('BP', this.props.breakpoints, this.props.time, bp);
 
         const windowWidth = this.props.windowWidth;
         const windowHeight = this.props.windowHeight;

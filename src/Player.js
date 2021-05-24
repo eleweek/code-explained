@@ -19,7 +19,7 @@ import _ from 'lodash';
 
 export class Player extends React.Component {
     SLIDER_MULTIPLIER = 1000;
-    SLIDER_AUTOPLAY_UPDATE_MS = 50;
+    SLIDER_AUTOPLAY_UPDATE_MS = 5;
     SLIDER_AUTOPLAY_BASE_MS = 750;
 
     MAX_WIDTH = 1300;
