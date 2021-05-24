@@ -217,7 +217,15 @@ export class Player extends React.Component {
     };
 
     toggleTheory = () => {
+        if (!this.state.showingTheory) {
+            this.stop();
+        }
+
         this.setState({showingTheory: !this.state.showingTheory});
+    };
+
+    isMobile = () => {
+        return this.props.windowWidth <= 480;
     };
 
     render() {
@@ -249,7 +257,7 @@ export class Player extends React.Component {
             console.log('Expected vis height', expectedVisHeight);
             codeVisWidth = totalWidth - approximateHorizontalPaddings;
 
-            if (windowWidth <= 480) {
+            if (this.isMobile()) {
                 isMobile = true;
                 theoryWidth = windowWidth - 1;
             } else {
