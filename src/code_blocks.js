@@ -1437,7 +1437,11 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                 <div
                     className={classNames('line-with-annotation', isCurrentLineHighlighted && 'current-line-highlight')}
                     key={`line-${i}`}
-                    style={{paddingTop: this.props.lineVerticalPadding, paddingBottom: this.props.lineVerticalPadding}}
+                    style={{
+                        paddingTop: this.props.lineVerticalPadding,
+                        paddingBottom: this.props.lineVerticalPadding,
+                        lineHeight: 1.15,
+                    }}
                 >
                     {formattedLine}
                     {!this.props.withShortExplanation && explanation}

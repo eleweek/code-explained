@@ -262,6 +262,14 @@ pre.code-line-container {
     display: inline;
 }
 
+.line-with-annotation {
+    background: white;
+}
+
+pre {
+    font-size: 100%;
+}
+
 .line-with-annotation.current-line-highlight,
 .line-with-annotation.current-line-highlight:hover,
 .mobile-short-explanation {
