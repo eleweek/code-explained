@@ -12,11 +12,6 @@
 
 body #root {
     color: black;
-    font-family: 'IBM Plex Sans';
-}
-
-pre {
-    font-size: inherit !important;
 }
 
 .app-container,
@@ -253,8 +248,6 @@ div.hash-example-instance {
     white-space: nowrap;
 
     width: 100%;
-
-    line-height: 1.25;
 }
 
 .code-block-with-annotations-code {
@@ -477,7 +470,7 @@ blockquote.blockquote {
     text-decoration: underline !important;
 }
 
-.mouse-highlight-line {
+.line-with-annotation:hover {
     background: #e9ecef;
     width: 100%;
 }

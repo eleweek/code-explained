@@ -332,9 +332,10 @@ export class Player extends React.Component {
                             code={this.props.code}
                             overflow={false}
                             fontSize={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 10 : 14}
+                            verticalPadding={isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 0.0 : 2.0}
                             breakpoints={this.props.breakpoints}
                             formatBpDesc={this.props.formatBpDesc}
-                            annotationsPadding={10}
+                            annotationsPadding={0}
                         />
                         <div className="player-state-vis-wrapper">
                             <StateVisualization
