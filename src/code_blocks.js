@@ -1493,6 +1493,9 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                     alwaysShowTracks={true}
                     className="code-block-with-annotations-scrollbar-container"
                 >
+                    {this.props.mobileHeaderTitle && (
+                        <div className="mobile-header-title">{this.props.mobileHeaderTitle}</div>
+                    )}
                     <div
                         style={{
                             maxHeight: this.props.height,

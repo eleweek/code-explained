@@ -48,12 +48,24 @@ a.player-title {
 }
 
 .mobile-short-explanation {
+    font-size: 14px;
+
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 7px;
 
     padding-left: 5px;
     padding-right: 5px;
+}
+
+.mobile-header-title {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: -10px;
+
+    font-weight: 700;
+    font-size: 14px;
 }
 
 .player-button {

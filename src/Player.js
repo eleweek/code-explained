@@ -268,11 +268,15 @@ export class Player extends React.Component {
 
         // const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
 
-        let playerHeaderStyle, mobileVisWrapperStyle;
+        let playerHeaderStyle, mobileVisWrapperStyle, mobileHeaderTitle;
         if (isMobile) {
             playerHeaderStyle = {position: 'absolute', bottom: 0};
             mobileVisWrapperStyle = {position: 'absolute', bottom: 76, width: '100%'};
+            mobileHeaderTitle = this.props.mobileHeaderTitle || this.props.playerHeaderTitle;
+            mobileHeaderTitle = mobileHeaderTitle.charAt(0).toUpperCase() + mobileHeaderTitle.slice(1);
         }
+
+        console.log('mobile header title', mobileHeaderTitle);
 
         return (
             <div className="player">
@@ -369,10 +373,11 @@ export class Player extends React.Component {
                             time={time}
                             code={this.props.code}
                             overflow={false}
-                            fontSize={!isDefinedSmallBoxScreen(windowWidth, windowHeight) ? 14 : 10}
+                            fontSize={!isDefinedSmallBoxScreen(windowWidth, windowHeight) || isMobile ? 14 : 10}
                             breakpoints={this.props.breakpoints}
                             formatBpDesc={this.props.formatBpDesc}
                             withShortExplanation={isMobile}
+                            mobileHeaderTitle={mobileHeaderTitle}
                         />
                         <div className="player-state-vis-wrapper" style={mobileVisWrapperStyle}>
                             <StateVisualization
