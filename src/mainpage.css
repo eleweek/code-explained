@@ -147,7 +147,7 @@
     background-color: #e3444a;
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 890px) {
     .frontpage {
         padding-left: 10px;
         padding-right: 10px;

@@ -31,12 +31,6 @@ a.player-title {
     font-family: 'IBM Plex Mono', monospace;
 }
 
-.player-buttons-desktop {
-    position: absolute;
-    transform: translateX(-50%);
-    left: 50%;
-}
-
 .player-buttons-mobile {
     margin-left: 30px;
 }
@@ -177,3 +171,17 @@ a.player-title:hover {
     left: 0px !important;
     right: none !important;
 }*/
+
+@media screen and (min-width: 890px) {
+    .player-buttons-desktop {
+        position: absolute;
+        transform: translateX(-50%);
+        left: 50%;
+    }
+}
+
+@media screen and (max-width: 891px) {
+    .player-buttons-desktop {
+        padding-left: 20px;
+    }
+}
