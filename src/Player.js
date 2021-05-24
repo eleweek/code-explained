@@ -284,7 +284,7 @@ export class Player extends React.Component {
                     className={classnames('player-header', !isMobile && 'player-header-desktop')}
                     style={playerHeaderStyle}
                 >
-                    {!this.state.showingTheory && (
+                    {(!this.state.showingTheory || !isMobile) && (
                         <a className="player-title" href="/" onClick={this.navigateHome}>
                             Объясняем
                         </a>
@@ -295,7 +295,7 @@ export class Player extends React.Component {
                             {this.props.playerHeaderTitle}
                         </div>
                     )}
-                    {!this.state.showingTheory && (
+                    {(!this.state.showingTheory || !isMobile) && (
                         <div
                             className={classnames(
                                 'player-buttons',

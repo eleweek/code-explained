@@ -1228,7 +1228,7 @@ function selectGeometry(windowWidth, windowHeight, lines) {
     // VERY HACKY
     let maxBoxSizeIsDefault = false;
     for (const line of lines) {
-        maxBoxSizeIsDefault = maxBoxSizeIsDefault || lines[1][0].maxBoxSizeIsDefault;
+        maxBoxSizeIsDefault = maxBoxSizeIsDefault || line[1][0].maxBoxSizeIsDefault;
     }
 
     if (windowWidth > 1000 && !maxBoxSizeIsDefault) {
