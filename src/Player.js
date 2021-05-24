@@ -237,6 +237,7 @@ export class Player extends React.Component {
         const bp = this.props.breakpoints[time];
 
         let codeHeight, innerTheoryHeight, theoryWidth, codeVisWidth;
+        const controlsHeight = 35;
         const approximateSliderAndControlsHeight = 51;
         const adjustTheoryTop = 5;
         const approximateHorizontalPaddings = 24;
@@ -259,11 +260,17 @@ export class Player extends React.Component {
 
         // const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
 
-        console.log('Inner theory height', innerTheoryHeight);
+        let playerHeaderStyle;
+        if (isMobile) {
+            playerHeaderStyle = {position: 'absolute', bottom: 0};
+        }
 
         return (
             <div className="player">
-                <div className="player-header">
+                <div
+                    className={classnames('player-header', !isMobile && 'player-header-desktop')}
+                    style={playerHeaderStyle}
+                >
                     <a className="player-title" href="/" onClick={this.navigateHome}>
                         Объясняем
                     </a>
@@ -273,7 +280,12 @@ export class Player extends React.Component {
                             {this.props.playerHeaderTitle}
                         </div>
                     )}
-                    <div className="player-buttons">
+                    <div
+                        className={classnames(
+                            'player-buttons',
+                            isMobile ? 'player-buttons-mobile' : 'player-buttons-desktop'
+                        )}
+                    >
                         <div className="player-button player-play-button">
                             <img src={this.state.autoPlaying ? pauseButton : playArrow} onClick={this.toggleAutoPlay} />
                         </div>
@@ -331,6 +343,7 @@ export class Player extends React.Component {
                             height: 1,
                             backgroundColor: '#416287',
                         }}
+                        className={classnames(isMobile && 'slider-mobile-extra')}
                     />
                 </div>
                 <div className="player-main">

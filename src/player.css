@@ -3,9 +3,10 @@
     display: flex;
     align-items: center;
     height: 35px;
+    width: 100%;
 }
 
-.player-header {
+.player-header-desktop {
     max-width: 1300px;
     margin-left: auto;
     margin-right: auto;
@@ -28,9 +29,22 @@ a.player-title {
     display: flex;
     align-items: center;
     font-family: 'IBM Plex Mono', monospace;
+}
+
+.player-buttons-desktop {
     position: absolute;
-    left: 50%;
     transform: translateX(-50%);
+    left: 50%;
+}
+
+.player-buttons-mobile {
+    margin-left: 30px;
+}
+
+.slider-mobile-extra {
+    position: absolute !important;
+    bottom: 36px !important;
+    width: calc(100% - 20px) !important;
 }
 
 .player-button {
