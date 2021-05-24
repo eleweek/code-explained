@@ -55,11 +55,11 @@
 
     color: white !important;
 
-    transition: transform 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 .frontpage .pane:hover {
-    transform: scale(1.01);
+    opacity: 0.95;
 }
 
 .frontpage .pane h2 {
