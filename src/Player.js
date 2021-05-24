@@ -252,8 +252,8 @@ export class Player extends React.Component {
         const bp = this.props.breakpoints[time];
 
         let codeHeight, innerTheoryHeight, theoryWidth, codeVisWidth;
-        const controlsHeight = 35;
-        const approximateSliderAndControlsHeight = 51;
+        const controlsHeight = isMobile ? 45 : 35;
+        const approximateSliderAndControlsHeight = controlsHeight + 16;
         const adjustTheoryTop = 5;
         const approximateHorizontalPaddings = 24;
         const MIN_THEORY_WIDTH = 300;

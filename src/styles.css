@@ -461,13 +461,6 @@ blockquote.blockquote {
     text-decoration: underline !important;
 }
 
-@media screen and (min-width: 481px) {
-    .line-with-annotation:hover {
-        background: #e9ecef;
-        width: 100%;
-    }
-}
-
 .line-with-annotation {
     width: 100%;
     display: flex;
@@ -511,4 +504,11 @@ footer {
 
 .hash-examples {
     margin-top: 8px;
+}
+
+@media screen and (min-width: 481px) {
+    .line-with-annotation:hover {
+        background: #e9ecef;
+        width: 100%;
+    }
 }

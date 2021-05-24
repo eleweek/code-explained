@@ -44,9 +44,7 @@ a.player-title {
 .mobile-short-explanation {
     font-size: 14px;
 
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 7px;
+    margin-top: 0px;
 
     padding-left: 5px;
     padding-right: 5px;
@@ -183,5 +181,11 @@ a.player-title:hover {
 @media screen and (max-width: 891px) {
     .player-buttons-desktop {
         padding-left: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .player-header {
+        height: 50px;
     }
 }
