@@ -89,6 +89,9 @@ export class Player extends React.Component {
 
     singleAutoPlayIteration = () => {
         console.log('autoplay iteration', this.state);
+        if (!this.state.autoPlaying) {
+            return;
+        }
         this.timeoutId = setTimeout(this.autoPlay, this.SLIDER_AUTOPLAY_UPDATE_MS);
     };
 
@@ -303,22 +306,19 @@ export class Player extends React.Component {
                                 isMobile ? 'player-buttons-mobile' : 'player-buttons-desktop'
                             )}
                         >
-                            <div className="player-button player-play-button">
-                                <img
-                                    src={this.state.autoPlaying ? pauseButton : playArrow}
-                                    onClick={this.toggleAutoPlay}
-                                />
+                            <div className="player-button player-play-button" onClick={this.toggleAutoPlay}>
+                                <img src={this.state.autoPlaying ? pauseButton : playArrow} />
                             </div>
-                            <div className="player-button player-prev">
-                                <img src={leftArrow} onClick={this.prevStep} />
+                            <div className="player-button player-prev" onClick={this.prevStep}>
+                                <img src={leftArrow} />
                             </div>
                             <div className="player-counters">
                                 <span>
                                     {time + 1}/{maxTime}
                                 </span>
                             </div>
-                            <div className="player-button player-next">
-                                <img src={rightArrow} onClick={this.nextStep} />
+                            <div className="player-button player-next" onClick={this.nextStep}>
+                                <img src={rightArrow} />
                             </div>
                         </div>
                     )}
