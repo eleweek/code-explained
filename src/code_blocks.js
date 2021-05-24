@@ -1415,7 +1415,6 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                 if (desc) {
                     explanation = (
                         <span
-                            style={{fontSize: this.props.fontSize}}
                             key="explanation"
                             className="code-explanation"
                             dangerouslySetInnerHTML={{__html: `\u00A0\u00A0\u00A0\u00A0\u00A0${desc}`}}
@@ -1430,7 +1429,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
             let formattedLine = (
                 <pre className="code-line-container" key="pre">
                     <code>
-                        <span style={{fontSize: this.props.fontSize}} dangerouslySetInnerHTML={{__html: hlCodeHtml}} />
+                        <span dangerouslySetInnerHTML={{__html: hlCodeHtml}} />
                     </code>
                 </pre>
             );
@@ -1513,6 +1512,7 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                             maxHeight: this.props.height,
                             lineHeight: this.props.lineHeight,
                             overflowX: this.props.overflow && 'scroll',
+                            fontSize: this.props.fontSize,
                         }}
                         className="code-block-with-annotations fix-animation"
                     >
