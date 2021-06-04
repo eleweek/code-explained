@@ -268,6 +268,7 @@ pre.code-line-container {
 
 pre {
     font-size: 100%;
+    overflow: hidden;
 }
 
 .line-with-annotation.current-line-highlight,
