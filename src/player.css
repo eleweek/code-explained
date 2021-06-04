@@ -165,6 +165,11 @@ a.player-title:hover {
     margin-bottom: 4px;
 }
 
+/* hack to make the last couple of lines not hidden */
+.player-theory-inner > :last-child {
+    padding-bottom: 35px;
+}
+
 /*.player-theory .scrollbar-track-y {
     left: 0px !important;
     right: none !important;
