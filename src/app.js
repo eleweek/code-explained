@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {createBrowserHistory} from 'history';
 import Bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import './mainpage.css';
 import './styles.css';
@@ -7,7 +8,6 @@ import classnames from 'classnames';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter} from 'react-router-dom';
-
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
 import {ForeverAnimation, dummyFormat, TetrisFactory, HashBoxesComponent, LineOfBoxesComponent} from './code_blocks';
@@ -75,6 +75,14 @@ function Footer() {
             </a>
         </footer>
     );
+}
+
+function sendGA(location) {
+    console.log('Calling sendGA');
+    if (typeof window.ga === 'function') {
+        window.ga('set', 'page', location.pathname + location.search);
+        window.ga('send', 'pageview');
+    }
 }
 
 // mainly to prevent addressbar stuff on mobile changing things excessively
@@ -145,6 +153,7 @@ export class App extends React.Component {
         }
         return (
             <Router>
+                <Route path="/" render={sendGA} />
                 <Switch>
                     <Route path="/lesson/:id">
                         <Lesson windowWidth={windowWidth} windowHeight={windowHeight} />
