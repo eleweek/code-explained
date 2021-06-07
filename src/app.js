@@ -79,9 +79,9 @@ function Footer() {
 
 function sendGA(location) {
     console.log('Calling sendGA');
-    if (typeof window.ga === 'function') {
-        window.ga('set', 'page', location.pathname + location.search);
-        window.ga('send', 'pageview');
+    const gtag = window.gtag;
+    if (typeof gtag === 'function') {
+        gtag('event', 'page_view');
     }
 }
 
