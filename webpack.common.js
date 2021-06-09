@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const {RawSource} = require('webpack-sources');
 const {exec} = require('child_process');
 const fs = require('fs');
@@ -46,6 +47,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
         }),
+        new CopyWebpackPlugin([{from: 'src/og/og.png', to: 'og.png'}]),
     ],
     watchOptions: {
         // does not work properly, ssr/mustache/etc is a mess now
