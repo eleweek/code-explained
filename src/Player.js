@@ -206,8 +206,8 @@ export class Player extends React.Component {
         }
 
         const keyCode = event.keyCode;
-        const isNext = keyCode === 38 || keyCode === 39;
-        const isPrev = keyCode === 40 || keyCode === 37;
+        const isNext = keyCode === 40 || keyCode === 39;
+        const isPrev = keyCode === 38 || keyCode === 37;
         const isSpace = keyCode === 32;
 
         if (isNext || isPrev || isSpace) {
