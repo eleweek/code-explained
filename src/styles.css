@@ -170,7 +170,7 @@ div.hash-example-instance {
 
 .box-animated {
     transition-property: opacity, transform;
-    transition-duration: 1.3s;
+    transition-duration: 0.6s;
     transition-timing-function: ease;
 }
 
