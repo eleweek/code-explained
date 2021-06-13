@@ -214,6 +214,15 @@ keys = removeRes.keys;
 
 const resizeRes = chapter2.runResize(hashCodes, keys);
 
+// const GLOBAL_STATE = {
+//     simplifiedHash: /*...*/,
+//     simplifiedKeyToSearch: /* ... */,
+// };
+
+// const inputsToPass = {
+//     inputs:
+// }
+
 const LESSONS = {
     bubble_sort: {
         mainPagePaneHeaderTitle: 'Пузырьком',
@@ -242,7 +251,7 @@ const LESSONS = {
         mainPagePaneClassName: 'simplified-hash-collisions',
         playerHeaderTitle: 'коллизии в хеш-таблицах',
         code: SIMPLIFIED_INSERT_ALL_BROKEN_CODE,
-        breakpoints: siaBrokenRes.bp,
+        getBreakpoints: () => siaBrokenRes.bp,
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertBrokenStateVisualization,
 
@@ -254,7 +263,7 @@ const LESSONS = {
         mainPagePaneClassName: 'simplified-hash-create',
         playerHeaderTitle: 'создание простейшей хеш-таблицы',
         code: SIMPLIFIED_INSERT_ALL_CODE,
-        breakpoints: siaRes.bp,
+        getBreakpoints: () => siaRes.bp,
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertStateVisualization,
 
@@ -266,7 +275,7 @@ const LESSONS = {
         mainPagePaneClassName: 'simplified-hash-search',
         playerHeaderTitle: 'поиск в простейшей хеш-таблице',
         code: SIMPLIFIED_SEARCH_CODE,
-        breakpoints: ssRes.bp,
+        getBreakpoints: () => ssRes.bp,
         formatBpDesc: formatSimplifiedSearchDescription,
         stateVisualization: SimplifiedSearchStateVisualization,
 
@@ -279,7 +288,7 @@ const LESSONS = {
         playerHeaderTitle: 'создание хеш-таблицы',
 
         code: HASH_CREATE_NEW_CODE,
-        breakpoints: newRes.bp,
+        getBreakpoints: () => newRes.bp,
         formatBpDesc: formatHashCreateNewAndInsert,
         stateVisualization: HashCreateNewStateVisualization,
 
@@ -291,7 +300,7 @@ const LESSONS = {
         mainPagePaneClassName: 'hash-search',
         playerHeaderTitle: 'поиск в хеш-таблице',
         code: HASH_SEARCH_CODE,
-        breakpoints: searchRes.bp,
+        getBreakpoints: () => searchRes.bp,
         formatBpDesc: formatHashRemoveSearch,
         stateVisualization: HashNormalStateVisualization,
 
@@ -303,7 +312,7 @@ const LESSONS = {
         mainPagePaneClassName: 'hash-remove',
         playerHeaderTitle: 'удаление из хеш-таблицы',
         code: HASH_REMOVE_CODE,
-        breakpoints: removeRes.bp,
+        getBreakpoints: () => removeRes.bp,
         formatBpDesc: formatHashRemoveSearch,
         stateVisualization: HashNormalStateVisualization,
 
@@ -315,7 +324,7 @@ const LESSONS = {
         mainPagePaneClassName: 'hash-resize',
         playerHeaderTitle: 'расширение хеш-таблицы',
         code: HASH_RESIZE_CODE,
-        breakpoints: resizeRes.bp,
+        getBreakpoints: () => resizeRes.bp,
         formatBpDesc: formatHashResize,
         stateVisualization: HashResizeStateVisualization,
 

@@ -28,16 +28,19 @@ export class Player extends React.Component {
         super(props);
 
         const timeStr = localStorage.getItem(props.lessonId + '_time');
-        const sliderTime = Math.min(+timeStr || 0, this.maxTime());
+        const breakpoints = this.props.getBreakpoints();
+        const sliderTime = Math.min(+timeStr || 0, breakpoints.length - 1);
         this.state = {
             time: Math.round(sliderTime),
-            sliderTime: sliderTime,
+            sliderTime,
             autoPlaying: false,
             showingTheory: false,
 
             // react router stuff
             navigatingHome: false,
+            breakpoints,
         };
+        console.log('Player constructor state', this.state);
 
         this.componentRef = React.createRef();
     }
@@ -47,7 +50,7 @@ export class Player extends React.Component {
     };
 
     maxTime = () => {
-        return this.props.breakpoints.length - 1;
+        return this.state.breakpoints.length - 1;
     };
 
     unixtimestamp() {
@@ -158,7 +161,7 @@ export class Player extends React.Component {
     };
 
     static getDerivedStateFromProps(props, state) {
-        if (state.autoPlaying && props.time === props.breakpoints.length - 1) {
+        if (state.autoPlaying && props.time === state.breakpoints.length - 1) {
             return {...state, autoPlaying: false};
         } else {
             return null;
@@ -240,7 +243,8 @@ export class Player extends React.Component {
         if (this.state.navigatingHome) {
             return <Redirect push to="/" />;
         }
-        const maxTime = this.props.breakpoints.length;
+        const breakpoints = this.state.breakpoints;
+        const maxTime = breakpoints.length;
 
         const StateVisualization = this.props.stateVisualization;
         const {windowHeight, windowWidth} = this.props;
@@ -249,7 +253,7 @@ export class Player extends React.Component {
 
         const time = this.state.time;
 
-        const bp = this.props.breakpoints[time];
+        const bp = breakpoints[time];
 
         let codeHeight, innerTheoryHeight, theoryWidth, codeVisWidth;
         const controlsHeight = isMobile ? 45 : 35;
@@ -287,6 +291,14 @@ export class Player extends React.Component {
         console.log('mobile header title', mobileHeaderTitle);
 
         const biggerFont = !isDefinedSmallBoxScreen(windowWidth, windowHeight) || isMobile;
+        // const inputs = this.props.inputs;
+        const inputs = [
+            {
+                label: 'original_list',
+                name: 'original_list',
+            },
+        ];
+
         return (
             <div className="player">
                 <div
@@ -373,6 +385,21 @@ export class Player extends React.Component {
                         className={classnames(isMobile && 'slider-mobile-extra')}
                     />
                 </div>
+                {inputs && (
+                    <div className="player-inputs-outer">
+                        <div className="player-inputs-inner">
+                            {inputs.map(input => {
+                                return (
+                                    <div className="player-inputs-wrapper">
+                                        <span className="player-input-label">{input.label}</span>
+                                        <input className="player-input" />
+                                        <span className="player-input-comment">{input.error}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
                 <div className="player-main">
                     <div className="player-code-and-visualisation" style={{width: codeVisWidth}}>
                         <CodeBlockWithActiveLineAndAnnotations
@@ -382,7 +409,7 @@ export class Player extends React.Component {
                             overflow={false}
                             fontSize={14}
                             lineVerticalPadding={2}
-                            breakpoints={this.props.breakpoints}
+                            breakpoints={breakpoints}
                             formatBpDesc={this.props.formatBpDesc}
                             withShortExplanation={isMobile}
                             mobileHeaderTitle={mobileHeaderTitle}
