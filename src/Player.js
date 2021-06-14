@@ -26,6 +26,8 @@ class PlayerInput extends ParsableInputBase {
     getPattern() {
         if (this.props.type === 'array_int') {
             return '[0-9 ,]*';
+        } else if (this.props.type === 'int') {
+            return '[0-9]*';
         }
         return null;
     }
@@ -38,6 +40,7 @@ class PlayerInput extends ParsableInputBase {
             <div className="player-input-wrapper">
                 <span className="player-input-label">{this.props.label}</span>
                 <input
+                    pattern={this.getPattern()}
                     style={{borderColor: errorMsg ? this.ERROR_COLOR : '#000'}}
                     className={classnames('player-input', errorMsg ? 'player-input-error' : null)}
                     onChange={this.handleChange}
@@ -84,13 +87,17 @@ export class Player extends React.Component {
         const inputs = this.props.inputs || [];
 
         const programInputs = [];
+        const originalRawInputs = [];
         const onInputChangeHandlers = [];
         for (let i = 0; i < inputs.length; ++i) {
             const input = inputs[i];
 
             const ls = localStorage.getItem(this.INPUTS_LS_PREFIX + input.id);
-            programInputs.push(ls ? parseValue(ls) : input.default);
-            onInputChangeHandlers.push(value => {
+
+            const rawValue = ls ? ls : input.default;
+            programInputs.push(parseValue(rawValue));
+            originalRawInputs.push(rawValue);
+            onInputChangeHandlers.push((value, valueRaw) => {
                 const programInputs = [...this.state.programInputs];
                 programInputs[i] = value;
                 const breakpoints = this.props.getBreakpoints(...programInputs);
@@ -99,7 +106,7 @@ export class Player extends React.Component {
                 this.setState({programInputs, breakpoints, time, sliderTime: time});
                 this.saveSliderTimeToLS(time);
 
-                localStorage.setItem(this.INPUTS_LS_PREFIX + input.id, dumpValue(value));
+                localStorage.setItem(this.INPUTS_LS_PREFIX + input.id, valueRaw);
 
                 console.log('onInputChangeHandlers', value, programInputs, breakpoints);
             });
@@ -121,6 +128,7 @@ export class Player extends React.Component {
             navigatingHome: false,
             breakpoints,
             programInputs,
+            originalRawInputs,
         };
 
         console.log('Player constructor state', this.state);
@@ -471,6 +479,7 @@ export class Player extends React.Component {
                                 return (
                                     <PlayerInput
                                         value={this.state.programInputs[idx]}
+                                        valueRaw={this.state.originalRawInputs[idx]}
                                         key={input.id}
                                         label={input.label}
                                         onChange={this.onInputChangeHandlers[idx]}

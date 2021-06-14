@@ -268,9 +268,9 @@ const LESSONS = {
         inputs: [
             {
                 label: 'original_list',
-                type: 'array_int3',
+                type: 'array_int',
                 id: 'simplified-hash-original-list',
-                default: chapter1.state.numbers,
+                default: '1 56 50 2 44 25 17 4',
             },
         ],
         formatBpDesc: formatSimplifiedInsertAllDescription,
