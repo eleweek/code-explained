@@ -18,7 +18,7 @@ import {Redirect} from 'react-router';
 import {doubleRAF, isDefinedSmallBoxScreen} from './util';
 import {ParsableInputBase} from './inputs';
 import _ from 'lodash';
-import {dumpPyList, parsePyList} from './py_obj_parsing';
+import {dumpPyList, parsePyList, parsePyNumber, parsePyStringOrNumber} from './py_obj_parsing';
 
 class PlayerInput extends ParsableInputBase {
     ERROR_COLOR = 'rgb(222, 39, 22)';
@@ -36,12 +36,16 @@ class PlayerInput extends ParsableInputBase {
         console.log('Input state', this.state);
         const errorMsg = this.state.error?.message;
 
+        const style = {borderColor: errorMsg ? this.ERROR_COLOR : '#000'};
+        if (this.props.type === 'int') {
+            style.width = 50;
+        }
         return (
             <div className="player-input-wrapper">
                 <span className="player-input-label">{this.props.label}</span>
                 <input
                     pattern={this.getPattern()}
-                    style={{borderColor: errorMsg ? this.ERROR_COLOR : '#000'}}
+                    style={style}
                     className={classnames('player-input', errorMsg ? 'player-input-error' : null)}
                     onChange={this.handleChange}
                     value={this.state.valueRaw}
@@ -63,11 +67,19 @@ function intValidator(num) {
 }
 
 function dumpValue(val, type) {
-    return dumpPyList(val);
+    if (type === 'array_int') {
+        return dumpPyList(val);
+    } else if (type === 'int') {
+        return val.toString();
+    }
 }
 
-function parseValue(s) {
-    return parsePyList(s, false, 1, intValidator);
+function parseValue(s, type) {
+    if (type === 'array_int') {
+        return parsePyList(s, false, 1, intValidator);
+    } else if (type === 'int') {
+        return parsePyNumber(s);
+    }
 }
 
 export class Player extends React.Component {
@@ -95,7 +107,7 @@ export class Player extends React.Component {
             const ls = localStorage.getItem(this.INPUTS_LS_PREFIX + input.id);
 
             const rawValue = ls ? ls : input.default;
-            programInputs.push(parseValue(rawValue));
+            programInputs.push(parseValue(rawValue, input.type));
             originalRawInputs.push(rawValue);
             onInputChangeHandlers.push((value, valueRaw) => {
                 const programInputs = [...this.state.programInputs];
@@ -482,9 +494,10 @@ export class Player extends React.Component {
                                         valueRaw={this.state.originalRawInputs[idx]}
                                         key={input.id}
                                         label={input.label}
+                                        type={input.type}
                                         onChange={this.onInputChangeHandlers[idx]}
-                                        dumpValue={dumpValue}
-                                        parseValue={parseValue}
+                                        dumpValue={val => dumpValue(val, input.type)}
+                                        parseValue={val => parseValue(val, input.type)}
                                     />
                                 );
                             })}

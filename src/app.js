@@ -223,6 +223,13 @@ const resizeRes = chapter2.runResize(hashCodes, keys);
 //     inputs:
 // }
 
+const SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT = {
+    label: 'original_list',
+    type: 'array_int',
+    id: 'simplified-hash-original-list',
+    default: '1 56 50 2 44 25 17 4',
+};
+
 const LESSONS = {
     bubble_sort: {
         mainPagePaneHeaderTitle: 'Пузырьком',
@@ -265,14 +272,7 @@ const LESSONS = {
         code: SIMPLIFIED_INSERT_ALL_CODE,
         getBreakpoints: original_list => chapter1.runSimplifiedInsertAll(original_list).bp,
 
-        inputs: [
-            {
-                label: 'original_list',
-                type: 'array_int',
-                id: 'simplified-hash-original-list',
-                default: '1 56 50 2 44 25 17 4',
-            },
-        ],
+        inputs: [SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT],
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertStateVisualization,
 
@@ -284,7 +284,19 @@ const LESSONS = {
         mainPagePaneClassName: 'simplified-hash-search',
         playerHeaderTitle: 'поиск в простейшей хеш-таблице',
         code: SIMPLIFIED_SEARCH_CODE,
-        getBreakpoints: () => ssRes.bp,
+        getBreakpoints: (original_list, number) => {
+            const keys = chapter1.runSimplifiedInsertAll(original_list).keys;
+            return chapter1.runSimplifiedSearch(keys, number).bp;
+        },
+        inputs: [
+            SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT,
+            {
+                label: 'number',
+                type: 'int',
+                id: 'simplified-hash-search-number',
+                default: '25',
+            },
+        ],
         formatBpDesc: formatSimplifiedSearchDescription,
         stateVisualization: SimplifiedSearchStateVisualization,
 

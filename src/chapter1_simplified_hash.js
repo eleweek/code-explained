@@ -340,6 +340,7 @@ class SimplifiedSearch extends BreakpointFunction {
             if (this.newList.get(this.newListIdx) === null) {
                 break;
             }
+            console.log('Simplified search', this);
             this.addBP('check-found');
             if (EQ(this.newList.get(this.newListIdx), this.number)) {
                 this.addBP('found-key');
