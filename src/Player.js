@@ -84,7 +84,7 @@ export class Player extends React.Component {
                 this.setState({programInputs, breakpoints, time, sliderTime: time});
                 this.saveSliderTimeToLS(time);
 
-                localStorage.setItem(this.INPUTS_LS_PREFIX + '_time', sliderTime.toString());
+                localStorage.setItem(this.INPUTS_LS_PREFIX + input.id, dumpValue(value));
 
                 console.log('onInputChangeHandlers', value, programInputs, breakpoints);
             });
