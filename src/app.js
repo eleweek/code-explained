@@ -198,11 +198,6 @@ export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{la
 
 const chapter1 = new Chapter1_SimplifiedHash();
 
-const slsRes = chapter1.runSimpleListSearch(chapter1.state.numbers, chapter1.state.simpleSearchNumber);
-const siaBrokenRes = chapter1.generateAlternativeDataForInsertAllBroken(chapter1.state.numbers);
-const siaRes = chapter1.runSimplifiedInsertAll(chapter1.state.numbers);
-const ssRes = chapter1.runSimplifiedSearch(siaRes.keys, chapter1.state.simplifiedHashSearchNumber);
-
 const chapter2 = new Chapter2_HashTableFunctions();
 const newRes = chapter2.runCreateNew(chapter2.state.array);
 let {hashCodes, keys} = newRes;
@@ -242,23 +237,26 @@ const LESSONS = {
         code: BUBBLE_SORT_CODE,
     },
 
-    linear_search: {
-        mainPagePaneHeaderTitle: 'Линейный поиск',
-        mainPagePaneClassName: 'linear-search',
-        playerHeaderTitle: 'линейный поиск',
-        mobilePlayerHeaderTitle: 'Линейный поиск',
-        code: SIMPLE_LIST_SEARCH,
-        breakpoints: slsRes.bp,
-        formatBpDesc: formatSimpleListSearchBreakpointDescription,
-        stateVisualization: SimpleListSearchStateVisualization,
-    },
+    // linear_search: {
+    //     mainPagePaneHeaderTitle: 'Линейный поиск',
+    //     mainPagePaneClassName: 'linear-search',
+    //     playerHeaderTitle: 'линейный поиск',
+    //     mobilePlayerHeaderTitle: 'Линейный поиск',
+    //     code: SIMPLE_LIST_SEARCH,
+    //     breakpoints: slsRes.bp,
+    //     formatBpDesc: formatSimpleListSearchBreakpointDescription,
+    //     stateVisualization: SimpleListSearchStateVisualization,
+    // },
 
     simplified_hash_collisions: {
         mainPagePaneHeaderTitle: 'Коллизии',
         mainPagePaneClassName: 'simplified-hash-collisions',
         playerHeaderTitle: 'коллизии в хеш-таблицах',
         code: SIMPLIFIED_INSERT_ALL_BROKEN_CODE,
-        getBreakpoints: () => siaBrokenRes.bp,
+        getBreakpoints: original_list => {
+            return chapter1.runSimplifiedInsertAllBroken(original_list).bp;
+        },
+        inputs: [SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT],
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertBrokenStateVisualization,
 

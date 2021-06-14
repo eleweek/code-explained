@@ -45,6 +45,7 @@ class PlayerInput extends ParsableInputBase {
                 <span className="player-input-label">{this.props.label}</span>
                 <input
                     pattern={this.getPattern()}
+                    type={this.props.type === 'int' ? 'number' : undefined}
                     style={style}
                     className={classnames('player-input', errorMsg ? 'player-input-error' : null)}
                     onChange={this.handleChange}
