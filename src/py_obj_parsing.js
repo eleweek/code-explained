@@ -59,6 +59,17 @@ export class PyObjParser {
         this.consume(expectedChar);
     }
 
+    maybeConsume(expectedChar) {
+        if (this.current() === expectedChar) {
+            this.consume(expectedChar);
+        }
+    }
+
+    maybeConsumeWS(expectedChar) {
+        this.skipWhitespace();
+        this.maybeConsume(expectedChar);
+    }
+
     throwErr(text, pos) {
         // TODO FIXME: pos computation looks way too complicated
         let posToInclude = pos != null ? pos : this.pos;
@@ -138,12 +149,16 @@ export class PyObjParser {
         const allowedSeparators = ',]';
         const c = this.current();
 
-        this.consumeWS('[');
+        console.log('parseList', c, this.s);
+        this.maybeConsumeWS('[');
         let res = [];
         this.skipWhitespace();
         while (this.current() !== ']') {
+            // if (this.current() == null) {
+            //     this.throwErr('List literal ended abruptly - no closing ]');
+            // }
             if (this.current() == null) {
-                this.throwErr('List literal ended abruptly - no closing ]');
+                break;
             }
             let {res: val, startPos: valStartPos} = this._parseStringOrNumberOrNone(allowedSeparators);
             if (!allowDuplicates) {
@@ -161,10 +176,10 @@ export class PyObjParser {
             }
             res.push(val);
             this.skipWhitespace();
-            if (this.current() !== ']' && this.current() != null) this.consume(',');
+            if (this.current() !== ']' && this.current() != null) this.maybeConsume(',');
             this.skipWhitespace();
         }
-        this.consumeWS(']');
+        this.maybeConsumeWS(']');
         if (minSize != null) {
             if (res.length < minSize) {
                 if (minSize > 1) {

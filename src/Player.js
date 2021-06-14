@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import SmoothScrollbar from 'react-smooth-scrollbar';
+import {BigNumber} from 'bignumber.js';
 
 import './player.css';
 
@@ -21,6 +22,14 @@ import {dumpPyList, parsePyList} from './py_obj_parsing';
 
 class PlayerInput extends ParsableInputBase {
     ERROR_COLOR = 'rgb(222, 39, 22)';
+
+    getPattern() {
+        if (this.props.type === 'array_int') {
+            return '[0-9 ,]*';
+        }
+        return null;
+    }
+
     render() {
         console.log('Input state', this.state);
         const errorMsg = this.state.error?.message;
@@ -44,12 +53,18 @@ class PlayerInput extends ParsableInputBase {
     }
 }
 
-function dumpValue(val) {
+function intValidator(num) {
+    if (!BigNumber.isBigNumber(num) && typeof num !== 'number') {
+        return 'Expected an integer';
+    }
+}
+
+function dumpValue(val, type) {
     return dumpPyList(val);
 }
 
 function parseValue(s) {
-    return parsePyList(s, false, 1);
+    return parsePyList(s, false, 1, intValidator);
 }
 
 export class Player extends React.Component {
@@ -59,7 +74,7 @@ export class Player extends React.Component {
 
     MAX_WIDTH = 1300;
 
-    INPUTS_LS_PREFIX = 'player-v1-';
+    INPUTS_LS_PREFIX = 'player-v1-1-';
 
     constructor(props) {
         super(props);
