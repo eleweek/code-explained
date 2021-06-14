@@ -30,7 +30,7 @@ class PlayerInput extends ParsableInputBase {
                 <span className="player-input-label">{this.props.label}</span>
                 <input
                     style={{borderColor: errorMsg ? this.ERROR_COLOR : '#000'}}
-                    className="player-input"
+                    className={classnames('player-input', errorMsg ? 'player-input-error' : null)}
                     onChange={this.handleChange}
                     value={this.state.valueRaw}
                 />
@@ -59,7 +59,7 @@ export class Player extends React.Component {
 
     MAX_WIDTH = 1300;
 
-    LS_PREFIX = 'player-v1-';
+    INPUTS_LS_PREFIX = 'player-v1-';
 
     constructor(props) {
         super(props);
@@ -73,15 +73,19 @@ export class Player extends React.Component {
         for (let i = 0; i < inputs.length; ++i) {
             const input = inputs[i];
 
-            const ls = localStorage.getItem(this.LS_PREFIX + input.id);
+            const ls = localStorage.getItem(this.INPUTS_LS_PREFIX + input.id);
             programInputs.push(ls ? parseValue(ls) : input.default);
             onInputChangeHandlers.push(value => {
                 const programInputs = [...this.state.programInputs];
                 programInputs[i] = value;
                 const breakpoints = this.props.getBreakpoints(...programInputs);
+
                 const time = breakpoints.length - 1;
                 this.setState({programInputs, breakpoints, time, sliderTime: time});
                 this.saveSliderTimeToLS(time);
+
+                localStorage.setItem(this.INPUTS_LS_PREFIX + '_time', sliderTime.toString());
+
                 console.log('onInputChangeHandlers', value, programInputs, breakpoints);
             });
         }
