@@ -368,10 +368,12 @@ export class Player extends React.Component {
         const adjustTheoryTop = 5;
         const approximateHorizontalPaddings = 24;
         const MIN_THEORY_WIDTH = 300;
+        const inputsHeight = this.props.inputs ? 7 + this.props.inputs.length * 38 : 0;
         let isMobile = false;
         if (windowHeight) {
             const expectedVisHeight = 1.1 * StateVisualization.getExpectedHeight(totalWidth, windowHeight);
-            codeHeight = this.props.windowHeight - expectedVisHeight - approximateSliderAndControlsHeight;
+            codeHeight =
+                this.props.windowHeight - expectedVisHeight - approximateSliderAndControlsHeight - inputsHeight;
             console.log('Expected vis height', expectedVisHeight);
             codeVisWidth = totalWidth - approximateHorizontalPaddings;
 
