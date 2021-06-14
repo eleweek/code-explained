@@ -15,7 +15,42 @@ import pauseButton from './icons/pause.svg';
 import {CodeBlockWithActiveLineAndAnnotations} from './code_blocks';
 import {Redirect} from 'react-router';
 import {doubleRAF, isDefinedSmallBoxScreen} from './util';
+import {ParsableInputBase} from './inputs';
 import _ from 'lodash';
+import {dumpPyList, parsePyList} from './py_obj_parsing';
+
+class PlayerInput extends ParsableInputBase {
+    ERROR_COLOR = 'rgb(222, 39, 22)';
+    render() {
+        console.log('Input state', this.state);
+        const errorMsg = this.state.error?.message;
+
+        return (
+            <div className="player-input-wrapper">
+                <span className="player-input-label">{this.props.label}</span>
+                <input
+                    style={{borderColor: errorMsg ? this.ERROR_COLOR : '#000'}}
+                    className="player-input"
+                    onChange={this.handleChange}
+                    value={this.state.valueRaw}
+                />
+                {errorMsg && (
+                    <span className="player-input-comment" style={{color: this.ERROR_COLOR}}>
+                        {errorMsg}
+                    </span>
+                )}
+            </div>
+        );
+    }
+}
+
+function dumpValue(val) {
+    return dumpPyList(val);
+}
+
+function parseValue(s) {
+    return parsePyList(s, false, 1);
+}
 
 export class Player extends React.Component {
     SLIDER_MULTIPLIER = 1000;
@@ -24,11 +59,38 @@ export class Player extends React.Component {
 
     MAX_WIDTH = 1300;
 
+    LS_PREFIX = 'player-v1-';
+
     constructor(props) {
         super(props);
 
         const timeStr = localStorage.getItem(props.lessonId + '_time');
-        const breakpoints = this.props.getBreakpoints();
+
+        const inputs = this.props.inputs || [];
+
+        const programInputs = [];
+        const onInputChangeHandlers = [];
+        for (let i = 0; i < inputs.length; ++i) {
+            const input = inputs[i];
+
+            const ls = localStorage.getItem(this.LS_PREFIX + input.id);
+            programInputs.push(ls ? parseValue(ls) : input.default);
+            onInputChangeHandlers.push(value => {
+                const programInputs = [...this.state.programInputs];
+                programInputs[i] = value;
+                const breakpoints = this.props.getBreakpoints(...programInputs);
+                const time = breakpoints.length - 1;
+                this.setState({programInputs, breakpoints, time, sliderTime: time});
+                this.saveSliderTimeToLS(time);
+                console.log('onInputChangeHandlers', value, programInputs, breakpoints);
+            });
+        }
+        this.onInputChangeHandlers = onInputChangeHandlers;
+
+        console.log('Inputs', programInputs);
+        const breakpoints = this.props.getBreakpoints(...programInputs);
+        console.log('breakpoints', breakpoints);
+
         const sliderTime = Math.min(+timeStr || 0, breakpoints.length - 1);
         this.state = {
             time: Math.round(sliderTime),
@@ -39,7 +101,9 @@ export class Player extends React.Component {
             // react router stuff
             navigatingHome: false,
             breakpoints,
+            programInputs,
         };
+
         console.log('Player constructor state', this.state);
 
         this.componentRef = React.createRef();
@@ -67,14 +131,15 @@ export class Player extends React.Component {
         this.handleTimeChange(sliderTime);
     };
 
+    saveSliderTimeToLS = sliderTime => {
+        localStorage.setItem(this.props.lessonId + '_time', sliderTime.toString());
+    };
+
     handleTimeChange = (sliderTime, autoPlaying = false, onStateChange) => {
         console.log('handleTimeChange', sliderTime, autoPlaying);
         const time = Math.round(sliderTime);
         this.setState(() => ({time, sliderTime, autoPlaying}), onStateChange);
-        setTimeout(
-            _.throttle(() => localStorage.setItem(this.props.lessonId + '_time', sliderTime.toString()), 500),
-            0
-        );
+        setTimeout(_.throttle(() => this.saveSliderTimeToLS(sliderTime), 500), 0);
         // this.props.handleTimeChange(value);
     };
 
@@ -292,12 +357,7 @@ export class Player extends React.Component {
 
         const biggerFont = !isDefinedSmallBoxScreen(windowWidth, windowHeight) || isMobile;
         // const inputs = this.props.inputs;
-        const inputs = [
-            {
-                label: 'original_list',
-                name: 'original_list',
-            },
-        ];
+        const inputs = this.props.inputs;
 
         return (
             <div className="player">
@@ -385,16 +445,19 @@ export class Player extends React.Component {
                         className={classnames(isMobile && 'slider-mobile-extra')}
                     />
                 </div>
-                {inputs && (
+                {inputs && inputs.length && (
                     <div className="player-inputs-outer">
                         <div className="player-inputs-inner">
-                            {inputs.map(input => {
+                            {inputs.map((input, idx) => {
                                 return (
-                                    <div className="player-inputs-wrapper">
-                                        <span className="player-input-label">{input.label}</span>
-                                        <input className="player-input" />
-                                        <span className="player-input-comment">{input.error}</span>
-                                    </div>
+                                    <PlayerInput
+                                        value={this.state.programInputs[idx]}
+                                        key={input.id}
+                                        label={input.label}
+                                        onChange={this.onInputChangeHandlers[idx]}
+                                        dumpValue={dumpValue}
+                                        parseValue={parseValue}
+                                    />
                                 );
                             })}
                         </div>

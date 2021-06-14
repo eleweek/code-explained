@@ -29,7 +29,7 @@ library.add(faUndoAlt);
 library.add(faRedoAlt);
 
 // TODO: this is still kinda ugly and needs some refactoring
-class ParsableInputBase extends React.Component {
+export class ParsableInputBase extends React.Component {
     constructor(props) {
         super(props);
         // TODO: this is a hack

@@ -263,7 +263,16 @@ const LESSONS = {
         mainPagePaneClassName: 'simplified-hash-create',
         playerHeaderTitle: 'создание простейшей хеш-таблицы',
         code: SIMPLIFIED_INSERT_ALL_CODE,
-        getBreakpoints: () => siaRes.bp,
+        getBreakpoints: original_list => chapter1.runSimplifiedInsertAll(original_list).bp,
+
+        inputs: [
+            {
+                label: 'original_list',
+                type: 'array_int3',
+                id: 'simplified-hash-original-list',
+                default: chapter1.state.numbers,
+            },
+        ],
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertStateVisualization,
 

@@ -199,11 +199,19 @@ a.player-title:hover {
     width: 35%;
     padding-left: 5px;
     padding-right: 5px;
+    border: 0.5px solid #416287 !important;
+    border-radius: 3px;
+}
+
+.player-input:focus {
+    border: 1px solid #416287 !important;
+    outline: none !important;
 }
 
 .player-input-wrapper {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 @media screen and (min-width: 890px) {
