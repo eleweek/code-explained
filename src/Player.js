@@ -78,6 +78,8 @@ function dumpValue(val, type) {
 function parseValue(s, type) {
     if (type === 'array_int') {
         return parsePyList(s, false, 1, intValidator);
+    } else if (type === 'array') {
+        return parsePyList(s, true, 1);
     } else if (type === 'int') {
         return parsePyNumber(s);
     }

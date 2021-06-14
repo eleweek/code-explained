@@ -225,6 +225,13 @@ const SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT = {
     default: '1 56 50 2 44 25 17 4',
 };
 
+const HASH_FROM_KEYS_INPUT = {
+    label: 'from_keys',
+    type: 'array',
+    id: 'hash-from-keys',
+    default: "'uname' 'mv' 1 'time' -6 'ps' 'mkdir' 'less'",
+};
+
 const LESSONS = {
     bubble_sort: {
         mainPagePaneHeaderTitle: 'Пузырьком',
@@ -307,7 +314,10 @@ const LESSONS = {
         playerHeaderTitle: 'создание хеш-таблицы',
 
         code: HASH_CREATE_NEW_CODE,
-        getBreakpoints: () => newRes.bp,
+        getBreakpoints: from_keys => {
+            return chapter2.runCreateNew(from_keys).bp;
+        },
+        inputs: [HASH_FROM_KEYS_INPUT],
         formatBpDesc: formatHashCreateNewAndInsert,
         stateVisualization: HashCreateNewStateVisualization,
 
