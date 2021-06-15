@@ -18,7 +18,13 @@ import {Redirect} from 'react-router';
 import {doubleRAF, isDefinedSmallBoxScreen} from './util';
 import {ParsableInputBase} from './inputs';
 import _ from 'lodash';
-import {dumpPyList, parsePyList, parsePyNumber, parsePyStringOrNumber} from './py_obj_parsing';
+import {
+    dumpPyList,
+    parsePyList,
+    parsePyNumber,
+    parsePyStringOrNumber,
+    parsePyStringOrNumberOrNone,
+} from './py_obj_parsing';
 
 class PlayerInput extends ParsableInputBase {
     ERROR_COLOR = 'rgb(222, 39, 22)';
@@ -68,10 +74,10 @@ function intValidator(num) {
 }
 
 function dumpValue(val, type) {
-    if (type === 'array_int') {
+    if (type === 'array_int' || type === 'array') {
         return dumpPyList(val);
-    } else if (type === 'int') {
-        return val.toString();
+    } else if (type === 'int' || type === 'int_str_none') {
+        return dumpSimplePyObj(val);
     }
 }
 
@@ -82,6 +88,8 @@ function parseValue(s, type) {
         return parsePyList(s, true, 1);
     } else if (type === 'int') {
         return parsePyNumber(s);
+    } else if (type === 'int_str_none') {
+        return parsePyStringOrNumberOrNone(s);
     }
 }
 

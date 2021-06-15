@@ -197,17 +197,7 @@ console.log('IS res', insertionSortRes);
 export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
 
 const chapter1 = new Chapter1_SimplifiedHash();
-
 const chapter2 = new Chapter2_HashTableFunctions();
-const newRes = chapter2.runCreateNew(chapter2.state.array);
-let {hashCodes, keys} = newRes;
-
-const searchRes = chapter2.runSearch(hashCodes, keys, chapter2.state.searchedObj);
-const removeRes = chapter2.runRemove(hashCodes, keys, chapter2.state.objToRemove);
-hashCodes = removeRes.hashCodes;
-keys = removeRes.keys;
-
-const resizeRes = chapter2.runResize(hashCodes, keys);
 
 // const GLOBAL_STATE = {
 //     simplifiedHash: /*...*/,
@@ -329,7 +319,19 @@ const LESSONS = {
         mainPagePaneClassName: 'hash-search',
         playerHeaderTitle: 'поиск в хеш-таблице',
         code: HASH_SEARCH_CODE,
-        getBreakpoints: () => searchRes.bp,
+        getBreakpoints: (from_keys, key) => {
+            const {hashCodes, keys} = chapter2.runCreateNew(from_keys);
+            return chapter2.runSearch(hashCodes, keys, key).bp;
+        },
+        inputs: [
+            HASH_FROM_KEYS_INPUT,
+            {
+                label: 'number',
+                type: 'int_str_none',
+                id: 'hash-search-key',
+                default: 'less',
+            },
+        ],
         formatBpDesc: formatHashRemoveSearch,
         stateVisualization: HashNormalStateVisualization,
 
@@ -341,7 +343,19 @@ const LESSONS = {
         mainPagePaneClassName: 'hash-remove',
         playerHeaderTitle: 'удаление из хеш-таблицы',
         code: HASH_REMOVE_CODE,
-        getBreakpoints: () => removeRes.bp,
+        getBreakpoints: (from_keys, key) => {
+            const {hashCodes, keys} = chapter2.runCreateNew(from_keys);
+            return chapter2.runRemove(hashCodes, keys, key).bp;
+        },
+        inputs: [
+            HASH_FROM_KEYS_INPUT,
+            {
+                label: 'number',
+                type: 'int_str_none',
+                id: 'hash-remove-key',
+                default: 'ps',
+            },
+        ],
         formatBpDesc: formatHashRemoveSearch,
         stateVisualization: HashNormalStateVisualization,
 
@@ -353,7 +367,11 @@ const LESSONS = {
         mainPagePaneClassName: 'hash-resize',
         playerHeaderTitle: 'расширение хеш-таблицы',
         code: HASH_RESIZE_CODE,
-        getBreakpoints: () => resizeRes.bp,
+        getBreakpoints: from_keys => {
+            const {hashCodes, keys} = chapter2.runCreateNew(from_keys);
+            return chapter2.runResize(hashCodes, keys).bp;
+        },
+        inputs: [HASH_FROM_KEYS_INPUT],
         formatBpDesc: formatHashResize,
         stateVisualization: HashResizeStateVisualization,
 
