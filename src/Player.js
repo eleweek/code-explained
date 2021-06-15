@@ -43,7 +43,7 @@ class PlayerInput extends ParsableInputBase {
         const errorMsg = this.state.error?.message;
 
         const style = {borderColor: errorMsg ? this.ERROR_COLOR : '#000'};
-        if (this.props.type === 'int') {
+        if (this.props.type === 'int' || this.props.type === 'int_str_none') {
             style.width = 50;
         }
         return (
@@ -82,6 +82,7 @@ function dumpValue(val, type) {
 }
 
 function parseValue(s, type) {
+    console.log('parseValue', s, type);
     if (type === 'array_int') {
         return parsePyList(s, false, 1, intValidator);
     } else if (type === 'array') {
