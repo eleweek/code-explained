@@ -5,8 +5,11 @@ import {BigNumber} from 'bignumber.js';
 class PyParsingError extends Error {
     constructor(text, pos) {
         // super(`${text} (at position ${pos})`);
-        super(text);
+        const isStr = typeof text === 'string';
+        const textEn = isStr ? text : text.en;
+        super(textEn);
         this.pos = pos;
+        this.text = isStr ? {en: textEn} : text;
     }
 }
 
@@ -70,12 +73,12 @@ export class PyObjParser {
         this.maybeConsume(expectedChar);
     }
 
-    throwErr(text, pos) {
+    throwErr(textEn, textRu, pos) {
         // TODO FIXME: pos computation looks way too complicated
         let posToInclude = pos != null ? pos : this.pos;
         posToInclude = Math.min(posToInclude, this.s.length - 1);
         if (posToInclude < 0) posToInclude = 0;
-        throw new PyParsingError(text, posToInclude);
+        throw new PyParsingError({en: textEn, ru: textRu}, posToInclude);
     }
 
     _parseStringOrNumberOrNone(allowedSeparators, fromDict, allowNonesInError) {
@@ -93,10 +96,13 @@ export class PyObjParser {
         const c = this.current();
         if (fromDict) {
             if (c === '{' || c === '[') {
-                this.throwErr('Nested lists and dictionaries are not supported. Only strings and ints are.');
+                this.throwErr(
+                    'Nested lists and dictionaries are not supported. Only strings and ints are.',
+                    'Вложенные списки и словари не поддерживаются'
+                );
             }
             if (c == null) {
-                this.throwErr('Dict literal added abruptly - expected value');
+                this.throwErr('Dict literal added abruptly - expected value', 'Неожиданный конец словаря');
             }
         }
 
@@ -106,9 +112,10 @@ export class PyObjParser {
             return {res: this.parseString(), startPos};
         } else {
             this.throwErr(
-                `Expected value - string, integer ${
-                    allowNonesInError ? 'or None' : ''
-                }. If you wanted a string, wrap it in quotes`
+                `Expected value - string, integer${
+                    allowNonesInError ? ' or None' : ''
+                }. If you wanted a string, wrap it in quotes`,
+                `Ожидается строка или целое${allowNonesInError ? ' или None' : ''}. Строки должны быть в кавычках.`
             );
         }
     }
@@ -122,7 +129,10 @@ export class PyObjParser {
         this.skipWhitespace();
         while (this.current() !== '}') {
             if (this.current() == null) {
-                this.throwErr('Dict literal ended abruptly - no closing }');
+                this.throwErr(
+                    'Dict literal ended abruptly - no closing }',
+                    'Неожиданный конец словаря, нет закрывающей }'
+                );
             }
             let key = this._parseStringOrNumberOrNone(allowedSeparators).res;
             this.consumeWS(':');
@@ -136,9 +146,9 @@ export class PyObjParser {
         if (minSize != null) {
             if (res.length < minSize) {
                 if (minSize > 1) {
-                    this.throwErr(`In this chapter, there should be at least ${minSize} pairs`);
+                    this.throwErr(`There should be at least ${minSize} pairs`, `Должно быть не меньше ${minSize} пар`);
                 } else {
-                    this.throwErr(`In this chapter, the data cannot be empty`);
+                    this.throwErr(`The data cannot be empty`, 'Пустые данные');
                 }
             }
         }
@@ -164,14 +174,17 @@ export class PyObjParser {
             if (!allowDuplicates) {
                 for (let existingVal of res) {
                     if (EQ(val, existingVal)) {
-                        this.throwErr('Duplicates are not allowed in this list');
+                        this.throwErr(
+                            'Duplicates are not allowed in this list',
+                            'В списке не должно быть дублированных значений'
+                        );
                     }
                 }
             }
             if (extraValueValidator) {
                 const error = extraValueValidator(val);
                 if (error) {
-                    this.throwErr(error, valStartPos);
+                    this.throwErr(error.en, error.ru, valStartPos);
                 }
             }
             res.push(val);
@@ -183,9 +196,12 @@ export class PyObjParser {
         if (minSize != null) {
             if (res.length < minSize) {
                 if (minSize > 1) {
-                    this.throwErr(`In this chapter, the list need to have length at least ${minSize}`);
+                    this.throwErr(
+                        `In this chapter, the list need to have length at least ${minSize}`,
+                        `Список должен быть длиной не меньше ${minSize}`
+                    );
                 } else {
-                    this.throwErr(`In this chapter, the list cannot be empty`);
+                    this.throwErr(`In this chapter, the list cannot be empty`, 'Список не может быть пустым');
                 }
             }
         }
@@ -195,7 +211,7 @@ export class PyObjParser {
     parseNumber(allowedSeparators = '') {
         this.skipWhitespace();
         if (this.current() == null) {
-            this.throwErr("Number can't be empty");
+            this.throwErr("Number can't be empty", 'Число не может быть пустым');
         }
 
         const originalPos = this.pos;
@@ -204,27 +220,30 @@ export class PyObjParser {
         }
 
         if (this.current() === '.') {
-            this.throwErr('Floats are not supported (yet)');
+            this.throwErr('Floats are not supported', 'Флоаты пока не поддерживаются');
         }
-        const nonDecimalErrorString = 'Non-decimal bases are not supported (yet)';
+
         if (this.current() === 'e') {
-            this.throwErr('Floats in scientific notation are not supported (yet)');
+            this.throwErr('Floats in scientific notation are not supported', 'Флоаты пока не поддерживаются');
         }
+
+        const nonDecimalErrorStringEn = 'Non-decimal bases are not supported';
+        const nonDecimalErrorStringRu = 'Поддерживаются только числа в десятичной системе счисления';
         if (this.current() === 'x') {
-            this.throwErr(nonDecimalErrorString);
+            this.throwErr(nonDecimalErrorStringEn, nonDecimalErrorStringRu);
         }
         if (!this.isCurrentWhitespaceOrEol() && (!allowedSeparators || !allowedSeparators.includes(this.current()))) {
             // TODO: a bit more descriptive? and a bit less hacky?
-            this.throwErr('Invalid syntax: number with non-digit characters');
+            this.throwErr('Invalid syntax: number with non-digit characters', 'В числе должны быть только цифры');
         }
 
         const num = this.s.slice(originalPos, this.pos);
         if (num[0] === '0' && num.length > 1) {
-            this.throwErr(nonDecimalErrorString);
+            this.throwErr(nonDecimalErrorStringEn, nonDecimalErrorStringRu);
         }
         // TODO: python parses numbers like ++1, -+--1, etc properly
         if (isNaN(+num)) {
-            this.throwErr('Invalid number', originalPos);
+            this.throwErr('Invalid number', 'Невалидное число', originalPos);
         }
         return BigNumber(num);
     }
@@ -235,7 +254,10 @@ export class PyObjParser {
         this.skipWhitespace();
         const c = this.current();
         if (c !== "'" && c !== '"') {
-            this.throwErr('String must be wrapped in quotation characters (either `\'` or `"`)');
+            this.throwErr(
+                'String must be wrapped in quotation characters (either `\'` or `"`)',
+                'Строки должны быть в кавычках'
+            );
         }
         const quote = c;
         this.consume(quote);
@@ -245,7 +267,11 @@ export class PyObjParser {
         while (this.current() != null && this.current() !== quote) {
             if (this.current() === '\\') {
                 if (this.next() !== '\\' && this.next() !== '"') {
-                    this.throwErr('The only supported escape sequences are for \\\\ and \\"', this.pos + 1);
+                    this.throwErr(
+                        'The only supported escape sequences are for \\\\ and \\"',
+                        'Такие escape-последовательности не поддерживаются',
+                        this.pos + 1
+                    );
                 }
                 res.push(this.next());
                 this.pos += 2;
@@ -274,13 +300,16 @@ export class PyObjParser {
             this.pos += 4;
             return {res: None, startPos};
         }
-        this.throwErr('Unknown identifier (if you wanted a string, wrap it in quotation marks - `"` or `\'`)');
+        this.throwErr(
+            'Unknown identifier (if you wanted a string, wrap it in quotation marks - `"` or `\'`)',
+            'Строки должны быть в кавычках'
+        );
     }
 
     checkTrailingChars() {
         this.skipWhitespace();
         if (this.pos < this.s.length) {
-            this.throwErr('Trailing characters');
+            this.throwErr('Trailing characters', 'Лишние символы');
         }
     }
 }

@@ -40,7 +40,11 @@ class PlayerInput extends ParsableInputBase {
 
     render() {
         console.log('Input state', this.state);
-        const errorMsg = this.state.error?.message;
+
+        let errorMsg;
+        if (this.state.error) {
+            errorMsg = this.state.error.text['ru'] || this.state.error.message;
+        }
 
         const style = {borderColor: errorMsg ? this.ERROR_COLOR : '#000'};
         if (this.props.type === 'int' || this.props.type === 'int_str_none') {
@@ -69,7 +73,7 @@ class PlayerInput extends ParsableInputBase {
 
 function intValidator(num) {
     if (!BigNumber.isBigNumber(num) && typeof num !== 'number') {
-        return 'Expected an integer';
+        return {en: 'Expected an integer', ru: 'Допустимы только числа'};
     }
 }
 
