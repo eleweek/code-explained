@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import SmoothScrollbar from 'react-smooth-scrollbar';
+import {BigNumber} from 'bignumber.js';
 
 import './player.css';
 
@@ -15,7 +16,87 @@ import pauseButton from './icons/pause.svg';
 import {CodeBlockWithActiveLineAndAnnotations} from './code_blocks';
 import {Redirect} from 'react-router';
 import {doubleRAF, isDefinedSmallBoxScreen} from './util';
+import {ParsableInputBase} from './inputs';
 import _ from 'lodash';
+import {
+    dumpPyList,
+    parsePyList,
+    parsePyNumber,
+    parsePyStringOrNumber,
+    parsePyStringOrNumberOrNone,
+} from './py_obj_parsing';
+
+class PlayerInput extends ParsableInputBase {
+    ERROR_COLOR = 'rgb(222, 39, 22)';
+
+    getPattern() {
+        if (this.props.type === 'array_int') {
+            return '[0-9 ,]*';
+        } else if (this.props.type === 'int') {
+            return '[0-9]*';
+        }
+        return null;
+    }
+
+    render() {
+        console.log('Input state', this.state);
+
+        let errorMsg;
+        if (this.state.error) {
+            errorMsg = this.state.error.text['ru'] || this.state.error.message;
+        }
+
+        const style = {borderColor: errorMsg ? this.ERROR_COLOR : '#000'};
+        if (this.props.type === 'int' || this.props.type === 'int_str_none') {
+            style.width = 50;
+        }
+        return (
+            <div className="player-input-wrapper">
+                <span className="player-input-label">{this.props.label}</span>
+                <input
+                    pattern={this.getPattern()}
+                    type={this.props.type === 'int' ? 'number' : undefined}
+                    style={style}
+                    className={classnames('player-input', errorMsg ? 'player-input-error' : null)}
+                    onChange={this.handleChange}
+                    value={this.state.valueRaw}
+                />
+                {errorMsg && (
+                    <span className="player-input-comment" style={{color: this.ERROR_COLOR}}>
+                        {errorMsg}
+                    </span>
+                )}
+            </div>
+        );
+    }
+}
+
+function intValidator(num) {
+    if (!BigNumber.isBigNumber(num) && typeof num !== 'number') {
+        return {en: 'Expected an integer', ru: 'Допустимы только числа'};
+    }
+}
+
+function dumpValue(val, type) {
+    if (type === 'array_int' || type === 'array') {
+        return dumpPyList(val);
+    } else if (type === 'int' || type === 'int_str_none') {
+        return dumpSimplePyObj(val);
+    }
+}
+
+function parseValue(s, type) {
+    console.log('parseValue', s, type);
+    if (type === 'array_int') {
+        return parsePyList(s, false, 1, intValidator);
+    } else if (type === 'array') {
+        return parsePyList(s, true, 1);
+    } else if (type === 'int') {
+        return parsePyNumber(s);
+    } else if (type === 'int_str_none') {
+        return parsePyStringOrNumberOrNone(s);
+    }
+}
 
 export class Player extends React.Component {
     SLIDER_MULTIPLIER = 1000;
@@ -24,20 +105,61 @@ export class Player extends React.Component {
 
     MAX_WIDTH = 1300;
 
+    INPUTS_LS_PREFIX = 'player-v1-1-';
+
     constructor(props) {
         super(props);
 
         const timeStr = localStorage.getItem(props.lessonId + '_time');
-        const sliderTime = Math.min(+timeStr || 0, this.maxTime());
+
+        const inputs = this.props.inputs || [];
+
+        const programInputs = [];
+        const originalRawInputs = [];
+        const onInputChangeHandlers = [];
+        for (let i = 0; i < inputs.length; ++i) {
+            const input = inputs[i];
+
+            const ls = localStorage.getItem(this.INPUTS_LS_PREFIX + input.id);
+
+            const rawValue = ls ? ls : input.default;
+            programInputs.push(parseValue(rawValue, input.type));
+            originalRawInputs.push(rawValue);
+            onInputChangeHandlers.push((value, valueRaw) => {
+                const programInputs = [...this.state.programInputs];
+                programInputs[i] = value;
+                const breakpoints = this.props.getBreakpoints(...programInputs);
+
+                const time = breakpoints.length - 1;
+                this.setState({programInputs, breakpoints, time, sliderTime: time});
+                this.saveSliderTimeToLS(time);
+
+                localStorage.setItem(this.INPUTS_LS_PREFIX + input.id, valueRaw);
+
+                console.log('onInputChangeHandlers', value, programInputs, breakpoints);
+            });
+        }
+        this.onInputChangeHandlers = onInputChangeHandlers;
+
+        console.log('Inputs', programInputs);
+        const breakpoints = this.props.getBreakpoints(...programInputs);
+        console.log('breakpoints', breakpoints);
+
+        const sliderTime = Math.min(+timeStr || 0, breakpoints.length - 1);
         this.state = {
             time: Math.round(sliderTime),
-            sliderTime: sliderTime,
+            sliderTime,
             autoPlaying: false,
             showingTheory: false,
 
             // react router stuff
             navigatingHome: false,
+            breakpoints,
+            programInputs,
+            originalRawInputs,
         };
+
+        console.log('Player constructor state', this.state);
 
         this.componentRef = React.createRef();
     }
@@ -47,7 +169,7 @@ export class Player extends React.Component {
     };
 
     maxTime = () => {
-        return this.props.breakpoints.length - 1;
+        return this.state.breakpoints.length - 1;
     };
 
     unixtimestamp() {
@@ -64,14 +186,15 @@ export class Player extends React.Component {
         this.handleTimeChange(sliderTime);
     };
 
+    saveSliderTimeToLS = sliderTime => {
+        localStorage.setItem(this.props.lessonId + '_time', sliderTime.toString());
+    };
+
     handleTimeChange = (sliderTime, autoPlaying = false, onStateChange) => {
         console.log('handleTimeChange', sliderTime, autoPlaying);
         const time = Math.round(sliderTime);
         this.setState(() => ({time, sliderTime, autoPlaying}), onStateChange);
-        setTimeout(
-            _.throttle(() => localStorage.setItem(this.props.lessonId + '_time', sliderTime.toString()), 500),
-            0
-        );
+        setTimeout(_.throttle(() => this.saveSliderTimeToLS(sliderTime), 500), 0);
         // this.props.handleTimeChange(value);
     };
 
@@ -158,7 +281,7 @@ export class Player extends React.Component {
     };
 
     static getDerivedStateFromProps(props, state) {
-        if (state.autoPlaying && props.time === props.breakpoints.length - 1) {
+        if (state.autoPlaying && props.time === state.breakpoints.length - 1) {
             return {...state, autoPlaying: false};
         } else {
             return null;
@@ -240,7 +363,8 @@ export class Player extends React.Component {
         if (this.state.navigatingHome) {
             return <Redirect push to="/" />;
         }
-        const maxTime = this.props.breakpoints.length;
+        const breakpoints = this.state.breakpoints;
+        const maxTime = breakpoints.length;
 
         const StateVisualization = this.props.stateVisualization;
         const {windowHeight, windowWidth} = this.props;
@@ -249,7 +373,7 @@ export class Player extends React.Component {
 
         const time = this.state.time;
 
-        const bp = this.props.breakpoints[time];
+        const bp = breakpoints[time];
 
         let codeHeight, innerTheoryHeight, theoryWidth, codeVisWidth;
         const controlsHeight = isMobile ? 45 : 35;
@@ -257,10 +381,12 @@ export class Player extends React.Component {
         const adjustTheoryTop = 5;
         const approximateHorizontalPaddings = 24;
         const MIN_THEORY_WIDTH = 300;
+        const inputsHeight = this.props.inputs ? 7 + this.props.inputs.length * 38 : 0;
         let isMobile = false;
         if (windowHeight) {
             const expectedVisHeight = 1.1 * StateVisualization.getExpectedHeight(totalWidth, windowHeight);
-            codeHeight = this.props.windowHeight - expectedVisHeight - approximateSliderAndControlsHeight;
+            codeHeight =
+                this.props.windowHeight - expectedVisHeight - approximateSliderAndControlsHeight - inputsHeight;
             console.log('Expected vis height', expectedVisHeight);
             codeVisWidth = totalWidth - approximateHorizontalPaddings;
 
@@ -287,6 +413,9 @@ export class Player extends React.Component {
         console.log('mobile header title', mobileHeaderTitle);
 
         const biggerFont = !isDefinedSmallBoxScreen(windowWidth, windowHeight) || isMobile;
+        // const inputs = this.props.inputs;
+        const inputs = this.props.inputs;
+
         return (
             <div className="player">
                 <div
@@ -373,6 +502,26 @@ export class Player extends React.Component {
                         className={classnames(isMobile && 'slider-mobile-extra')}
                     />
                 </div>
+                {inputs && inputs.length && (
+                    <div className="player-inputs-outer">
+                        <div className="player-inputs-inner">
+                            {inputs.map((input, idx) => {
+                                return (
+                                    <PlayerInput
+                                        value={this.state.programInputs[idx]}
+                                        valueRaw={this.state.originalRawInputs[idx]}
+                                        key={input.id}
+                                        label={input.label}
+                                        type={input.type}
+                                        onChange={this.onInputChangeHandlers[idx]}
+                                        dumpValue={val => dumpValue(val, input.type)}
+                                        parseValue={val => parseValue(val, input.type)}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
                 <div className="player-main">
                     <div className="player-code-and-visualisation" style={{width: codeVisWidth}}>
                         <CodeBlockWithActiveLineAndAnnotations
@@ -382,7 +531,7 @@ export class Player extends React.Component {
                             overflow={false}
                             fontSize={14}
                             lineVerticalPadding={2}
-                            breakpoints={this.props.breakpoints}
+                            breakpoints={breakpoints}
                             formatBpDesc={this.props.formatBpDesc}
                             withShortExplanation={isMobile}
                             mobileHeaderTitle={mobileHeaderTitle}

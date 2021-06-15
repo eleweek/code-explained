@@ -175,6 +175,61 @@ a.player-title:hover {
     right: none !important;
 }*/
 
+.player-inputs-outer {
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.player-inputs-inner {
+    margin-left: 10px;
+}
+
+.player-input-label {
+    min-width: 100px;
+    padding-right: 10px;
+}
+
+.player-input {
+    height: 35px;
+    min-width: 150px;
+    width: 35%;
+    padding-left: 5px;
+    padding-right: 5px;
+    /* border: 0.5px solid #416287 !important; */
+    /*border: 1px solid #e5e6f1 !important;*/
+    border: none;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    background-color: #f4f4f7;
+}
+
+.player-input:focus {
+    /* border: 1px solid #416287 !important;*/
+    outline: none !important;
+}
+
+.player-input-error:focus {
+    outline: none !important;
+}
+
+.player-input-error {
+    background-color: #fdeded;
+}
+
+.player-input-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.player-input-comment {
+    margin-left: 10px;
+}
+
 @media screen and (min-width: 890px) {
     .player-buttons-desktop {
         position: absolute;

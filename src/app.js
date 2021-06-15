@@ -197,22 +197,30 @@ console.log('IS res', insertionSortRes);
 export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
 
 const chapter1 = new Chapter1_SimplifiedHash();
-
-const slsRes = chapter1.runSimpleListSearch(chapter1.state.numbers, chapter1.state.simpleSearchNumber);
-const siaBrokenRes = chapter1.generateAlternativeDataForInsertAllBroken(chapter1.state.numbers);
-const siaRes = chapter1.runSimplifiedInsertAll(chapter1.state.numbers);
-const ssRes = chapter1.runSimplifiedSearch(siaRes.keys, chapter1.state.simplifiedHashSearchNumber);
-
 const chapter2 = new Chapter2_HashTableFunctions();
-const newRes = chapter2.runCreateNew(chapter2.state.array);
-let {hashCodes, keys} = newRes;
 
-const searchRes = chapter2.runSearch(hashCodes, keys, chapter2.state.searchedObj);
-const removeRes = chapter2.runRemove(hashCodes, keys, chapter2.state.objToRemove);
-hashCodes = removeRes.hashCodes;
-keys = removeRes.keys;
+// const GLOBAL_STATE = {
+//     simplifiedHash: /*...*/,
+//     simplifiedKeyToSearch: /* ... */,
+// };
 
-const resizeRes = chapter2.runResize(hashCodes, keys);
+// const inputsToPass = {
+//     inputs:
+// }
+
+const SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT = {
+    label: 'original_list',
+    type: 'array_int',
+    id: 'simplified-hash-original-list',
+    default: '1 56 50 2 44 25 17 4',
+};
+
+const HASH_FROM_KEYS_INPUT = {
+    label: 'from_keys',
+    type: 'array',
+    id: 'hash-from-keys',
+    default: "'uname' 'mv' 1 'time' -6 'ps' 'mkdir' 'less'",
+};
 
 const LESSONS = {
     bubble_sort: {
@@ -226,23 +234,26 @@ const LESSONS = {
         code: BUBBLE_SORT_CODE,
     },
 
-    linear_search: {
-        mainPagePaneHeaderTitle: 'Линейный поиск',
-        mainPagePaneClassName: 'linear-search',
-        playerHeaderTitle: 'линейный поиск',
-        mobilePlayerHeaderTitle: 'Линейный поиск',
-        code: SIMPLE_LIST_SEARCH,
-        breakpoints: slsRes.bp,
-        formatBpDesc: formatSimpleListSearchBreakpointDescription,
-        stateVisualization: SimpleListSearchStateVisualization,
-    },
+    // linear_search: {
+    //     mainPagePaneHeaderTitle: 'Линейный поиск',
+    //     mainPagePaneClassName: 'linear-search',
+    //     playerHeaderTitle: 'линейный поиск',
+    //     mobilePlayerHeaderTitle: 'Линейный поиск',
+    //     code: SIMPLE_LIST_SEARCH,
+    //     breakpoints: slsRes.bp,
+    //     formatBpDesc: formatSimpleListSearchBreakpointDescription,
+    //     stateVisualization: SimpleListSearchStateVisualization,
+    // },
 
     simplified_hash_collisions: {
         mainPagePaneHeaderTitle: 'Коллизии',
         mainPagePaneClassName: 'simplified-hash-collisions',
         playerHeaderTitle: 'коллизии в хеш-таблицах',
         code: SIMPLIFIED_INSERT_ALL_BROKEN_CODE,
-        breakpoints: siaBrokenRes.bp,
+        getBreakpoints: original_list => {
+            return chapter1.runSimplifiedInsertAllBroken(original_list).bp;
+        },
+        inputs: [SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT],
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertBrokenStateVisualization,
 
@@ -254,7 +265,9 @@ const LESSONS = {
         mainPagePaneClassName: 'simplified-hash-create',
         playerHeaderTitle: 'создание простейшей хеш-таблицы',
         code: SIMPLIFIED_INSERT_ALL_CODE,
-        breakpoints: siaRes.bp,
+        getBreakpoints: original_list => chapter1.runSimplifiedInsertAll(original_list).bp,
+
+        inputs: [SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT],
         formatBpDesc: formatSimplifiedInsertAllDescription,
         stateVisualization: SimplifiedInsertStateVisualization,
 
@@ -266,7 +279,19 @@ const LESSONS = {
         mainPagePaneClassName: 'simplified-hash-search',
         playerHeaderTitle: 'поиск в простейшей хеш-таблице',
         code: SIMPLIFIED_SEARCH_CODE,
-        breakpoints: ssRes.bp,
+        getBreakpoints: (original_list, number) => {
+            const keys = chapter1.runSimplifiedInsertAll(original_list).keys;
+            return chapter1.runSimplifiedSearch(keys, number).bp;
+        },
+        inputs: [
+            SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT,
+            {
+                label: 'number',
+                type: 'int',
+                id: 'simplified-hash-search-number',
+                default: '25',
+            },
+        ],
         formatBpDesc: formatSimplifiedSearchDescription,
         stateVisualization: SimplifiedSearchStateVisualization,
 
@@ -279,7 +304,10 @@ const LESSONS = {
         playerHeaderTitle: 'создание хеш-таблицы',
 
         code: HASH_CREATE_NEW_CODE,
-        breakpoints: newRes.bp,
+        getBreakpoints: from_keys => {
+            return chapter2.runCreateNew(from_keys).bp;
+        },
+        inputs: [HASH_FROM_KEYS_INPUT],
         formatBpDesc: formatHashCreateNewAndInsert,
         stateVisualization: HashCreateNewStateVisualization,
 
@@ -291,7 +319,19 @@ const LESSONS = {
         mainPagePaneClassName: 'hash-search',
         playerHeaderTitle: 'поиск в хеш-таблице',
         code: HASH_SEARCH_CODE,
-        breakpoints: searchRes.bp,
+        getBreakpoints: (from_keys, key) => {
+            const {hashCodes, keys} = chapter2.runCreateNew(from_keys);
+            return chapter2.runSearch(hashCodes, keys, key).bp;
+        },
+        inputs: [
+            HASH_FROM_KEYS_INPUT,
+            {
+                label: 'number',
+                type: 'int_str_none',
+                id: 'hash-search-key',
+                default: "'less'",
+            },
+        ],
         formatBpDesc: formatHashRemoveSearch,
         stateVisualization: HashNormalStateVisualization,
 
@@ -303,7 +343,19 @@ const LESSONS = {
         mainPagePaneClassName: 'hash-remove',
         playerHeaderTitle: 'удаление из хеш-таблицы',
         code: HASH_REMOVE_CODE,
-        breakpoints: removeRes.bp,
+        getBreakpoints: (from_keys, key) => {
+            const {hashCodes, keys} = chapter2.runCreateNew(from_keys);
+            return chapter2.runRemove(hashCodes, keys, key).bp;
+        },
+        inputs: [
+            HASH_FROM_KEYS_INPUT,
+            {
+                label: 'number',
+                type: 'int_str_none',
+                id: 'hash-remove-key',
+                default: "'ps'",
+            },
+        ],
         formatBpDesc: formatHashRemoveSearch,
         stateVisualization: HashNormalStateVisualization,
 
@@ -315,7 +367,11 @@ const LESSONS = {
         mainPagePaneClassName: 'hash-resize',
         playerHeaderTitle: 'расширение хеш-таблицы',
         code: HASH_RESIZE_CODE,
-        breakpoints: resizeRes.bp,
+        getBreakpoints: from_keys => {
+            const {hashCodes, keys} = chapter2.runCreateNew(from_keys);
+            return chapter2.runResize(hashCodes, keys).bp;
+        },
+        inputs: [HASH_FROM_KEYS_INPUT],
         formatBpDesc: formatHashResize,
         stateVisualization: HashResizeStateVisualization,
 

@@ -29,13 +29,13 @@ library.add(faUndoAlt);
 library.add(faRedoAlt);
 
 // TODO: this is still kinda ugly and needs some refactoring
-class ParsableInputBase extends React.Component {
+export class ParsableInputBase extends React.Component {
     constructor(props) {
         super(props);
         // TODO: this is a hack
         // there should probably be a single source of truth
         this.state = {
-            valueRaw: this.props.dumpValue(this.props.value),
+            valueRaw: this.props.valueRaw || this.props.dumpValue(this.props.value),
             value: this.props.value,
             error: null,
             lastError: null,
@@ -63,7 +63,7 @@ class ParsableInputBase extends React.Component {
             };
 
             this.setState(newState);
-            this.props.onChange(newState.value);
+            this.props.onChange(newState.value, newState.valueRaw);
         } catch (e) {
             this.setState({
                 valueRaw: event.target.value,
