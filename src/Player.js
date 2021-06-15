@@ -381,12 +381,11 @@ export class Player extends React.Component {
         const adjustTheoryTop = 5;
         const approximateHorizontalPaddings = 24;
         const MIN_THEORY_WIDTH = 300;
-        const inputsHeight = this.props.inputs ? 7 + this.props.inputs.length * 38 : 0;
+        let inputsHeight;
         let isMobile = false;
         if (windowHeight) {
             const expectedVisHeight = 1.1 * StateVisualization.getExpectedHeight(totalWidth, windowHeight);
-            codeHeight =
-                this.props.windowHeight - expectedVisHeight - approximateSliderAndControlsHeight - inputsHeight;
+
             console.log('Expected vis height', expectedVisHeight);
             codeVisWidth = totalWidth - approximateHorizontalPaddings;
 
@@ -397,6 +396,10 @@ export class Player extends React.Component {
                 theoryWidth = Math.max(0.3 * totalWidth, MIN_THEORY_WIDTH);
             }
             innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight - 15 /* IDK why 15 */;
+
+            inputsHeight = this.props.inputs && !isMobile ? 7 + this.props.inputs.length * 38 : 0;
+            codeHeight =
+                this.props.windowHeight - expectedVisHeight - approximateSliderAndControlsHeight - inputsHeight;
         }
 
         // const theoryPosition = approximateSliderAndControlsHeight - adjustTheoryTop;
@@ -502,7 +505,7 @@ export class Player extends React.Component {
                         className={classnames(isMobile && 'slider-mobile-extra')}
                     />
                 </div>
-                {inputs && inputs.length && (
+                {!isMobile && inputs && inputs.length && (
                     <div className="player-inputs-outer">
                         <div className="player-inputs-inner">
                             {inputs.map((input, idx) => {
