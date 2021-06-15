@@ -326,7 +326,7 @@ const LESSONS = {
         inputs: [
             HASH_FROM_KEYS_INPUT,
             {
-                label: 'number',
+                label: 'key',
                 type: 'int_str_none',
                 id: 'hash-search-key',
                 default: "'less'",
@@ -350,7 +350,7 @@ const LESSONS = {
         inputs: [
             HASH_FROM_KEYS_INPUT,
             {
-                label: 'number',
+                label: 'key',
                 type: 'int_str_none',
                 id: 'hash-remove-key',
                 default: "'ps'",
