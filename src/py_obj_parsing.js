@@ -48,11 +48,17 @@ export class PyObjParser {
     consume(expectedChar) {
         const c = this.current();
         if (c == null) {
-            this.throwErr(`Encountered unexpected EOL, expected ${expectedChar}`);
+            this.throwErr(
+                `Encountered unexpected EOL, expected ${expectedChar}`,
+                `Неожиданный конец данных, ожидается ${expectedChar}`
+            );
         }
 
         if (c !== expectedChar) {
-            this.throwErr(`Expected \`${expectedChar}\`, got \`${c}\``);
+            this.throwErr(
+                `Expected \`${expectedChar}\`, got \`${c}\``,
+                `Ожидается \`${expectedChar}\` вместо \`${c}\``
+            );
         }
         this.pos++;
     }
