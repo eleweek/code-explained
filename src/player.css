@@ -204,7 +204,7 @@ a.player-title:hover {
     border: none;
     border-radius: 3px;
     margin-bottom: 3px;
-    background-color: #e5e6f1;
+    background-color: #f4f4f7;
 }
 
 .player-input:focus {
@@ -214,7 +214,10 @@ a.player-title:hover {
 
 .player-input-error:focus {
     outline: none !important;
-    background-color: #eecaca;
+}
+
+.player-input-error {
+    background-color: #fdeded;
 }
 
 .player-input-wrapper {
