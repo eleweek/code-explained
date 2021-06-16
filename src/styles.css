@@ -491,14 +491,14 @@ blockquote.blockquote {
     transition-function: ease;
 }
 
-a.link {
-    color: rgba(6, 85, 128);
-    border-bottom-color: rgba(6, 85, 128, 0.15);
+footer a.link {
+    color: rgba(0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0.15);
     border-bottom-width: 1px;
     border-bottom-style: solid;
 }
 
-a.link:hover {
+footer a.link:hover {
     text-decoration: none;
     color: #b03000;
     border-bottom-color: rgba(160, 48, 0, 0.15);
