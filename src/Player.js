@@ -375,7 +375,7 @@ export class Player extends React.Component {
 
         const bp = breakpoints[time];
 
-        let codeHeight, innerTheoryHeight, theoryWidth, codeVisWidth;
+        let codeHeight, innerTheoryHeight, theoryWidth, codeVisWidth, desktopTheoryTop;
         const controlsHeight = isMobile ? 45 : 35;
         const approximateSliderAndControlsHeight = controlsHeight + 16;
         const adjustTheoryTop = 5;
@@ -396,6 +396,7 @@ export class Player extends React.Component {
                 theoryWidth = Math.max(0.3 * totalWidth, MIN_THEORY_WIDTH);
             }
             innerTheoryHeight = windowHeight - approximateSliderAndControlsHeight - 15 /* IDK why 15 */;
+            desktopTheoryTop = approximateSliderAndControlsHeight - 4;
 
             inputsHeight = this.props.inputs && !isMobile ? 7 + this.props.inputs.length * 38 : 0;
             codeHeight =
@@ -558,6 +559,7 @@ export class Player extends React.Component {
                                 background: 'white',
                                 zIndex: 1,
                                 right: 1,
+                                top: !isMobile ? desktopTheoryTop : undefined,
                                 width: theoryWidth,
                                 minWidth: MIN_THEORY_WIDTH,
                             }}
