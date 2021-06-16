@@ -43,7 +43,8 @@ class PlayerInput extends ParsableInputBase {
 
         let errorMsg;
         if (this.state.error) {
-            errorMsg = this.state.error.text['ru'] || this.state.error.message;
+            errorMsg =
+                this.state.error.text && this.state.error.text.ru ? this.state.error.text.ru : this.state.error.message;
         }
 
         const style = {borderColor: errorMsg ? this.ERROR_COLOR : '#000'};
@@ -126,17 +127,21 @@ export class Player extends React.Component {
             programInputs.push(parseValue(rawValue, input.type));
             originalRawInputs.push(rawValue);
             onInputChangeHandlers.push((value, valueRaw) => {
-                const programInputs = [...this.state.programInputs];
-                programInputs[i] = value;
-                const breakpoints = this.props.getBreakpoints(...programInputs);
+                console.log('equal compare', dumpValue(programInputs[i], input.type), dumpValue(value, input.type));
 
-                const time = breakpoints.length - 1;
-                this.setState({programInputs, breakpoints, time, sliderTime: time});
-                this.saveSliderTimeToLS(time);
+                if (dumpValue(programInputs[i], input.type) !== dumpValue(value, input.type)) {
+                    const programInputs = [...this.state.programInputs];
+                    programInputs[i] = value;
+                    const breakpoints = this.props.getBreakpoints(...programInputs);
 
-                localStorage.setItem(this.INPUTS_LS_PREFIX + input.id, valueRaw);
+                    const time = this.state.time > 0 ? breakpoints.length - 1 : 0;
+                    this.setState({programInputs, breakpoints, time, sliderTime: time});
+                    this.saveSliderTimeToLS(time);
 
-                console.log('onInputChangeHandlers', value, programInputs, breakpoints);
+                    localStorage.setItem(this.INPUTS_LS_PREFIX + input.id, valueRaw);
+
+                    console.log('onInputChangeHandlers', value, programInputs, breakpoints);
+                }
             });
         }
         this.onInputChangeHandlers = onInputChangeHandlers;
