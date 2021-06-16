@@ -1,6 +1,6 @@
 # Code explained - interactive visualisations of code with dynamic comments
 
-This repository contains the code for code-explained.com
+This repository contains the code for https://code-explained.com/
 
 ## Code
 
