@@ -188,8 +188,7 @@ div.hash-example-instance {
 
 .active-box-selection-2 {
     /* border-style: dashed; */
-    border-style: solid;
-    border-width: 1px;
+    border: none;
 }
 
 .active-box-selection-animated {
