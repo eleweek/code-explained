@@ -19,6 +19,7 @@ import {
     QUICK_SORT_CODE,
     QuickSort,
     formatQuickSort,
+    formatBubbleSort,
 } from './new_demos';
 import {Player} from './player';
 import {
@@ -207,6 +208,7 @@ export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{la
 export const QuickSortVisualisation = TetrisFactory([
     [HashBoxesComponent, [{labels: [null]}, 'array', 'left', 'right']],
 ]);
+export const BubbleSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a', 'j', 'jplus1']]]);
 
 const chapter1 = new Chapter1_SimplifiedHash();
 const chapter2 = new Chapter2_HashTableFunctions();
@@ -241,8 +243,8 @@ const LESSONS = {
         playerHeaderTitle: 'сортировку пузырьком',
         mobilePlayerHeaderTitle: 'Сортировка пузырьком',
         getBreakpoints: () => bubbleSortResGranular.bp,
-        formatBpDesc: dummyFormat,
-        stateVisualization: MinimalSortVisualisation,
+        formatBpDesc: formatBubbleSort,
+        stateVisualization: BubbleSortVisualisation,
         code: BUBBLE_SORT_CODE,
     },
 

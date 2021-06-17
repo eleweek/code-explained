@@ -10,9 +10,13 @@ import {VisualizedCode, TetrisFactory, LineOfBoxesComponent, HashBoxesComponent,
 export const BUBBLE_SORT_CODE = [
     ['def bubble_sort(a):', '', 0],
     ['    for i in range(len(a)):', 'for-i', 1],
-    ['        for j in range(len(a) - 1):', 'for-j', 2],
-    ['            if a[j] > a[j + 1]:', 'compare', 3],
-    ['                a[j], a[j + 1] = a[j + 1], a[j]', 'swap', 4],
+    ['        swapped = False', 'swapped-false', 1],
+    ['        for j in range(len(a) - i - 1):', 'for-j', 2],
+    ['            if a[j] > a[j + 1]:', 'compare', 2],
+    ['                a[j], a[j + 1] = a[j + 1], a[j]', 'swap', 2],
+    ['                swapped = True', 'swapped-true', 2],
+    ['        if swapped:', 'check-swapped', 1],
+    ['            break', 'break-swapped', 1],
     ['', 'end', -1],
 ];
 
@@ -27,8 +31,9 @@ export class BubbleSort extends BreakpointFunction {
 
         for (this.i = 0; this.i < n; ++this.i) {
             this.addBP('for-i');
-            let swapped = false;
-            for (this.j = 0; this.j < n - 1; ++this.j) {
+            this.swapped = false;
+            this.addBP('swapped-false');
+            for (this.j = 0; this.j < n - 1 - this.i; ++this.j) {
                 this.jplus1 = this.j + 1;
                 if (granular) {
                     this.addBP('for-j');
@@ -41,19 +46,55 @@ export class BubbleSort extends BreakpointFunction {
                 if (aj > ajplus1) {
                     this.a = this.a.set(this.j, ajplus1);
                     this.a = this.a.set(this.j + 1, aj);
-                    swapped = true;
                     if (granular) {
                         this.addBP('swap');
                     }
+                    this.swapped = true;
+                    if (granular) {
+                        this.addBP('swapped-true');
+                    }
                 }
             }
-            if (!granular && !swapped) {
-                break;
+            this.j = undefined;
+            this.jplus1 = undefined;
+            this.addBP('check-swapped');
+            if (!this.swapped) {
+                this.addBP('break-swapped');
+                return;
             }
+            this.swapped = undefined;
         }
         this.addBP('end');
 
         return this.a;
+    }
+}
+
+export function formatBubbleSort(bp) {
+    switch (bp.point) {
+        case 'for-i':
+            return `Делаем <code>${bp.i + 1}</code>-ю итерацию сортировки`;
+        case 'swapped-false':
+            return `На этой итерации элементы еще не меняли местами`;
+        case 'for-j':
+            return `Посмотрим на <code>${bp.j}</code>-й элемент, <code>${bp.a.get(bp.j)}</code>`;
+        case 'compare': {
+            const aj = bp.a.get(bp.j);
+            const aj1 = bp.a.get(bp.j + 1);
+            return `<code>${aj} ${formatComparison(aj, aj1)} ${aj1}</code>, сравниваем его с соседним`;
+        }
+        case 'swap': {
+            return `Поменяем соседей местами`;
+        }
+        case 'check-swapped': {
+            return bp.swapped
+                ? `На этой итерации мы делали обмены, поэтому продолжаем`
+                : `На этой итерации мы не сделали обменов, поэтому массив отсортирован`;
+        }
+        case 'break-swapped':
+            return 'Выходим';
+        case 'end':
+            return 'Массив отсортирован';
     }
 }
 
@@ -351,25 +392,25 @@ export class NewDemos extends Chapter2_HashTableFunctions {
 }
 
 export const QUICK_SORT_CODE = [
-    ['def quicksort(array, start, stop):', '', 0],
+    ['def quicksort(a, start, stop):', '', 0],
     ['    if start >= stop:', 'compare-size', 1],
     ['        return', 'return', 2],
     ['', '', -1],
-    ['    pivot = array[(start + stop) // 2]', 'select-pivot', 1],
+    ['    pivot = a[(start + stop) // 2]', 'select-pivot', 1],
     ['    left = start', 'left-start', 1],
     ['    right = stop', 'right-stop', 1],
     ['', '', -1],
     ['    while left <= right:', 'while-left-right', 2],
-    ['        while array[left] < pivot:', 'while-left', 3],
+    ['        while a[left] < pivot:', 'while-left', 3],
     ['            left += 1', 'inc-left-first', 3],
-    ['        while array[right] > pivot:', 'while-right', 3],
+    ['        while a[right] > pivot:', 'while-right', 3],
     ['            right -= 1', 'dec-right-first', 3],
     ['        if left <= right:', 'compare-left-right', 2],
-    ['            array[left], array[right] = array[right], array[left]', 'swap', 3],
+    ['            a[left], a[right] = a[right], a[left]', 'swap', 3],
     ['            left += 1', 'inc-left-second', 3],
     ['            right -= 1', 'dec-right-second', 3],
-    ['    quicksort(array, start, right)', 'sort-left', 1],
-    ['    quicksort(array, left, stop)', 'sort-right', 1],
+    ['    quicksort(a, start, right)', 'sort-left', 1],
+    ['    quicksort(a, left, stop)', 'sort-right', 1],
     ['    ', 'exit', 1],
 ];
 
