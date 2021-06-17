@@ -198,7 +198,7 @@ function runQuickSort(a) {
 
 const InsertionSortVisualisation = TetrisFactory([[LineOfBoxesComponent, [{labels: [null]}, 'a', 'i', undefined]]]);
 
-const MAIN_PAGE_ARRAY = [42, 11, 92, 27, 87, 14, 67, 1];
+const MAIN_PAGE_ARRAY = [42, 11, 92, 27, 87, 14, 67, 1, 12, 44, 9];
 const bubbleSortRes = runBubbleSort(MAIN_PAGE_ARRAY);
 const bubbleSortResGranular = runBubbleSort(MAIN_PAGE_ARRAY, true);
 const insertionSortRes = runInsertionSort(MAIN_PAGE_ARRAY);
