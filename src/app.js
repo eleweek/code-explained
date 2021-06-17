@@ -11,7 +11,14 @@ import {BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter} from
 import {MyErrorBoundary, initUxSettings, getUxSettings, BootstrapAlert, doubleRAF} from './util';
 import {win, globalSettings} from './store';
 import {ForeverAnimation, dummyFormat, TetrisFactory, HashBoxesComponent, LineOfBoxesComponent} from './code_blocks';
-import {BubbleSort, BUBBLE_SORT_CODE, InsertionSort, INSERTION_SORT_CODE} from './new_demos';
+import {
+    BubbleSort,
+    BUBBLE_SORT_CODE,
+    InsertionSort,
+    INSERTION_SORT_CODE,
+    QUICK_SORT_CODE,
+    QuickSort,
+} from './new_demos';
 import {Player} from './player';
 import {
     Chapter1_SimplifiedHash,
@@ -181,20 +188,24 @@ function runInsertionSort(a, granular = false) {
     return {bp};
 }
 
+function runQuickSort(a) {
+    const qs = new QuickSort();
+    qs.run(a);
+    const bp = qs.getBreakpoints();
+    console.log('quicksort bp', bp);
+    return {bp};
+}
+
 const InsertionSortVisualisation = TetrisFactory([[LineOfBoxesComponent, [{labels: [null]}, 'a', 'i', undefined]]]);
 
 const MAIN_PAGE_ARRAY = [42, 11, 92, 27, 87, 14, 67, 1];
 const bubbleSortRes = runBubbleSort(MAIN_PAGE_ARRAY);
 const bubbleSortResGranular = runBubbleSort(MAIN_PAGE_ARRAY, true);
 const insertionSortRes = runInsertionSort(MAIN_PAGE_ARRAY);
-const insertionSortResGranular = runInsertionSort(MAIN_PAGE_ARRAY, true);
-const MAX_PAGE_TIME = Math.max(...[bubbleSortRes, insertionSortRes].map(res => res.bp.length));
-console.log('Max page time', MAX_PAGE_TIME);
-
-console.log('BS res', bubbleSortRes);
-console.log('IS res', insertionSortRes);
+const quickSortRes = runQuickSort(MAIN_PAGE_ARRAY);
 
 export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
+export const QuickSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'array']]]);
 
 const chapter1 = new Chapter1_SimplifiedHash();
 const chapter2 = new Chapter2_HashTableFunctions();
@@ -228,10 +239,21 @@ const LESSONS = {
         mainPagePaneClassName: 'bubble-sort',
         playerHeaderTitle: 'сортировку пузырьком',
         mobilePlayerHeaderTitle: 'Сортировка пузырьком',
-        breakpoints: bubbleSortResGranular.bp,
+        getBreakpoints: () => bubbleSortResGranular.bp,
         formatBpDesc: dummyFormat,
         stateVisualization: MinimalSortVisualisation,
         code: BUBBLE_SORT_CODE,
+    },
+
+    quick_sort: {
+        mainPagePaneHeaderTitle: 'Быстрая',
+        mainPagePaneClassName: 'quick-sort',
+        playerHeaderTitle: 'быструю сортировку',
+        mobilePlayerHeaderTitle: 'Быстрая сортировка',
+        getBreakpoints: () => quickSortRes.bp,
+        formatBpDesc: dummyFormat,
+        stateVisualization: QuickSortVisualisation,
+        code: QUICK_SORT_CODE,
     },
 
     // linear_search: {

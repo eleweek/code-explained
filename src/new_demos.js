@@ -349,3 +349,113 @@ export class NewDemos extends Chapter2_HashTableFunctions {
         );
     }
 }
+
+export const QUICK_SORT_CODE = [
+    ['def quicksort(array, start, stop):', '', 0],
+    ['    if stop <= start:', 'compare-size', 1],
+    ['        return', 'return', 2],
+    ['', '', -1],
+    ['    pivot = array[(start + stop) // 2]', 'select-pivot', 1],
+    ['    left = start', 'left-start', 1],
+    ['    right = stop', 'right-stop', 1],
+    ['', '', -1],
+    ['    while left <= right:', 'while-left-right', 2],
+    ['        while array[left] < pivot:', 'while-left', 3],
+    ['            left += 1', 'inc-left-first', 3],
+    ['        while array[right] > pivot:', 'while-right', 3],
+    ['            right -= 1', 'dec-right-first', 3],
+    ['        if left <= right:', 'compare-left-right', 2],
+    ['            array[left], array[right] = array[right], array[left]', 'swap', 3],
+    ['            left += 1', 'inc-left-second', 3],
+    ['            right -= 1', 'dec-right-second', 3],
+    ['    quicksort(array, left, stop)', 'sort-left', 1],
+    ['    quicksort(array, start, right)', 'sort-right', 1],
+];
+
+export class QuickSort extends BreakpointFunction {
+    constructor() {
+        super();
+    }
+
+    run(_a) {
+        this.array = new ImmutableList(_a);
+        this.quickSort(0, _a.length);
+    }
+
+    quickSort(_start, _stop) {
+        this.start = _start;
+        this.stop = _stop;
+        this.addBP('compare-size');
+        console.log('quicksort', this.start, this.stop);
+        if (this.stop <= this.start) {
+            this.addBP('return');
+            return;
+        }
+        this.pivot = this.array.get(Math.trunc((this.start + this.stop) / 2));
+        this.addBP('select-pivot');
+        this.left = this.start;
+        this.addBP('left-start');
+        this.right = this.stop;
+        this.addBP('right-stop');
+
+        while (true) {
+            this.addBP('while-left-right');
+            if (this.left > this.right) {
+                break;
+            }
+
+            while (true) {
+                this.addBP('while-left');
+                if (this.array.get(this.left) >= this.pivot) {
+                    break;
+                }
+                this.left++;
+                this.addBP('inc-left-first');
+            }
+
+            while (true) {
+                this.addBP('while-right');
+                if (this.array.get(this.right) <= this.pivot) {
+                    break;
+                }
+                this.right--;
+                this.addBP('dec-right-first');
+            }
+
+            this.addBP('compare-left-right');
+            if (this.left <= this.right) {
+                const _al = this.array.get(this.left);
+                const _ar = this.array.get(this.right);
+                this.array = this.array.set(this.left, _ar);
+                this.array = this.array.set(this.right, _al);
+                this.addBP('swap');
+                this.left += 1;
+                this.addBP('inc-left-second');
+                this.right -= 1;
+                this.addBP('dec-right-second');
+            }
+        }
+
+        console.log(this.start, this.left, this.right, this.stop);
+        const savedPivot = this.pivot;
+        const savedLeft = this.left;
+        const savedRight = this.right;
+        const savedStop = this.stop;
+        const savedStart = this.start;
+        this.pivot = undefined;
+        this.right = undefined;
+        this.addBP('sort-left');
+        this.quickSort(this.left, this.stop);
+
+        this.pivot = savedPivot;
+        this.left = savedLeft;
+        this.right = savedRight;
+        this.stop = savedStop;
+        this.start = savedStart;
+
+        this.pivot = undefined;
+        this.left = undefined;
+        this.addBP('sort-right');
+        this.quickSort(this.start, this.right);
+    }
+}
