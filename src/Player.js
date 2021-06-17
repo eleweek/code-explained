@@ -53,7 +53,7 @@ class PlayerInput extends ParsableInputBase {
         }
         return (
             <div className="player-input-wrapper">
-                <span className="player-input-label">{this.props.label}</span>
+                {this.props.label && <span className="player-input-label">{this.props.label}</span>}
                 <input
                     pattern={this.getPattern()}
                     type={this.props.type === 'int' ? 'number' : undefined}

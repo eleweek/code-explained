@@ -199,11 +199,6 @@ function runQuickSort(a) {
 }
 
 const InsertionSortVisualisation = TetrisFactory([[LineOfBoxesComponent, [{labels: [null]}, 'a', 'i', undefined]]]);
-
-const MAIN_PAGE_ARRAY = [42, 11, 92, 27, 87, 14, 67, 1, 12, 44, 9];
-const bubbleSortResGranular = runBubbleSort(MAIN_PAGE_ARRAY, true);
-const quickSortRes = runQuickSort(MAIN_PAGE_ARRAY);
-
 export const MinimalSortVisualisation = TetrisFactory([[HashBoxesComponent, [{labels: [null]}, 'a']]]);
 export const QuickSortVisualisation = TetrisFactory([
     [HashBoxesComponent, [{labels: [null]}, 'array', 'left', 'right']],
@@ -229,6 +224,13 @@ const SIMPLIFIED_HASH_ORIGINAL_LIST_INPUT = {
     default: '1 56 50 2 44 25 17 4',
 };
 
+const SORTS_LIST_INPUT = {
+    label: '',
+    type: 'array_int',
+    id: 'sorts-list',
+    default: '42 13 11 92 27 87 14 67 1 12 44 9 20 7',
+};
+
 const HASH_FROM_KEYS_INPUT = {
     label: 'from_keys',
     type: 'array',
@@ -242,7 +244,10 @@ const LESSONS = {
         mainPagePaneClassName: 'bubble-sort',
         playerHeaderTitle: 'сортировку пузырьком',
         mobilePlayerHeaderTitle: 'Сортировка пузырьком',
-        getBreakpoints: () => bubbleSortResGranular.bp,
+        getBreakpoints: numbers => {
+            return runBubbleSort(numbers.map(n => n.toNumber()), true).bp;
+        },
+        inputs: [SORTS_LIST_INPUT],
         formatBpDesc: formatBubbleSort,
         stateVisualization: BubbleSortVisualisation,
         code: BUBBLE_SORT_CODE,
@@ -253,7 +258,10 @@ const LESSONS = {
         mainPagePaneClassName: 'quick-sort',
         playerHeaderTitle: 'быструю сортировку',
         mobilePlayerHeaderTitle: 'Быстрая сортировка',
-        getBreakpoints: () => quickSortRes.bp,
+        getBreakpoints: numbers => {
+            return runQuickSort(numbers.map(n => n.toNumber())).bp;
+        },
+        inputs: [SORTS_LIST_INPUT],
         formatBpDesc: formatQuickSort,
         stateVisualization: QuickSortVisualisation,
         code: QUICK_SORT_CODE,

@@ -86,6 +86,9 @@ export function formatBubbleSort(bp) {
         case 'swap': {
             return `Поменяем соседей местами`;
         }
+        case 'swapped-true': {
+            return `Запомним, что поменяли местами`;
+        }
         case 'check-swapped': {
             return bp.swapped
                 ? `На этой итерации мы делали обмены, поэтому продолжаем`
@@ -432,8 +435,8 @@ export function formatQuickSort(bp) {
                 len <= 0
                     ? 'пустой подмассив уже отсортирован'
                     : len === 1
-                    ? 'подмассив из одного элемента уже отсортирован'
-                    : `сортируем подмассив длины <code>${len}</code>`;
+                    ? `${bp.recursionLevel > 0 ? 'под' : ''}массив из одного элемента уже отсортирован`
+                    : `сортируем ${bp.recursionLevel > 0 ? 'под' : ''}массив длины <code>${len}</code>`;
             return `<code>${bp.start} ${formatComparison(bp.start, bp.stop)} ${bp.stop}</code>: ${explanation}`;
         }
         case 'return':
