@@ -352,7 +352,7 @@ export class NewDemos extends Chapter2_HashTableFunctions {
 
 export const QUICK_SORT_CODE = [
     ['def quicksort(array, start, stop):', '', 0],
-    ['    if stop <= start:', 'compare-size', 1],
+    ['    if start >= stop:', 'compare-size', 1],
     ['        return', 'return', 2],
     ['', '', -1],
     ['    pivot = array[(start + stop) // 2]', 'select-pivot', 1],
@@ -393,16 +393,16 @@ export function formatQuickSort(bp) {
                     : len === 1
                     ? 'подмассив из одного элемента уже отсортирован'
                     : `сортируем подмассив длины <code>${len}</code>`;
-            return `<code>${bp.stop} ${bp.stop <= bp.start ? '<=' : '>'} ${bp.start}</code>: ${explanation}`;
+            return `<code>${bp.start} ${formatComparison(bp.start, bp.stop)} ${bp.stop}</code>: ${explanation}`;
         }
         case 'return':
             return 'Ничего делать не нужно — выходим';
         case 'select-pivot':
             return `Выбираем элемент-разделитель: <code>${bp.pivot}</code>`;
         case 'left-start':
-            return `Левый указатель указывает на <code>${bp.left}</code>`;
+            return `Левый указатель: <code>${bp.left}</code>`;
         case 'right-stop':
-            return `Правый указатель указывает на <code>${bp.right}</code>`;
+            return `Правый указатель: <code>${bp.right}</code>`;
         case 'while-left-right': {
             const len = bp.right - bp.left + 1;
             const explanation =
@@ -464,6 +464,7 @@ export class QuickSort extends BreakpointFunction {
 
     run(_a) {
         this.array = new ImmutableList(_a);
+        this.recursionLevel = 0;
         this.quickSort(0, _a.length - 1);
     }
 
@@ -527,10 +528,13 @@ export class QuickSort extends BreakpointFunction {
         const savedRight = this.right;
         const savedStop = this.stop;
         const savedStart = this.start;
+
         this.pivot = undefined;
-        this.right = undefined;
-        this.addBP('sort-right');
-        this.quickSort(this.left, this.stop);
+        this.left = undefined;
+        this.addBP('sort-left');
+        this.recursionLevel++;
+        this.quickSort(this.start, this.right);
+        this.recursionLevel--;
 
         this.pivot = savedPivot;
         this.left = savedLeft;
@@ -539,8 +543,10 @@ export class QuickSort extends BreakpointFunction {
         this.start = savedStart;
 
         this.pivot = undefined;
-        this.left = undefined;
-        this.addBP('sort-left');
-        this.quickSort(this.start, this.right);
+        this.right = undefined;
+        this.addBP('sort-right');
+        this.recursionLevel++;
+        this.quickSort(this.left, this.stop);
+        this.recursionLevel--;
     }
 }

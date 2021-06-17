@@ -1474,6 +1474,11 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
                 break;
             }
 
+            if (bp.recursionLevel != null && bp.recursionLevel !== activeBp.recursionLevel) {
+                continue;
+            }
+            console.log('BP', time, bp);
+
             if (bp.point in visibleBreakpoints) {
                 let level = pointToLevel[bp.point];
                 for (let visibleBpPoint in visibleBreakpoints) {
