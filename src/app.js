@@ -18,6 +18,7 @@ import {
     INSERTION_SORT_CODE,
     QUICK_SORT_CODE,
     QuickSort,
+    formatQuickSort,
 } from './new_demos';
 import {Player} from './player';
 import {
@@ -251,7 +252,7 @@ const LESSONS = {
         playerHeaderTitle: 'быструю сортировку',
         mobilePlayerHeaderTitle: 'Быстрая сортировка',
         getBreakpoints: () => quickSortRes.bp,
-        formatBpDesc: dummyFormat,
+        formatBpDesc: formatQuickSort,
         stateVisualization: QuickSortVisualisation,
         code: QUICK_SORT_CODE,
     },
