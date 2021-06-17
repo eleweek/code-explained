@@ -194,7 +194,7 @@ function SingleBoxSelection({idx, status, boxSize, spacingX, spacingY, borderRad
 }
 
 class SelectionGroup extends React.Component {
-    TRANSITION_DURATION = 300;
+    TRANSITION_DURATION = 500;
 
     constructor() {
         super();
