@@ -24,6 +24,7 @@ import {
     parsePyNumber,
     parsePyStringOrNumber,
     parsePyStringOrNumberOrNone,
+    dumpSimplePyObj,
 } from './py_obj_parsing';
 
 class PlayerInput extends ParsableInputBase {

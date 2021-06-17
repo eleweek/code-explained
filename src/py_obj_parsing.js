@@ -358,7 +358,7 @@ export function parsePyStringOrNumberOrNone(s) {
 
 // TODO: Dump functions are very hacky right now
 
-function dumpSimplePyObj(o) {
+export function dumpSimplePyObj(o) {
     if (isNone(o)) {
         return 'None';
     }
