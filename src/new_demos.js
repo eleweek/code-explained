@@ -370,7 +370,7 @@ export const QUICK_SORT_CODE = [
     ['            right -= 1', 'dec-right-second', 3],
     ['    quicksort(array, start, right)', 'sort-left', 1],
     ['    quicksort(array, left, stop)', 'sort-right', 1],
-    ['', 'exit', 1],
+    ['    ', 'exit', 1],
 ];
 
 function formatComparison(num1, num2) {
@@ -416,7 +416,9 @@ export function formatQuickSort(bp) {
             const explanation =
                 a < bp.pivot
                     ? 'элемент слева от разделителя уже меньше'
-                    : 'слева должны быть элементы меньше разделителя, а мы натолкнулись на больший элемент';
+                    : `слева должны быть элементы меньше разделителя, а мы натолкнулись на ${
+                          a === bp.pivot ? 'равный' : 'больший'
+                      } элемент`;
             return `<code>${a} ${formatComparison(a, bp.pivot)} ${bp.pivot}</code>: ${explanation}`;
         }
         case 'while-right': {
@@ -425,7 +427,9 @@ export function formatQuickSort(bp) {
             const explanation =
                 a > bp.pivot
                     ? 'элемент справа от разделителя уже больше'
-                    : 'справа должны быть элементы больше разделителя, а мы натолкнулись на меньший элемент';
+                    : `справа должны быть элементы больше разделителя, а мы натолкнулись на ${
+                          a === bp.pivot ? 'равный' : 'меньший'
+                      } элемент`;
             return `<code>${a} ${formatComparison(a, bp.pivot)} ${bp.pivot}</code>: ${explanation}`;
         }
         case 'inc-left-first':
@@ -451,9 +455,18 @@ export function formatQuickSort(bp) {
             }
         }
         case 'sort-left':
-            return `Рекурсивно сортируем левый подмассив с ${bp.start} по ${bp.right} элементы`;
+            return `Рекурсивно сортируем левый подмассив <code>${bp.start}..${bp.right}</code>`;
         case 'sort-right':
-            return `Рекурсивно сортируем правый подмассив с ${bp.left} по ${bp.stop} элементы`;
+            return `Рекурсивно сортируем правый подмассив <code>${bp.left}..${bp.stop}</code>`;
+        case 'exit': {
+            if (bp.recursionLevel > 0) {
+                return `Подмассив <code>${bp.start}..${
+                    bp.stop
+                }</code> отсортирован. Выходим из рекурсии (текущая глубина: ${bp.recursionLevel})`;
+            } else {
+                return `Весь массив отсортирован, выходим`;
+            }
+        }
     }
 }
 
@@ -548,5 +561,7 @@ export class QuickSort extends BreakpointFunction {
         this.recursionLevel++;
         this.quickSort(this.left, this.stop);
         this.recursionLevel--;
+
+        this.addBP('exit');
     }
 }
