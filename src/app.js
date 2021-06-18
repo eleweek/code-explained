@@ -49,7 +49,7 @@ import {
     HashNormalStateVisualization,
     HashResizeStateVisualization,
 } from './chapter2_hash_table_functions';
-import {CollisionsTheory, SimplifiedHashTheory, HashTheory} from './theory';
+import {CollisionsTheory, SimplifiedHashTheory, HashTheory, BubbleSortTheory, QuickSortTheory} from './theory';
 
 function getWindowDimensions() {
     const width = document.documentElement.clientWidth;
@@ -252,6 +252,8 @@ const LESSONS = {
         stateVisualization: BubbleSortVisualisation,
         code: BUBBLE_SORT_CODE,
         resetToZero: true,
+
+        theory: <BubbleSortTheory />,
     },
 
     quick_sort: {
@@ -267,6 +269,8 @@ const LESSONS = {
         stateVisualization: QuickSortVisualisation,
         code: QUICK_SORT_CODE,
         resetToZero: true,
+
+        theory: <QuickSortTheory />,
     },
 
     // linear_search: {
