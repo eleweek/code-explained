@@ -11,8 +11,12 @@
         <meta property="og:image" content="http://code-explained.com/og.png" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:secure_url" content="https://code-explained.com/og.png" />
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+        </style>
 
-        <% if (process.env.NODE_ENV === "production") { %>
+        <% if (process.env.NODE_ENV==="production" ) { %>
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-08N9MH2EME"></script>
         <script>
@@ -26,6 +30,7 @@
         </script>
         <% } %>
     </head>
+
     <body>
         <div id="root"></div>
     </body>
