@@ -170,7 +170,7 @@ div.hash-example-instance {
 
 .box-animated {
     transition-property: opacity, transform;
-    transition-duration: 0.6s;
+    transition-duration: 0.5s;
     transition-timing-function: ease;
 }
 
@@ -188,8 +188,7 @@ div.hash-example-instance {
 
 .active-box-selection-2 {
     /* border-style: dashed; */
-    border-style: solid;
-    border-width: 1px;
+    border: none;
 }
 
 .active-box-selection-animated {

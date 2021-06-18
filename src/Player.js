@@ -54,7 +54,7 @@ class PlayerInput extends ParsableInputBase {
         }
         return (
             <div className="player-input-wrapper">
-                <span className="player-input-label">{this.props.label}</span>
+                {this.props.label && <span className="player-input-label">{this.props.label}</span>}
                 <input
                     pattern={this.getPattern()}
                     type={this.props.type === 'int' ? 'number' : undefined}
@@ -115,6 +115,7 @@ export class Player extends React.Component {
         const timeStr = localStorage.getItem(props.lessonId + '_time');
 
         const inputs = this.props.inputs || [];
+        const resetToZero = props.resetToZero;
 
         const programInputs = [];
         const originalRawInputs = [];
@@ -135,7 +136,7 @@ export class Player extends React.Component {
                     programInputs[i] = value;
                     const breakpoints = this.props.getBreakpoints(...programInputs);
 
-                    const time = this.state.time > 0 ? breakpoints.length - 1 : 0;
+                    const time = !resetToZero && this.state.time > 0 ? breakpoints.length - 1 : 0;
                     this.setState({programInputs, breakpoints, time, sliderTime: time});
                     this.saveSliderTimeToLS(time);
 

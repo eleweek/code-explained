@@ -2,7 +2,7 @@ import * as React from 'react';
 import memoizeOne from 'memoize-one';
 import {List as ImmutableList} from 'immutable';
 
-import {Subcontainerize, COLOR_FOR_READ_OPS} from './util';
+import {Subcontainerize, COLOR_FOR_READ_OPS, singularOrPluralRus} from './util';
 import {Chapter2_HashTableFunctions} from './chapter2_hash_table_functions';
 import {joinBreakpoints, BreakpointFunction} from './hash_impl_common';
 import {VisualizedCode, TetrisFactory, LineOfBoxesComponent, HashBoxesComponent, dummyFormat} from './code_blocks';
@@ -10,9 +10,13 @@ import {VisualizedCode, TetrisFactory, LineOfBoxesComponent, HashBoxesComponent,
 export const BUBBLE_SORT_CODE = [
     ['def bubble_sort(a):', '', 0],
     ['    for i in range(len(a)):', 'for-i', 1],
-    ['        for j in range(len(a) - 1):', 'for-j', 2],
-    ['            if a[j] > a[j + 1]:', 'compare', 3],
-    ['                a[j], a[j + 1] = a[j + 1], a[j]', 'swap', 4],
+    ['        swapped = False', 'swapped-false', 1],
+    ['        for j in range(len(a) - i - 1):', 'for-j', 2],
+    ['            if a[j] > a[j + 1]:', 'compare', 2],
+    ['                a[j], a[j + 1] = a[j + 1], a[j]', 'swap', 2],
+    ['                swapped = True', 'swapped-true', 2],
+    ['        if swapped:', 'check-swapped', 1],
+    ['            break', 'break-swapped', 1],
     ['', 'end', -1],
 ];
 
@@ -27,8 +31,9 @@ export class BubbleSort extends BreakpointFunction {
 
         for (this.i = 0; this.i < n; ++this.i) {
             this.addBP('for-i');
-            let swapped = false;
-            for (this.j = 0; this.j < n - 1; ++this.j) {
+            this.swapped = false;
+            this.addBP('swapped-false');
+            for (this.j = 0; this.j < n - 1 - this.i; ++this.j) {
                 this.jplus1 = this.j + 1;
                 if (granular) {
                     this.addBP('for-j');
@@ -41,19 +46,58 @@ export class BubbleSort extends BreakpointFunction {
                 if (aj > ajplus1) {
                     this.a = this.a.set(this.j, ajplus1);
                     this.a = this.a.set(this.j + 1, aj);
-                    swapped = true;
                     if (granular) {
                         this.addBP('swap');
                     }
+                    this.swapped = true;
+                    if (granular) {
+                        this.addBP('swapped-true');
+                    }
                 }
             }
-            if (!granular && !swapped) {
-                break;
+            this.j = undefined;
+            this.jplus1 = undefined;
+            this.addBP('check-swapped');
+            if (!this.swapped) {
+                this.addBP('break-swapped');
+                return;
             }
+            this.swapped = undefined;
         }
         this.addBP('end');
 
         return this.a;
+    }
+}
+
+export function formatBubbleSort(bp) {
+    switch (bp.point) {
+        case 'for-i':
+            return `Делаем <code>${bp.i + 1}</code>-ю итерацию сортировки`;
+        case 'swapped-false':
+            return `На этой итерации элементы еще не меняли местами`;
+        case 'for-j':
+            return `Посмотрим на <code>${bp.j}</code>-й элемент, <code>${bp.a.get(bp.j)}</code>`;
+        case 'compare': {
+            const aj = bp.a.get(bp.j);
+            const aj1 = bp.a.get(bp.j + 1);
+            return `<code>${aj} ${formatComparison(aj, aj1)} ${aj1}</code>, сравниваем его с соседним`;
+        }
+        case 'swap': {
+            return `Поменяем соседей местами`;
+        }
+        case 'swapped-true': {
+            return `Запомним, что поменяли местами`;
+        }
+        case 'check-swapped': {
+            return bp.swapped
+                ? `На этой итерации мы делали обмены, поэтому продолжаем`
+                : `На этой итерации мы не сделали обменов, поэтому массив отсортирован`;
+        }
+        case 'break-swapped':
+            return 'Выходим';
+        case 'end':
+            return 'Массив отсортирован';
     }
 }
 
@@ -347,5 +391,221 @@ export class NewDemos extends Chapter2_HashTableFunctions {
                 </Subcontainerize>
             </div>
         );
+    }
+}
+
+export const QUICK_SORT_CODE = [
+    ['def quicksort(a, start, stop):', '', 0],
+    ['    if start >= stop:', 'compare-size', 1],
+    ['        return', 'return', 2],
+    ['', '', -1],
+    ['    pivot = a[(start + stop) // 2]', 'select-pivot', 1],
+    ['    left = start', 'left-start', 1],
+    ['    right = stop', 'right-stop', 1],
+    ['', '', -1],
+    ['    while left <= right:', 'while-left-right', 2],
+    ['        while a[left] < pivot:', 'while-left', 3],
+    ['            left += 1', 'inc-left-first', 3],
+    ['        while a[right] > pivot:', 'while-right', 3],
+    ['            right -= 1', 'dec-right-first', 3],
+    ['        if left <= right:', 'compare-left-right', 2],
+    ['            a[left], a[right] = a[right], a[left]', 'swap', 3],
+    ['            left += 1', 'inc-left-second', 3],
+    ['            right -= 1', 'dec-right-second', 3],
+    ['    quicksort(a, start, right)', 'sort-left', 1],
+    ['    quicksort(a, left, stop)', 'sort-right', 1],
+    ['    ', 'exit', 1],
+];
+
+function formatComparison(num1, num2) {
+    if (num1 === num2) {
+        return '==';
+    } else if (num1 < num2) {
+        return '<';
+    } else {
+        return '>';
+    }
+}
+
+export function formatQuickSort(bp) {
+    switch (bp.point) {
+        case 'compare-size': {
+            const len = bp.stop - bp.start + 1;
+            const explanation =
+                len <= 0
+                    ? 'пустой подмассив уже отсортирован'
+                    : len === 1
+                    ? `${bp.recursionLevel > 0 ? 'под' : ''}массив из одного элемента уже отсортирован`
+                    : `сортируем ${bp.recursionLevel > 0 ? 'под' : ''}массив длины <code>${len}</code>`;
+            return `<code>${bp.start} ${formatComparison(bp.start, bp.stop)} ${bp.stop}</code>: ${explanation}`;
+        }
+        case 'return':
+            return 'Ничего делать не нужно — выходим';
+        case 'select-pivot':
+            return `Выбираем элемент-разделитель: <code>${bp.pivot}</code>`;
+        case 'left-start':
+            return `Левый указатель: <code>${bp.left}</code>`;
+        case 'right-stop':
+            return `Правый указатель: <code>${bp.right}</code>`;
+        case 'while-left-right': {
+            const len = bp.right - bp.left + 1;
+            const explanation =
+                len <= 0
+                    ? `все элементы слева от разделителя меньше него, а все справа — больше`
+                    : `остается обработать ${len} ${singularOrPluralRus(len, 'элемент', 'элемента', 'элементов')}`;
+            return `<code>${bp.left} ${bp.left <= bp.right ? '<=' : '>'} ${bp.right}</code>: ${explanation}`;
+        }
+        case 'while-left': {
+            const a = bp.array.get(bp.left);
+            const explanation =
+                a < bp.pivot
+                    ? 'элемент слева от разделителя уже меньше'
+                    : `слева должны быть элементы меньше разделителя, а мы натолкнулись на ${
+                          a === bp.pivot ? 'равный' : 'больший'
+                      } элемент`;
+            return `<code>${a} ${formatComparison(a, bp.pivot)} ${bp.pivot}</code>: ${explanation}`;
+        }
+        case 'while-right': {
+            const a = bp.array.get(bp.right);
+            console.log('While right', a, bp.array, bp.array.get(bp.right));
+            const explanation =
+                a > bp.pivot
+                    ? 'элемент справа от разделителя уже больше'
+                    : `справа должны быть элементы больше разделителя, а мы натолкнулись на ${
+                          a === bp.pivot ? 'равный' : 'меньший'
+                      } элемент`;
+            return `<code>${a} ${formatComparison(a, bp.pivot)} ${bp.pivot}</code>: ${explanation}`;
+        }
+        case 'inc-left-first':
+        case 'inc-left-second':
+            return `Сдвигаем левый указатель вправо на <code>${bp.left}</code> элемент`;
+        case 'dec-right-first':
+        case 'dec-right-second':
+            return `Сдвигаем правый указатель влево на <code>${bp.right}</code> элемент`;
+        case 'compare-left-right': {
+            const len = bp.right - bp.left + 1;
+            return `<code>${bp.left} ${formatComparison(bp.left, bp.right)} ${
+                bp.right
+            }</code>: еще ${len} ${singularOrPluralRus(len, 'элемент', 'элемента', 'элементов')} для обработки`;
+        }
+        case 'swap': {
+            const isSame = bp.left === bp.right;
+            if (isSame) {
+                return `Ничего не происходит: меняем элемент сам с собой`;
+            } else {
+                return `Меняем местами элементы, на которые наткнулись: <code>${bp.array.get(
+                    bp.right
+                )}</code> и <code>${bp.array.get(bp.left)}</code>`;
+            }
+        }
+        case 'sort-left':
+            return `Рекурсивно сортируем левый подмассив <code>${bp.start}..${bp.right}</code>`;
+        case 'sort-right':
+            return `Рекурсивно сортируем правый подмассив <code>${bp.left}..${bp.stop}</code>`;
+        case 'exit': {
+            if (bp.recursionLevel > 0) {
+                return `Подмассив <code>${bp.start}..${
+                    bp.stop
+                }</code> отсортирован. Выходим из рекурсии (текущая глубина: ${bp.recursionLevel})`;
+            } else {
+                return `Весь массив отсортирован, выходим`;
+            }
+        }
+    }
+}
+
+export class QuickSort extends BreakpointFunction {
+    constructor() {
+        super();
+    }
+
+    run(_a) {
+        this.array = new ImmutableList(_a);
+        this.recursionLevel = 0;
+        this.quickSort(0, _a.length - 1);
+    }
+
+    quickSort(_start, _stop) {
+        this.start = _start;
+        this.stop = _stop;
+        this.addBP('compare-size');
+        console.log('quicksort', this.start, this.stop);
+        if (this.stop <= this.start) {
+            this.addBP('return');
+            return;
+        }
+        this.pivot = this.array.get(Math.trunc((this.start + this.stop) / 2));
+        this.addBP('select-pivot');
+        this.left = this.start;
+        this.addBP('left-start');
+        this.right = this.stop;
+        this.addBP('right-stop');
+
+        while (true) {
+            this.addBP('while-left-right');
+            if (this.left > this.right) {
+                break;
+            }
+
+            while (true) {
+                this.addBP('while-left');
+                if (this.array.get(this.left) >= this.pivot) {
+                    break;
+                }
+                this.left++;
+                this.addBP('inc-left-first');
+            }
+
+            while (true) {
+                this.addBP('while-right');
+                if (this.array.get(this.right) <= this.pivot) {
+                    break;
+                }
+                this.right--;
+                this.addBP('dec-right-first');
+            }
+
+            this.addBP('compare-left-right');
+            if (this.left <= this.right) {
+                const _al = this.array.get(this.left);
+                const _ar = this.array.get(this.right);
+                this.array = this.array.set(this.left, _ar);
+                this.array = this.array.set(this.right, _al);
+                this.addBP('swap');
+                this.left += 1;
+                this.addBP('inc-left-second');
+                this.right -= 1;
+                this.addBP('dec-right-second');
+            }
+        }
+
+        console.log(this.start, this.left, this.right, this.stop);
+        const savedPivot = this.pivot;
+        const savedLeft = this.left;
+        const savedRight = this.right;
+        const savedStop = this.stop;
+        const savedStart = this.start;
+
+        this.pivot = undefined;
+        this.left = undefined;
+        this.addBP('sort-left');
+        this.recursionLevel++;
+        this.quickSort(this.start, this.right);
+        this.recursionLevel--;
+
+        this.pivot = savedPivot;
+        this.left = savedLeft;
+        this.right = savedRight;
+        this.stop = savedStop;
+        this.start = savedStart;
+
+        this.pivot = undefined;
+        this.right = undefined;
+        this.addBP('sort-right');
+        this.recursionLevel++;
+        this.quickSort(this.left, this.stop);
+        this.recursionLevel--;
+
+        this.addBP('exit');
     }
 }

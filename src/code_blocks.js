@@ -194,7 +194,7 @@ function SingleBoxSelection({idx, status, boxSize, spacingX, spacingY, borderRad
 }
 
 class SelectionGroup extends React.Component {
-    TRANSITION_DURATION = 300;
+    TRANSITION_DURATION = 500;
 
     constructor() {
         super();
@@ -1473,6 +1473,11 @@ export class CodeBlockWithActiveLineAndAnnotations extends React.PureComponent {
             if (time > this.props.time) {
                 break;
             }
+
+            if (bp.recursionLevel != null && bp.recursionLevel !== activeBp.recursionLevel) {
+                continue;
+            }
+            console.log('BP', time, bp);
 
             if (bp.point in visibleBreakpoints) {
                 let level = pointToLevel[bp.point];
