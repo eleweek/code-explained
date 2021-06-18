@@ -487,7 +487,7 @@ export class MainPage extends React.Component {
                     </div>
                 </div> */}
                 <div className="section">
-                    <h1>Простейшие хеш-таблицы</h1>
+                    <h1>Введение в хеш-таблицы</h1>
                     <div className="pane-collection simplified-hash-collection">
                         <div className="simplified-hash-collection-left">
                             <LessonPane id="simplified_hash_collisions" />
