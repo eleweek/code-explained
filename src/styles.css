@@ -487,17 +487,13 @@ blockquote.blockquote {
 
 footer a.link {
     color: rgba(0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0.15);
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
+    border: none;
 }
 
 footer a.link:hover {
     text-decoration: none;
     color: #b03000;
-    border-bottom-color: rgba(160, 48, 0, 0.15);
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
+    border: none;
 }
 
 footer {
