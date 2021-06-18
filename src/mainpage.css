@@ -74,12 +74,30 @@
     padding-left: 10px;
 }
 
-.frontpage .bubble-sort {
-    background-color: #8700ff;
+.frontpage .sorts-collection {
+    display: flex;
+    flex-direction: row;
+    height: 370px;
+    width: 100%;
 }
 
-.frontpage .insertion-sort {
-    background-color: #dc151d;
+.frontpage .bubble-sort {
+    background-color: #8700ff;
+    margin-right: 10px;
+    height: 370px;
+}
+
+.frontpage .quick-sort {
+    background-color: #e3444a;
+    height: 370px;
+}
+
+.frontpage .sort-1 {
+    width: 50%;
+}
+
+.frontpage .sort-2 {
+    width: 50%;
 }
 
 .frontpage .simplified-hash-collisions {
@@ -269,9 +287,21 @@
     }
 
     .frontpage .simplified-hash-search,
-    .frontpage .simplified-hash-create {
+    .frontpage .simplified-hash-create,
+    .frontpage .bubble-sort,
+    .frontpage .quick-sort {
         margin-right: 0px;
         height: 70px;
+    }
+
+    .frontpage .sort-2,
+    .frontpage .sort-1 {
+        width: 100%;
+    }
+
+    .frontpage .sorts-collection {
+        height: 140px;
+        flex-direction: column;
     }
 
     .frontpage .hash-create {

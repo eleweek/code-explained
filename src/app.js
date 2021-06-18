@@ -514,6 +514,18 @@ export class MainPage extends React.Component {
                         </div>
                     </div>
                 </div>
+                <div className="section">
+                    <h1>Сортировки</h1>
+                    <div className="pane-collection sorts-collection">
+                        <div className="sort-1">
+                            <LessonPane id="bubble_sort" />
+                        </div>
+
+                        <div className="sort-2">
+                            <LessonPane id="quick_sort" />
+                        </div>
+                    </div>
+                </div>
                 <Footer />
             </div>
         );
