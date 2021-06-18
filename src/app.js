@@ -251,6 +251,7 @@ const LESSONS = {
         formatBpDesc: formatBubbleSort,
         stateVisualization: BubbleSortVisualisation,
         code: BUBBLE_SORT_CODE,
+        resetToZero: true,
     },
 
     quick_sort: {
@@ -265,6 +266,7 @@ const LESSONS = {
         formatBpDesc: formatQuickSort,
         stateVisualization: QuickSortVisualisation,
         code: QUICK_SORT_CODE,
+        resetToZero: true,
     },
 
     // linear_search: {

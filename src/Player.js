@@ -114,6 +114,7 @@ export class Player extends React.Component {
         const timeStr = localStorage.getItem(props.lessonId + '_time');
 
         const inputs = this.props.inputs || [];
+        const resetToZero = props.resetToZero;
 
         const programInputs = [];
         const originalRawInputs = [];
@@ -134,7 +135,7 @@ export class Player extends React.Component {
                     programInputs[i] = value;
                     const breakpoints = this.props.getBreakpoints(...programInputs);
 
-                    const time = this.state.time > 0 ? breakpoints.length - 1 : 0;
+                    const time = !resetToZero && this.state.time > 0 ? breakpoints.length - 1 : 0;
                     this.setState({programInputs, breakpoints, time, sliderTime: time});
                     this.saveSliderTimeToLS(time);
 
