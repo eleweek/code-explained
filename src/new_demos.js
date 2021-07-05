@@ -15,7 +15,7 @@ export const BUBBLE_SORT_CODE = [
     ['            if a[j] > a[j + 1]:', 'compare', 2],
     ['                a[j], a[j + 1] = a[j + 1], a[j]', 'swap', 2],
     ['                swapped = True', 'swapped-true', 2],
-    ['        if swapped:', 'check-swapped', 1],
+    ['        if not swapped:', 'check-swapped', 1],
     ['            break', 'break-swapped', 1],
     ['', 'end', -1],
 ];
